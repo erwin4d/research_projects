@@ -35,7 +35,7 @@ function [ ] = RP_KNN_demo(data_name, nsims)
 
   for iter = 1:nsims
     iter
-    big_V = gen_typeof_V([XTrain; XTest], max_k, 2, 1 );
+    big_V = gen_typeof_V([XTrain; XTest], max_k, 'binary', 1);
     VXTrain = big_V(1:size_Train,:);
     VXTest = big_V((size_Train+1):end,:);
 

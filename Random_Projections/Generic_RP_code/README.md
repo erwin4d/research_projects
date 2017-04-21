@@ -10,7 +10,7 @@ Generates the type of random projection matrix required. Note: The SRHT here is 
 
 Creates V = XR, without the scaling factor, since we can always scale the estimates later and avoid a pesky square root.
 
-- compute_generic_norm.m ; compute_generic_ED.m ; compute_generic_IP.m
+- compute_generic_all_norm.m ; compute_generic_ED.m ; compute_generic_IP.m
 
 Computes the estimates / actual norms, Euclidean distances, and inner products. 
 

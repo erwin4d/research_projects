@@ -16,7 +16,7 @@ function [ ED ] = compute_generic_ED( row1, row2, mat, is_est, option, opt_para,
   % opt_para : to the option , opt_para in gen_typeof_R
   % is_sim: If we want to simulate and look at the estimates with increasing columns k, can compute estimates all at once
  
-  if is_est == false
+  if ~is_est 
   	% Compute ED of mat. Is exact estimate
   	ED = norm(mat(row1,:) - mat(row2,:));
   else
@@ -25,12 +25,12 @@ function [ ED ] = compute_generic_ED( row1, row2, mat, is_est, option, opt_para,
     % so we're putting them in now.
     % See derviations.pdf 
     [ ~, k ] = size(mat);
-    if strcmp(is_sim, 'yes')
+    if is_sim
       ED = cumsum((mat(row1,:) - mat(row2,:)).^2) ./ (1:k);
     else
       ED = mean((mat(row1,:) - mat(row2,:)).^2);
     end
-    if option == 4
+    if strcmp(option, 'SB') 
       ED = opt_para * ED;
     end
     ED = sqrt(ED);
