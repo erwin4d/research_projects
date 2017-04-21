@@ -18,14 +18,8 @@ Computes the estimates / actual norms, Euclidean distances, and inner products.
 
 Shows the derivations of why scaling factor can be taken out for generic random projections
 
-- Database Friendly Random Projections 
+- Relevant papers 
 
-Binary random projections
+Database Friendly Random Projections, Very Sparse Random Projections, and Improved Analysis of the Subsampled Randomized Hadamard Transform
 
-- Very Sparse Random Projections
-
-Sparse Bernoulli random projections
-
-- Improved Analysis of the Subsampled Randomized Hadamard Transform
-
-Subsampled Randomized Hadamard Transform projections
+They give some analysis and explanation on the types of random projections in this folder.
