@@ -8,3 +8,13 @@ data/t10k-images-idx3-ubyte
 data/train-labels-idx1-ubyte
 
 data/train-images-idx3-ubyte
+
+*.aux
+
+*.idx
+
+*.log
+
+*.out
+
+*.gz

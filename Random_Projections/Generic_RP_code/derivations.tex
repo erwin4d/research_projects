@@ -1,0 +1,98 @@
+\documentclass[a4paper,12pt]{article} 
+\usepackage{amsmath,amssymb, amsthm, mathrsfs, fancyhdr, ulem, gastex, gensymb, harmony, color, enumitem, bm, hyperref, extarrows, makeidx, rotating, wasysym, calligra}
+\usepackage[encapsulated]{CJK}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+% use one of bsmi(trad Chinese), gbsn(simp Chinese), min(Japanese), mj(Korean); see:
+% /usr/share/texmf-dist/tex/latex/cjk/texinput/UTF8/*.fd
+\usepackage{tikz} 
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,fit}  
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}} 
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}} 
+
+
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\setlength\topmargin{0in}
+\setlength\headheight{0in}
+\setlength\headsep{0in}
+\setlength\textheight{9.0in}
+\setlength\textwidth{6.5in}
+\setlength\oddsidemargin{0in}
+\setlength\evensidemargin{0in}
+\setlength\parindent{0.0in}
+\setlength\parskip{0.25in} 
+
+\pagestyle{fancy}
+\headheight 15pt
+\headsep 20pt
+
+\def\newop#1 
+{\expandafter\def\csname #1 
+\endcsname{\mathop{\rm #1}\nolimits}} 
+%Use as \newop{Blah}, then \Blah works. Similar to say, \dim, or \min, etcc
+
+\lhead[\thepage]{Derivations for generic random projections} 
+\rhead[Derivations for generic random projections]{\thepage} 	
+\chead{}
+\cfoot{}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem{fact}{Fact}[section]
+\newtheorem{question}{Question}[section]
+\newtheorem{process}{Process}[section]
+\newtheorem{skill}{Skill}[section]
+\newtheorem{result}{Result}[section]
+\newtheorem{remark}{Remark}[section]
+\numberwithin{equation}{section}
+\newcommand{\cntext}[1]{\begin{CJK}{UTF8}{gbsn}#1\end{CJK}}
+
+\makeindex
+\begin{document} 
+
+Here are the derivations without the scaling factor. 
+
+${\bf x}_i, {\bf v}_i$ correspond to the $i^\text{th}$ row of $X$ and $V$ respectively.
+
+First, we assume each entry $r_{ij}$ is drawn i.i.d. with mean 0 and standard deviation 1. 
+
+Consider the column vector ${\bf x}_1, {\bf x}_2, {\bf r} \in \mathbb R^p$. 
+
+Denoting $v_1 = \langle {\bf x}_1, {\bf r}\rangle$ and $v_2 = \langle {\bf x}_2, {\bf r}\rangle$, we have:
+\begin{align}
+\mathbb E[v_1^2] & = \|{\bf x}_1\|_2^2\\
+\mathbb E[v_2^2] & = \|{\bf x}_2\|_2^2 \\
+\mathbb E[(v_1-v_2)^2] & = \|{\bf x}_1 - {\bf x}_2\|_2^2 \\
+\mathbb E[v_1v_2] & = \langle {\bf x}_1, {\bf x}_2 \rangle
+\end{align}
+
+Therefore, for {\tt option} 1 and 2, where we simulate $r_{ij}$ i.i.d. from $N(0,1)$ and $\{-1,1\}$ with probability $\frac{1}{2}$ respectively, it suffices to compute:
+\begin{align*}
+\frac{1}{k} \|{\bf v}_1\|_2^2 & ~~~~~~\text{as an estimate for $\|{\bf x}_1\|_2^2$} \\
+\frac{1}{k} \|{\bf v}_2\|_2^2 & ~~~~~~\text{as an estimate for $\|{\bf x}_2\|_2^2$} \\
+\frac{1}{k} \|{\bf v}_1 - {\bf v}_2\|_2^2 & ~~~~~~\text{as an estimate for $\|{\bf x}_1 - {\bf x}_2\|_2^2$} \\
+\frac{1}{k} \langle {\bf v}_1, {\bf v}_2 \rangle & ~~~~~~\text{as an estimate for $\langle {\bf x}_1, {\bf x}_2 \rangle$} 
+\end{align*}
+
+For the Sparse Bernoulli distribution ({\tt option} 3), we computed $V = \frac{1}{\sqrt{s}}XR$ instead of $V = XR$. 
+
+Thus, this implies we need to compute:
+\begin{align*}
+\frac{s}{k} \|{\bf v}_1\|_2^2 & ~~~~~~\text{as an estimate for $\|{\bf x}_1\|_2^2$} \\
+\frac{s}{k} \|{\bf v}_2\|_2^2 & ~~~~~~\text{as an estimate for $\|{\bf x}_2\|_2^2$} \\
+\frac{s}{k} \|{\bf v}_1 - {\bf v}_2\|_2^2 & ~~~~~~\text{as an estimate for $\|{\bf x}_1 - {\bf x}_2\|_2^2$} \\
+\frac{s}{k} \langle {\bf v}_1, {\bf v}_2 \rangle & ~~~~~~\text{as an estimate for $\langle {\bf x}_1, {\bf x}_2 \rangle$} 
+\end{align*}
+
+
+
+\end{document}
+
+
+
