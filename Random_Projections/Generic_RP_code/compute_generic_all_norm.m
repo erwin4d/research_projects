@@ -1,24 +1,30 @@
-function [ norm_val ] = compute_generic_all_norm( mat, is_est, option, opt_para, is_sim)
+function [ norm_val ] = compute_generic_all_norm( mat, is_est, varargin)
 
-  % Compute the norm of all rows of mat
-  % or the estimated norm of all V := XR
-  % as a vector of increasing k 
-
-  % mat can be a single vector.
-
-  % For example, if V was n by k, we want to know how accurate our
-  % estimates are...
+  p = inputParser;  
+  p.addRequired('mat',@(x) true);
+  p.addRequired('is_est',@islogical);
+  p.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB', 'SRHT'})));
+  p.addOptional('opt_para', -1, @(x) true);
+  p.addOptional('is_sim', false, @islogical);
+  p.addOptional('kvec', 1, @(x) true);
+  p.parse(mat, is_est,varargin{:});
+  inputs = p.Results;
   
-  % is_est: can either be true (estimating norm given V)
-  %                   or false (exact norm given V)
 
-  % mat:    either true X, or estimated V
+  % Setup: Random projections, where we have V = XR
+  % This function computes the actual vector of row norms of X
+  % or an estimated vector of row norms using V
 
-  % option   : both used only if is_est is true, and corresponds
-  % opt_para : to the option , opt_para in gen_typeof_R
-  % is_sim: If we want to simulate and look at the estimates with increasing columns k, can compute estimates all at once
+  % mat: X (or V)
+  % is_est : true   - compute actual norm using X as input
+  %          false  - compute estimated norms using V using V as input
 
-
+  % Optional parameters
+  % option: type of random projection matrix
+  % opt_para: scaling factor for sparse bernoulli option
+  % is_sim: boolean ; true if computing matrix of norms for subset of kvec cols for simulations
+  %                   false - return just vector of row norms using K cols
+  % kvec: subset for is_sim above
   if ~is_est
   	% Compute norm of row of mat. Is exact estimate
   	norm_val = sqrt(sum(mat.^2,2));
@@ -26,15 +32,16 @@ function [ norm_val ] = compute_generic_all_norm( mat, is_est, option, opt_para,
     % Compute norms given V
     % Note that we didn't include scaling factor in our previous functions
     % so we're putting them in now.
-    % See derviations.pdf 
+    % See derviations.pdf for working
     [ ~, k ] = size(mat);
-    if is_sim
-      norm_val = cumsum(mat.^2,2)./(1:k);
+    if inputs.is_sim
+      norm_val = cumsum(mat.^2,2);
+      norm_val = norm_val(:,inputs.kvec) ./ inputs.kvec;
     else
       norm_val = sum(mat.^2,2)/k;
     end
-    if strcmp(option, 'SB') == 1
-      norm_val = opt_para * norm_val;
+    if strcmp(inputs.option, 'SB') == 1
+      norm_val = inputs.opt_para * norm_val;
     end
     norm_val = sqrt(norm_val);
   end

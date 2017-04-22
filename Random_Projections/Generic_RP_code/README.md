@@ -23,3 +23,8 @@ Shows the derivations of why scaling factor can be taken out for generic random 
 Database Friendly Random Projections, Very Sparse Random Projections, and Improved Analysis of the Subsampled Randomized Hadamard Transform
 
 They give some analysis and explanation on the types of random projections in this folder.
+
+
+To Do: 
+  + update compute_generic_ED.m and compute_generic_IP.m to get pairwise ED and IP for multiple vectors, returning a m by n matrix
+  + unit testing for randomness + above functionality (plausibly easier to verify by correct MSEs and such by plotting)

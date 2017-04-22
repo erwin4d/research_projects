@@ -1,21 +1,32 @@
-function [ ED ] = compute_generic_ED( row1, row2, mat, is_est, option, opt_para, is_sim)
+function [ ED ] = compute_generic_ED( row1, row2, mat, is_est, varargin)
   
-  % Compute the Euclidean distance between any two rows of X
-  % or the estimated Euclidean distance between any two rows of V := XR
-  % as a vector of increasing k 
+  p = inputParser;  
+  p.addRequired('row1',@(x) x > 0);
+  p.addRequired('row2',@(x) x > 0);
+  p.addRequired('mat',@(x) true);
+  p.addRequired('is_est',@islogical);
+  p.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB', 'SRHT'})));
+  p.addOptional('opt_para', -1, @(x) true);
+  p.addOptional('is_sim', false, @islogical);
+  p.addOptional('kvec', 1, @(x) true);
+  p.parse(row1, row2, mat, is_est,varargin{:});
+  inputs = p.Results;
 
-  % For example, if V was n by k, we want to know how accurate our
-  % estimates are...
-  
-  % is_est: can either be true (estimating ED given V)
-  %                   or false (exact ED given V)
+  % Setup: Random projections, where we have V = XR
+  % This function computes the actual ED between two rows of X
+  % or an estimated ED between two rows of X using V
 
-  % mat:    either true X, or estimated V
+  % mat: X (or V)
+  % is_est : true   - compute actual ED using X as input
+  %          false  - compute estimated ED using V using V as input
 
-  % option   : both used only if is_est is true, and corresponds
-  % opt_para : to the option , opt_para in gen_typeof_R
-  % is_sim: If we want to simulate and look at the estimates with increasing columns k, can compute estimates all at once
- 
+  % Optional parameters
+  % option: type of random projection matrix
+  % opt_para: scaling factor for sparse bernoulli option
+  % is_sim: boolean ; true if computing vectors of ED for subset of K cols for simulations
+  %                   false - return just estimated ED using K cols
+  % kvec:   subset of K cols
+
   if ~is_est 
   	% Compute ED of mat. Is exact estimate
   	ED = norm(mat(row1,:) - mat(row2,:));
@@ -25,13 +36,14 @@ function [ ED ] = compute_generic_ED( row1, row2, mat, is_est, option, opt_para,
     % so we're putting them in now.
     % See derviations.pdf 
     [ ~, k ] = size(mat);
-    if is_sim
-      ED = cumsum((mat(row1,:) - mat(row2,:)).^2) ./ (1:k);
+    if inputs.is_sim
+      ED = cumsum((mat(row1,:) - mat(row2,:)).^2);
+      ED = ED(inputs.kvec) ./ inputs.kvec;
     else
       ED = mean((mat(row1,:) - mat(row2,:)).^2);
     end
-    if strcmp(option, 'SB') 
-      ED = opt_para * ED;
+    if strcmp(inputs.option, 'SB') 
+      ED = inputs.opt_para * ED;
     end
     ED = sqrt(ED);
   end

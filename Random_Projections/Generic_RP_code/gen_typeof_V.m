@@ -1,4 +1,14 @@
-function [ V ] = gen_typeof_V(X, k, option, opt_para )
+function [ V ] = gen_typeof_V(X, k, varargin )
+
+  pars = inputParser;  
+  pars.addRequired('X',@(x) true);
+  pars.addRequired('k',@(x) x > 0);
+  pars.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB', 'SRHT'})));
+  pars.addOptional('opt_para', -1, @(x) true);
+  pars.parse(X, k ,varargin{:});
+
+  inputs = pars.Results;
+
 
   % For cases when we want to do generic random projections
   % i.e. V = 1/sqrt(k) XR
@@ -14,7 +24,7 @@ function [ V ] = gen_typeof_V(X, k, option, opt_para )
 
   % Get num_paras (cols) of X
   [ ~, p] = size(X);
-  R = gen_typeof_R( p, k, option, opt_para);
+  R = gen_typeof_R( p, k, 'option', inputs.option, 'opt_para', inputs.opt_para);
   V = X * R; % again, remember no scaling parameter
 
 end
