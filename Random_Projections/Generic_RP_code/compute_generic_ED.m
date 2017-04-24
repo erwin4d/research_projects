@@ -17,8 +17,8 @@ function [ ED ] = compute_generic_ED( row1, row2, mat, is_est, varargin)
   % or an estimated ED between two rows of X using V
 
   % mat: X (or V)
-  % is_est : true   - compute actual ED using X as input
-  %          false  - compute estimated ED using V using V as input
+  % is_est : false   - compute actual ED using X as input
+  %          true  - compute estimated ED using V using V as input
 
   % Optional parameters
   % option: type of random projection matrix

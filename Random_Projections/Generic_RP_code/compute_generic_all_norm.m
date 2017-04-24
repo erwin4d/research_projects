@@ -16,8 +16,8 @@ function [ norm_val ] = compute_generic_all_norm( mat, is_est, varargin)
   % or an estimated vector of row norms using V
 
   % mat: X (or V)
-  % is_est : true   - compute actual norm using X as input
-  %          false  - compute estimated norms using V using V as input
+  % is_est : false   - compute actual norm using X as input
+  %          true  - compute estimated norms using V using V as input
 
   % Optional parameters
   % option: type of random projection matrix

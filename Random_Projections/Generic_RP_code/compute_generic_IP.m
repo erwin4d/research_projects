@@ -18,8 +18,8 @@ function [ IP ] = compute_generic_IP(  row1, row2, mat, is_est, varargin )
   % or an estimated IP between two rows of X using V
 
   % mat: X (or V)
-  % is_est : true   - compute actual IP using X as input
-  %          false  - compute estimated IP using V using V as input
+  % is_est : false   - compute actual IP using X as input
+  %          true  - compute estimated IP using V using V as input
 
   % Optional parameters
   % option: type of random projection matrix
