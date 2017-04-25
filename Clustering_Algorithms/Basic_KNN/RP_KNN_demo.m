@@ -1,34 +1,20 @@
-function [ ] = RP_KNN_demo(data_name, nsims)
-
+function [ ] = RP_KNN_demo(data_name, nsims, num_neigh, is_norm)
+  
   % Demo KNN with Random Projections
   % Inspired by class homework for BTRY 6520
   
   % Type of matrix used (change this if needed)
   option = 'binary';
   opt_para = 0;
-
-  if strcmp(data_name, 'mnist')
-    [XTrain, XTest, YTrain, YTest] = load_MNIST();
-    kvec = [20, 50, 100, 150, 200, 250];
-    true_par = 0.9688;
-    % Baseline error for MNIST is.....
-    % 0.9688 for p = 2
-  elseif strcmp(data_name, 'gisette')
-    [XTrain, XTest, YTrain, YTest] = load_gisette();
-    kvec = [10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
-    true_par = 0.9560;
-    % 0.9560 for p = 2
-  elseif strcmp(data_name, 'arcene')
-    [XTrain, XTest, YTrain, YTest] = load_arcene();
-    kvec = [10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000];
-    true_par = 0.7800;
-  end
-  near_neigh = 5;
-  % labels  = basic_KNN( XTrain, XTest, YTrain, 2, near_neigh, 100);
+  
+  % Load in datasets
+  [ XTrain, XTest, YTrain, YTest, kvec, true_par] = load_datasets_for_basic_knn(data_name, num_neigh, is_norm);
+  
 
   size_Train = size(XTrain,1);
   size_Test = size(XTest,1);
   max_k = max(kvec);
+
   err_mat = zeros(length(kvec), nsims);
 
   figure;
@@ -41,23 +27,23 @@ function [ ] = RP_KNN_demo(data_name, nsims)
     for kval = 1 : length(kvec)
       %kval
       k = kvec(kval);
-      labels = basic_KNN( VXTrain(:,1:k), VXTest(:,1:k), YTrain, 2, near_neigh, 100);
+      labels = basic_KNN( VXTrain(:,1:k), VXTest(:,1:k), YTrain, 2, num_neigh, 100);
       err_mat(kval, iter) = sum(labels == YTest)/size_Test;
     end
 
     if mod(iter, 20) == 0
-      [ avg_err, sd_err] = compute_acc_err_KNN(err_mat(:,1:iter), data_name, iter, false);
+      [ avg_err, sd_err] = compute_acc_err_KNN(err_mat(:,1:iter), data_name, iter, false, is_norm);
       clf('reset')    
       local_plot_rel_err(kvec, true_par, avg_err,sd_err, iter, data_name, false)
       drawnow
     end
 
     if mod(iter, 100) == 0
-      compute_acc_err_KNN(err_mat(:,1:iter), data_name, iter, true);
+      compute_acc_err_KNN(err_mat(:,1:iter), data_name, iter, true, is_norm);
     end
   end
 
-  [ avg_err, sd_err] = compute_acc_err_KNN(err_mat(:,1:iter), data_name, iter, 'tosave', true);
+  [ avg_err, sd_err] = compute_acc_err_KNN(err_mat(:,1:iter), data_name, iter, 'tosave', true, is_norm);
   
   
   local_plot_rel_err(kvec, true_par, avg_err,sd_err,iter, data_name, true)

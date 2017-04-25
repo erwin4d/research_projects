@@ -1,4 +1,19 @@
-function [ labels ] = basic_KNN( XTrain, XTest, YTrain, p, k, split_num)
+function [ labels ] = basic_KNN( XTrain, XTest, YTrain, varargin)
+
+  pars = inputParser;  
+  pars.addRequired('XTrain',@(x) true);
+  pars.addRequired('XTest',@(x) true);
+  pars.addRequired('YTrain',@isvector);
+  pars.addOptional('p', 2, @isnumeric);
+  pars.addOptional('k', 5, @isnumeric);
+  pars.addOptional('split_num', 100, @isnumeric);
+
+  pars.parse( XTrain, XTest, YTrain , varargin{:});
+  inputs = pars.Results;  
+  
+  p = inputs.p;
+  k = inputs.k;
+  split_num = inputs.split_num;
 
   % This performs basic K nearest neighbors
   % using lp distance parameterized by p
@@ -55,7 +70,7 @@ function [ labels ] = basic_KNN( XTrain, XTest, YTrain, p, k, split_num)
       if (mod(i,10) == 1)
         i
       end
-      labels(i) = compute_LP_normal_basic( XTrain, XTest(i,:), YTrain, size_Train, p, k_neigh);
+      labels(i) = compute_LP_normal_basic( XTrain, XTest(i,:), YTrain, size_Train, p, k);
     end  	
 end
 
