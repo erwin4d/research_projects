@@ -20,3 +20,19 @@ data/train-images-idx3-ubyte
 *.gz
 
 data/words/
+
+data/gisette_train.data
+
+data/gisette_train.labels
+
+data/gisette_valid.data
+
+data/gisette_valid.labels
+
+data/arcene_valid.labels
+
+data/arcene_valid.data
+
+data/arcene_train.labels
+
+data/arcene_train.data
