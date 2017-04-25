@@ -14,10 +14,10 @@ function [ ] = RP_KNN_demo(data_name, nsims)
     % Baseline error for MNIST is.....
     % 0.9688 for p = 2
   elseif strcmp(data_name, 'gisette')
-    XTrain = csvread('gisette_train.csv');
-    YTrain = csvread('gisette_train_label.csv');
-    XTest = csvread('gisette_valid.csv');
-    YTest = csvread('gisette_valid_label.csv');
+    XTrain = sparse(feval('load', 'gisette_train.data'));
+    YTrain = feval('load', 'gisette_train.labels');
+    XTest = sparse(feval('load', 'gisette_valid.data'));
+    YTest = feval('load', 'gisette_valid.labels');
     kvec = [10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
     true_par = 0.9560;
     % 0.9560 for p = 2
@@ -28,7 +28,7 @@ function [ ] = RP_KNN_demo(data_name, nsims)
     YTest = csvread('arcene_valid_labels.csv');
     kvec = [10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000];
     true_par = 0.7800;
-    %  0.7800 p = 2
+ 
   
   end
   near_neigh = 5;
