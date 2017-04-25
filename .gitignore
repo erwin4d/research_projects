@@ -19,6 +19,4 @@ data/train-images-idx3-ubyte
 
 *.gz
 
-data/words/A
-
-data/
+data/words/
