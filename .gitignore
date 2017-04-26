@@ -36,3 +36,5 @@ data/arcene_valid.data
 data/arcene_train.labels
 
 data/arcene_train.data
+
+*.data
