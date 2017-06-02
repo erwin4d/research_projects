@@ -14,7 +14,7 @@ function [ labels ] = compute_LP_split_basic( XTrain, XTest, YTrain, split_num, 
   for coef = 2:(length(bin_coef)-1);
       Z = Z + (-1)^(coef-1) * bin_coef(coef) *(XTrain.^(p-coef+1))*transpose((XTest.^(coef-1)));
   end
-  
+  Z = sqrt(Z);
   labels = zeros(1, split_num);
   for zcol = 1:split_num
     [~, idx] = sort(Z(:,zcol));

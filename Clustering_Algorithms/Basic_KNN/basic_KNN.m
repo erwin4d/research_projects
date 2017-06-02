@@ -7,13 +7,19 @@ function [ labels ] = basic_KNN( XTrain, XTest, YTrain, varargin)
   pars.addOptional('p', 2, @isnumeric);
   pars.addOptional('k', 5, @isnumeric);
   pars.addOptional('split_num', 100, @isnumeric);
+  pars.addOptional('uses_CV', false, @islogical);
+  pars.addOptional('norm_XTrain', @isvector);
+  pars.addOptional('norm_XTest', @isvector);
 
   pars.parse( XTrain, XTest, YTrain , varargin{:});
   inputs = pars.Results;  
   
   p = inputs.p;
   k = inputs.k;
-  split_num = inputs.split_num;
+  split_num = min(inputs.split_num, size(XTest,1));
+  uses_CV = inputs.uses_CV;
+  norm_XTrain = inputs.norm_XTrain;
+  norm_XTest = inputs.norm_XTest;
 
   % This performs basic K nearest neighbors
   % using lp distance parameterized by p
@@ -46,24 +52,25 @@ function [ labels ] = basic_KNN( XTrain, XTest, YTrain, varargin)
   % (..)^p could be negative
   % bummer.
 
-
-  if mod(p,2) == 0
+  if mod(p,2) == 0 || uses_CV
   	% What's the binomial coefficients?
-  	bin_coef = zeros(1, p+1);
-    for i = 1:p+1;
-      bin_coef(i) = nchoosek(p, i-1);
+    if ~uses_CV
+  	  bin_coef = zeros(1, p+1);
+      for i = 1:p+1;
+        bin_coef(i) = nchoosek(p, i-1);
+      end
     end
-    
     % Partition correctly
     start_vec = 1:split_num:size_Test;
     end_vec = split_num:split_num:size_Test;
     
     for ss = 1:(length(start_vec))
       
-    	%if mod(ss,10) == 0
-      %  ss
-      %end
-      labels(start_vec(ss):end_vec(ss)) = compute_LP_split_basic( XTrain, XTest(start_vec(ss):end_vec(ss),:), YTrain, split_num, p, k, bin_coef);
+      if uses_CV
+        labels(start_vec(ss):end_vec(ss)) = compute_LP_split_basic_RPCV( XTrain, XTest(start_vec(ss):end_vec(ss),:), YTrain, split_num, k, norm_XTrain,norm_XTest(start_vec(ss):end_vec(ss),:));
+      else
+        labels(start_vec(ss):end_vec(ss)) = compute_LP_split_basic( XTrain, XTest(start_vec(ss):end_vec(ss),:), YTrain, split_num, p, k, bin_coef);
+      end
     end
   else
     for i = 1:size_Test;
