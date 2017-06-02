@@ -9,6 +9,6 @@ rmpath('Clustering_Algorithms/Basic_KNN');
 warning('on')
 
 addpath('Random_Projections/Generic_RP_code');
-generic_results = runtests('genericTest.m')
+generic_results = runtests('genericTest.m');
 rmpath('Random_Projections/Generic_RP_code');
 

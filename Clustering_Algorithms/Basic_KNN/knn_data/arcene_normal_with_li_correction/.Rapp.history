@@ -1,0 +1,1605 @@
+extract_element_and_give_rem<-function(comments, width){#
+#
+  if(nchar(comments) < width){#
+  	return(list(this_line = comments, width = NA))#
+  }#
+  # If char at width = space#
+  end_pt = substr(comments, start = width, stop = width)#
+#
+  letter_set = union(letters, LETTERS)#
+  # If char at width = letters or LETTERS#
+  if(length(setdiff(end_pt, letter_set)) == 0){#
+  	this_line = paste(substr(comments, start = 1, stop = width-1), "-", sep = "")#
+  	to_put = end_pt#
+  } else {#
+  	this_line = comments#
+  	to_put = NULL#
+  }#
+#
+  # Don't assume anything too complex (punctuation, etc, etc). Should really format this better#
+  return(list(this_line = this_line, to_put = to_put))#
+#
+}#
+get_comment_width_list<-function(comments, width){#
+#
+  max_len = nchar(comments) / width + 2#
+  comment_list = vector("list", max_len)#
+  counter = 0#
+  while(nchar(comments) > 0){#
+  	counter = counter + 1#
+  	curr_comment = substr(comments, start = 1, stop = width)#
+  	comments = substr(comments, start = width + 1, stop = nchar(comments))#
+#
+  	ex_list = extract_element_and_give_rem(comments = curr_comments, width = width)#
+    comment_list[[counter]] = ex_list$this_line#
+    if(!is.null(ex_list$to_put)){#
+    	if(!is.na(ex_list$to_put)){#
+        comments = paste(ex_list$to_put, comments, sep = "")#
+      } else {#
+      	comments = ""#
+      }#
+    }#
+  }#
+  return(list(clist = comment_list, len = counter))#
+}
+get_comment_width_list("hi",5)
+get_comment_width_list<-function(comments, width){#
+#
+  max_len = nchar(comments) / width + 2#
+  comment_list = vector("list", max_len)#
+  counter = 0#
+  while(nchar(comments) > 0){#
+  	counter = counter + 1#
+  	curr_comment = substr(comments, start = 1, stop = width)#
+  	comments = substr(comments, start = width + 1, stop = nchar(comments))#
+#
+  	ex_list = extract_element_and_give_rem(comments = curr_comment, width = width)#
+    comment_list[[counter]] = ex_list$this_line#
+    if(!is.null(ex_list$to_put)){#
+    	if(!is.na(ex_list$to_put)){#
+        comments = paste(ex_list$to_put, comments, sep = "")#
+      } else {#
+      	comments = ""#
+      }#
+    }#
+  }#
+  return(list(clist = comment_list, len = counter))#
+}
+get_comment_width_list("hi",5)
+get_comment_width_list("hsharhi",5)
+get_comment_width_list<-function(comments, width){#
+#
+  max_len = nchar(comments) / width + 1#
+  comment_list = vector("list", max_len)#
+  counter = 0#
+  while(nchar(comments) > 0){#
+  	counter = counter + 1#
+  	curr_comment = substr(comments, start = 1, stop = width)#
+  	comments = substr(comments, start = width + 1, stop = nchar(comments))#
+#
+  	ex_list = extract_element_and_give_rem(comments = curr_comment, width = width)#
+    comment_list[[counter]] = ex_list$this_line#
+    if(!is.null(ex_list$to_put)){#
+    	if(!is.na(ex_list$to_put)){#
+        comments = paste(ex_list$to_put, comments, sep = "")#
+      } else {#
+      	comments = ""#
+      }#
+    }#
+  }#
+  return(list(clist = comment_list, len = counter))#
+}
+get_comment_width_list("hsharhi",5)
+get_comment_width_list<-function(comments, width){#
+  if(nchar(comments) <= width){#
+  	return(clist = list(comments))#
+  }#
+  max_len = nchar(comments) / width + 1#
+  comment_list = vector("list", max_len)#
+  counter = 0#
+  while(nchar(comments) > 0){#
+  	counter = counter + 1#
+  	curr_comment = substr(comments, start = 1, stop = width)#
+  	comments = substr(comments, start = width + 1, stop = nchar(comments))#
+#
+  	ex_list = extract_element_and_give_rem(comments = curr_comment, width = width)#
+    comment_list[[counter]] = ex_list$this_line#
+    if(!is.null(ex_list$to_put)){#
+    	if(!is.na(ex_list$to_put)){#
+        comments = paste(ex_list$to_put, comments, sep = "")#
+      } else {#
+      	comments = ""#
+      }#
+    }#
+  }#
+  return(clist)#
+}
+get_comment_width_list("hsharhi",5)
+get_comment_width_list<-function(comments, width){#
+  if(nchar(comments) <= width){#
+  	return(list(comments))#
+  }#
+  max_len = nchar(comments) / width + 1#
+  comment_list = vector("list", max_len)#
+  counter = 0#
+  while(nchar(comments) > 0){#
+  	counter = counter + 1#
+  	curr_comment = substr(comments, start = 1, stop = width)#
+  	comments = substr(comments, start = width + 1, stop = nchar(comments))#
+#
+  	ex_list = extract_element_and_give_rem(comments = curr_comment, width = width)#
+    comment_list[[counter]] = ex_list$this_line#
+    if(!is.null(ex_list$to_put)){#
+    	if(!is.na(ex_list$to_put)){#
+        comments = paste(ex_list$to_put, comments, sep = "")#
+      } else {#
+      	comments = ""#
+      }#
+    }#
+  }#
+  return(comment_list)#
+}
+get_comment_width_list("hsharhi",5)
+get_comment_width_list("hsharhi",10)
+get_comment_width_list("hsharhi",7)
+get_comment_width_list("This is a",7)
+get_comment_width_list("This is a stick up.",7)
+comments = "Today is a fine day. Johnny got fined when jaywalking across the street. I wish Brandon would not be a silly ass. Nero Wolfe?"
+comments
+width = 35
+comment_list = get_comment_width_list(comments = comments, width = width)
+comment_list
+rep("",4)
+collapse(rep("",4))
+whitespace_to_fill = 10
+paste(rep("", whitespace_to_fill), sep = "")
+paste(rep("", whitespace_to_fill), collapse = "")
+paste(rep("", whitespace_to_fill), collapse = TRUE)
+paste(rep("", whitespace_to_fill), collapse = "")
+?paste
+paste(rep("", whitespace_to_fill), collapse)
+paste(rep("", whitespace_to_fill), collapse = " ")
+nchar(paste(rep("", whitespace_to_fill), collapse = " "))
+whitespace_to_fill
+comments = paste(comments,paste(rep("", 2*width), collapse = " "))
+comments
+nchar(comments)
+get_comment_width_list<-function(comments, width){#
+  if(nchar(comments) <= width){#
+  	comments = paste(comments,paste(rep("", 2*width), collapse = " "))#
+  	return(list(substr(comments, start = 1, stop = width)))#
+  }#
+  max_len = nchar(comments) / width + 1#
+  comment_list = vector("list", max_len)#
+  counter = 0#
+  while(nchar(comments) > 0){#
+  	counter = counter + 1#
+  	curr_comment = substr(comments, start = 1, stop = width)#
+  	comments = substr(comments, start = width + 1, stop = nchar(comments))#
+#
+  	ex_list = extract_element_and_give_rem(comments = curr_comment, width = width)#
+    comment_list[[counter]] = ex_list$this_line#
+    if(!is.null(ex_list$to_put)){#
+    	if(!is.na(ex_list$to_put)){#
+        comments = paste(ex_list$to_put, comments, sep = "")#
+      } else {#
+      	comments = ""#
+      }#
+    }#
+  }#
+  return(comment_list)#
+}
+comments = "Today is a fine day. Johnny got fined when jaywalking across the street. I wish Brandon would not be a silly ass. Nero Wolfe?"
+comment_list
+length(comment_list)
+return_comment_list<-function(comments, score, width = 35){#
+  # Get score width right#
+	score = ob@score#
+	score_str = get_score_width(score)#
+#
+  # Comments! Not as straightforward but let's try#
+  comment_list = get_comment_width_list(comments = comments, width = width)#
+  comment_list[[1]] = paste(comment_list[[1]], score_str, sep = "")#
+  return(comment_list)#
+}
+KenBoot = function(X,nboot=1000,alpha=0.05)#
+{#
+ # X = data#
+ # nboot = number of bootstraps#
+ # alpha = level of the test or confidence interval#
+  corCoef = cor(X,method="kendall")[1,2]#
+  n = nrow(X)#
+  bootKenCor = c()#
+  for (i in 1:nboot)#
+  {#
+    index = sample(1:n,replace = T)#
+    sampleX = X[index,]#
+    bootKenCor[i] = cor(sampleX,method="kendall")[1,2]#
+  }#
+  statBoot = statFromBStrap(bootKenCor,corCoef,alpha)#
+  return(append(statBoot,list(corCoef=corCoef),0))#
+}#
+#
+statFromBStrap = function(bootEst,est,alpha)#
+{#
+  bias = mean(bootEst) - est#
+  correctBias = est - bias#
+  sdbootEst = sd(bootEst)#
+  normCI = correctBias + c(-1,1)*qnorm(1-alpha/2)*sdbootEst#
+  bLow = quantile(bootEst,1-alpha/2)#
+  bUp = quantile(bootEst,alpha/2)#
+  stdBootCI = as.vector(2*est - c(bLow,bUp))#
+  return(list(bias=bias,correctedEst=correctBias,#
+              normCI=normCI,stdBootCI=stdBootCI))#
+}
+data(faithful)
+BootResult = KenBoot(faithful,1000)
+BootResult
+str(BootResult)
+mode(BootResult)
+vec = c(1,2,3,4,5,6,7)
+vec
+c1 = c(1,2,3,4,5)#
+c2 = list(c(1,2,3,4,5))#
+c3 = list(1,2,3,4,5)#
+#
+c1#
+#
+c2#
+c3
+str(C1)
+str(c1)
+mode(c1)
+mode(c2)
+mode(c3)
+c1[[1]]
+c2[[1]]
+c3[[1]]
+c1[[1]]
+c1[[2]]
+c1[[3]]
+str(c1)
+c1 = c(1,2,3,4,5)#
+c2 = list(1,2,3,4,5)
+c1
+c2
+mode(c1)
+mode(c2)
+list = NULL#
+boot.cor = 1 # some random number#
+list = c(list, boot.cor)#
+bias = 2 # some other random number#
+list = c(list, bias)
+mode(list)
+int = "hello"#
+string = 5#
+list = 3#
+not_a_list = NULL#
+not_a_list = c(not_a_list, 1)#
+not_a_list = c(not_a_list, 2)
+mode(int)
+mode(string)
+character = 5
+mode(character)
+mode(list)
+list
+t
+c2
+c2[[1]]
+c2[1]
+c2[2]
+c2[3]
+c2[4]
+c2[5]
+c2
+c2[5]
+c2[4]
+str(c2[3])
+str(c2[4])
+str(c2[5])
+name = "HW"
+j = 1
+this_str = paste(name, "Q", j, sep = "")
+this_str
+name = "Final"
+this_str = paste(name, "Q", j, ".R", sep = "")
+this_str
+paste("10% deducted from Q", j, sep = "")
+qstr = paste("10% deducted from Q", j, "!", sep = "")
+qstr
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    if(is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    if(is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }
+all_check("hi",6)
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    if(is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+all_check("hi",6)
+vzd<-function(fun_output){#
+  out = tryCatch(#
+    {#
+      fun_output#
+      return(1)  #
+    },#
+    error = function(cond) {      #
+      # Gave an error#
+      return(NA)  #
+    },#
+    warning = function(cond) {#
+    # Gave a warning#
+      return(NULL) #
+    },    #
+    finally = {#
+      ## nothing#
+    }#
+  )#
+}
+all_check("hi",6)
+source("zz")
+t = vzd(source(ar))
+t
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    cat(t, "\n")#
+    if(is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+t
+all_check("hi",6)
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    print(this_str)#
+    t = vzd(source(this_str))#
+    cat(t, "\n")#
+    if(is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+all_check("hi",6)
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    print(this_str)#
+    t = vzd(source(this_str))#
+    print(t)#
+    cat(t, "\n")#
+    if(is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+all_check("hi",6)
+source("hiQ1.R")
+all_check<-function(name, max_num){#
+  for (j in 1:max_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    if(is.null(t) || is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+#
+    }#
+  }#
+}
+source("hiQ1.R")
+all_check("hi",6)
+all_check(name = "HW4", max_q_num = 3)
+all_check<-function(name, max_q_num){#
+  for (j in 1:max_q_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    if(is.null(t) || is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}#
+#
+all_check(name = "HW4", max_q_num = 3)
+all_check<-function(name, max_q_num){#
+  for (j in 1:max_q_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    if(is.null(t) || is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+all_check(name = "HW4", max_q_num = 3)
+all_check<-function(name, max_q_num){#
+  for (j in 1:max_q_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    if(is.null(t) || is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    }#
+  }#
+}
+all_check
+all_check<-function(name, max_q_num){#
+  for (j in 1:max_q_num){#
+    this_str = paste(name, "Q", j, ".R", sep = "")#
+    t = vzd(source(this_str))#
+    if(is.null(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")#
+    } else if (is.na(t)){#
+      qstr = paste("10% deducted from Q", j, "!", sep = "")#
+      cat(qstr, "\n")      #
+    }#
+  }#
+}
+all_check(name = "HW4", max_q_num = 3)
+mount d ~/Desktop/Dosbox/rallo-gump/scum-rl1 -t cdrom
+## A function to compute roots with#
+## the Secant Method#
+## Inputs:#
+##  x0      -> first starting point#
+##  x1      -> second starting point#
+##  fnx     -> function to find root of#
+##  WUSF    -> an update step function#
+##  bds     -> for plots #
+##  epsilon -> tolerance#
+##  maxiter -> max iterations#
+##  type    -> type of update function#
+#
+Secant_With_Readline<-function(x0, x1, fnx, wrong_update_step_fn, bds, epsilon = 1e-8, maxiter = 100, type = 1){#
+  iter = 1#
+  xvec = seq(min(bds[1],x0,x1), max(bds[2],x0,x1), length.out = 1000)#
+  yvec = fnx(xvec)#
+  plot(xvec,yvec$val,type = "l", ylab = "", xlab = "", #
+    main = paste("Initial plot of", yvec$name),col = "blue")#
+#
+  ## axis#
+  abline(h = 0)#
+  readline("Pause to check graph")#
+#
+  # Draw secants#
+  f1 = fnx(x1)$val#
+  f0 = fnx(x0)$val#
+  m = (f0 -f1)/(x0-x1)#
+  c = f0 - m*x0#
+  x_prev = x1#
+  x_now = wrong_update_step_fn(x0 = x0, x1 = x1, fnx = fnx, type = type)#
+  abline(a = c, b = m, col = "red")#
+  abline(v = x_now, lty = 2)#
+  f_now = fnx(x_now)$val#
+  lines(x_now,f_now, type = "p", pch = 4)#
+  readline("Pause to check graph")#
+#
+  while(1){#
+    x_tmp = x_now#
+    x_now = wrong_update_step_fn(x0 = x_prev, x1 = x_now, fnx = fnx, type = type)#
+    x_prev = x_tmp#
+    y_now = fnx(x_now)$val#
+    # Plot the new graph#
+    xvec = seq(min(bds[1],x_prev,x_now), max(bds[2],x_prev,x_now), length.out = 1000)#
+    yvec = fnx(xvec)#
+    plot(xvec,yvec$val,type = "l", ylab = "", xlab = "", #
+    main = paste("Updated plot of", yvec$name, "root at:", x_now),col = "blue")#
+    abline(h = 0)#
+    f1 = fnx(x_now)$val#
+    f0 = fnx(x_prev)$val#
+    m = (f0 -f1)/(x_prev-x_now)#
+    c = f0 - m*x_prev#
+    abline(a = c, b = m, col = "red")#
+    abline(v = x_now, lty = 2)#
+    lines(x_now,y_now, type = "p", pch = 4)#
+    readline("Pause to check graph")#
+    if (abs(x_now - x_prev) < epsilon){#
+      break#
+    }    #
+    if (iter > maxiter){#
+      break#
+    }  #
+    iter = iter + 1#
+  }#
+  return(x_now)#
+}#
+wrong_update_step_fn<-function(x0, x1, fnx, type = 1){#
+  if(type == 1){#
+    return(x1 - fnx(x1)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  } else if (type == 2){#
+    return(x1 - fnx(x0)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  } else if (type == 3){#
+    return(x0 - fnx(x0)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  } else if (type == 4){#
+    return(x0 - fnx(x1)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  }#
+}#
+## A function#
+## (nice to have some metadata for generic fn names)#
+fnx<-function(x){#
+  name = "x*cos(x)"#
+  val = x*cos(x)#
+  return(list(name = name, val = val))#
+}#
+#
+## Let's look at different types#
+#
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 1)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 2)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 3)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 1)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 4)
+data(faithful)#
+#
+## Look at eruptions#
+hist(faithful$eruptions, main = "Histogram of Eruptions", xlab = "Eruptions", breaks = 20)
+data(faithful)#
+#
+## Look at eruptions#
+hist(faithful$eruptions, main = "Histogram of Eruptions", xlab = "Eruptions", breaks = 20)#
+#
+show_contour<-function(mu1range, mu2range, xvec, bimodal_fn, opt_type = "nil", muhist = NA, bimodal_dfn = NA, to_compute = "yes", mu_vars = NA){#
+#
+  # Compute grid#
+  if(to_compute == "yes"){#
+    mu_vars = grid_search(bimodal_fn = bimodal_fn, mu1range = mu1range, mu2range = mu2range, xvec = xvec)#
+  }#
+#
+  ptitle = paste("Contour plots of mu1 and mu2")#
+#
+  # Create title based on inputs#
+  if(opt_type == "CA"){#
+    ptitle = paste("Coordinate Ascent Steps")#
+  } else if (opt_type == "arrows") {#
+    ptitle = paste("Showing direction of gradient")#
+  } else if (opt_type == "SA") {#
+    ptitle = paste("Steepest Ascent steps")#
+  } else if (opt_type == "NR") {#
+    ptitle = paste("Newton Raphson steps")#
+  } else if (opt_type != "nil") {#
+    stop("Wrong opt_type")#
+  }#
+#
+  contour(mu_vars$mu1_vec,mu_vars$mu2_vec,mu_vars$mu_mat, main = ptitle, xlab = "mu 1",ylab = "mu 2",cex.lab=1.5,cex.axis=1.5, nlevels = 20) #
+  # Draw steps for convergence given various algorithms / parameters for opt_type#
+  if(opt_type != "nil" && opt_type != "arrows"){#
+    lines(muhist,type='b',lwd=2,col=2)#
+  } #
+  if (opt_type == "arrows" || opt_type == "SA" || opt_type == "NR"){#
+    # This function is defined below#
+    mu1_vec = seq(mu1range[1], mu1range[2], by = 0.01)#
+    mu2_vec = seq(mu2range[1], mu2range[2], by = 0.01)#
+#
+    arrow_list = get_arrow_list(mu1range = mu1range, mu2range = mu2range, bimodal_dfn = bimodal_dfn, xvec = xvec)#
+    arrows(arrow_list$starts[,1],arrow_list$starts[,2],arrow_list$ends[,1],arrow_list$ends[,2],col=4,code=2)#
+  }#
+}#
+#
+par(mfrow = c(2,2))#
+show_contour(mu1range = c(0,5), mu2range = c(0,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(2,5), mu2range = c(2,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(1,4), mu2range = c(3.5,5), bimodal_fn = compute_bimodal_mixture_fx,  xvec = faithful$eruptions)#
+show_contour(mu1range = c(2.5,3), mu2range = c(4,4.35), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+grid_search<-function(bimodal_fn, mu1range, mu2range, xvec){#
+  mu1_vec = seq(mu1range[1], mu1range[2], by = 0.01)#
+  mu2_vec = seq(mu2range[1], mu2range[2], by = 0.01)#
+#
+  mu_mat = matrix(0, nrow = length(mu1_vec), ncol = length(mu2_vec))#
+  for(i in 1:length(mu1_vec)){#
+    for(j in 1:length(mu2_vec)){#
+      mu_mat[i,j] = bimodal_fn(mu1_vec[i], mu2_vec[j], xvec)#
+    }#
+  }#
+  return(list(mu1_vec = mu1_vec, mu2_vec = mu2_vec, mu_mat = mu_mat))#
+}
+par(mfrow = c(2,2))#
+show_contour(mu1range = c(0,5), mu2range = c(0,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(2,5), mu2range = c(2,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(1,4), mu2range = c(3.5,5), bimodal_fn = compute_bimodal_mixture_fx,  xvec = faithful$eruptions)#
+show_contour(mu1range = c(2.5,3), mu2range = c(4,4.35), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+hist(faithful$eruptions, main = "Histogram of Eruptions", xlab = "Eruptions", breaks = 20)#
+grid_search<-function(bimodal_fn, mu1range, mu2range, xvec){#
+  mu1_vec = seq(mu1range[1], mu1range[2], by = 0.01)#
+  mu2_vec = seq(mu2range[1], mu2range[2], by = 0.01)#
+#
+  mu_mat = matrix(0, nrow = length(mu1_vec), ncol = length(mu2_vec))#
+  for(i in 1:length(mu1_vec)){#
+    for(j in 1:length(mu2_vec)){#
+      mu_mat[i,j] = bimodal_fn(mu1_vec[i], mu2_vec[j], xvec)#
+    }#
+  }#
+  return(list(mu1_vec = mu1_vec, mu2_vec = mu2_vec, mu_mat = mu_mat))#
+}#
+compute_bimodal_mixture_fx<-function(mu1, mu2, xvec){#
+  return(sum(log(exp(-0.5*(xvec - mu1)^2) + exp(-0.5*(xvec - mu2)^2))))#
+}#
+#
+show_contour<-function(mu1range, mu2range, xvec, bimodal_fn, opt_type = "nil", muhist = NA, bimodal_dfn = NA, to_compute = "yes", mu_vars = NA){#
+#
+  # Compute grid#
+  if(to_compute == "yes"){#
+    mu_vars = grid_search(bimodal_fn = bimodal_fn, mu1range = mu1range, mu2range = mu2range, xvec = xvec)#
+  }#
+#
+  ptitle = paste("Contour plots of mu1 and mu2")#
+#
+  # Create title based on inputs#
+  if(opt_type == "CA"){#
+    ptitle = paste("Coordinate Ascent Steps")#
+  } else if (opt_type == "arrows") {#
+    ptitle = paste("Showing direction of gradient")#
+  } else if (opt_type == "SA") {#
+    ptitle = paste("Steepest Ascent steps")#
+  } else if (opt_type == "NR") {#
+    ptitle = paste("Newton Raphson steps")#
+  } else if (opt_type != "nil") {#
+    stop("Wrong opt_type")#
+  }#
+#
+  contour(mu_vars$mu1_vec,mu_vars$mu2_vec,mu_vars$mu_mat, main = ptitle, xlab = "mu 1",ylab = "mu 2",cex.lab=1.5,cex.axis=1.5, nlevels = 20) #
+  # Draw steps for convergence given various algorithms / parameters for opt_type#
+  if(opt_type != "nil" && opt_type != "arrows"){#
+    lines(muhist,type='b',lwd=2,col=2)#
+  } #
+  if (opt_type == "arrows" || opt_type == "SA" || opt_type == "NR"){#
+    # This function is defined below#
+    mu1_vec = seq(mu1range[1], mu1range[2], by = 0.01)#
+    mu2_vec = seq(mu2range[1], mu2range[2], by = 0.01)#
+#
+    arrow_list = get_arrow_list(mu1range = mu1range, mu2range = mu2range, bimodal_dfn = bimodal_dfn, xvec = xvec)#
+    arrows(arrow_list$starts[,1],arrow_list$starts[,2],arrow_list$ends[,1],arrow_list$ends[,2],col=4,code=2)#
+  }#
+}#
+#
+par(mfrow = c(2,2))#
+show_contour(mu1range = c(0,5), mu2range = c(0,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(2,5), mu2range = c(2,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(1,4), mu2range = c(3.5,5), bimodal_fn = compute_bimodal_mixture_fx,  xvec = faithful$eruptions)#
+show_contour(mu1range = c(2.5,3), mu2range = c(4,4.35), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+show_contour(mu1range = c(2,5), mu2range = c(2,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+compute_bimodal_mixture_fx<-function(mu, xvec, opt_para_pos){#
+  m1 = mu[1]#
+  m2 = mu[2]#
+  xvec = xvec#
+#
+  if (opt_para_pos == 1){#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - opt_para)^2) + exp(-0.5*(xvec - m2)^2))))#
+      }#
+    )#
+  } else if (opt_para_pos == 2) {#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - m1)^2) + exp(-0.5*(xvec - opt_para)^2))))#
+      }#
+    )#
+  }#
+}#
+#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 1 )#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 2 )#
+# and try this#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 1 )(1)#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 2 )(2)
+CoordinateAscent<-function(mu, x_LB_vec , x_UB_vec , bimodal_fn , xvec , tol=1e-8, maxit=1000){#
+#
+  iter = 0              # Initialization#
+  tol.met = FALSE#
+  muhist = matrix(0,nrow = maxit+1, ncol = 2)#
+  muhist[1,] = mu#
+#
+  while(!tol.met){  # Tolerance will be checked by how much we move mu#
+    oldmu = mu      # over one cycle accross the dimensions.#
+    for(ndims in 1:length(mu)){  #
+      iter = iter + 1     #
+      mu[ndims] = GoldenSection1D(opt_fn = bimodal_fn(mu = mu, xvec = xvec, opt_para_pos = ndims), x_LB = x_LB_vec[ndims], x_UB = x_UB_vec[ndims])$x_mid#
+      muhist[iter+1,] = mu#
+    }#
+#
+    if( max(abs(mu - oldmu))<tol | iter > maxit){ #
+      tol.met = TRUE#
+      muhist = muhist[1:(iter+1),]#
+    } else { #
+      oldmu = mu #
+    }#
+  } #
+  return(list(mu = mu, iter = iter, muhist = muhist))#
+}#
+CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+## Generalize 1D to 2D to nD#
+#
+## An update step #
+###
+## Input: #
+## opt_fn:  A 1D function you want to optimize#
+## GS_list: A list of optional parameters      #
+GoldenSection1D_update<-function(opt_fn, GS_list){#
+#
+  if( (GS_list$x_UB - GS_list$x_mid) > (GS_list$x_mid - GS_list$x_LB) ){  # Working on the right-hand side#
+    y = GS_list$x_mid + (GS_list$x_UB - GS_list$x_mid)/(1 + GS_list$gr)#
+    GS_list$f_y = opt_fn(y)#
+    if( GS_list$f_y > GS_list$y_mid){ #
+      GS_list$x_LB = GS_list$x_mid#
+      GS_list$y_LB = GS_list$y_mid#
+      GS_list$x_mid = y#
+      GS_list$y_mid = GS_list$f_y #
+    } else { #
+      GS_list$x_UB = y#
+      GS_list$y_UB = GS_list$f_y #
+    }#
+  } else {#
+    y = GS_list$x_mid - (GS_list$x_mid - GS_list$x_LB)/(1 + GS_list$gr)#
+    GS_list$f_y = opt_fn(y)#
+    if( GS_list$f_y > GS_list$y_mid){#
+      GS_list$x_UB = GS_list$x_mid#
+      GS_list$y_UB = GS_list$y_mid #
+      GS_list$x_mid = y #
+      GS_list$y_mid = GS_list$f_y #
+    } else { #
+      GS_list$x_LB = y#
+      GS_list$y_LB = GS_list$f_y #
+    }#
+  }#
+  return(GS_list)#
+}#
+#
+## A 1D implementation of GoldenSection#
+## Input: #
+## opt_fn : function to optimize#
+## x_LB   : "lower bound X"#
+## x_UB   : "upper bound X"#
+## tol    : tolerance#
+## maxit  : max iterations   #
+GoldenSection1D = function(opt_fn, x_LB, x_UB, tol=1e-8, maxit=100){#
+  # Pre-calculate golden ratio#
+  gr = (1 + sqrt(5))/2#
+#
+  x_mid = x_LB + (x_UB-x_LB)/(1+gr)#
+  # Initialize our list#
+  GS_list = list(#
+    gr = gr, #
+    x_mid = x_mid,#
+    x_UB = x_UB,#
+    x_LB = x_LB,#
+    y_LB = opt_fn(x_LB),#
+    y_UB = opt_fn(x_UB),#
+    y_mid = opt_fn(x_mid),#
+    f_y = NA#
+  )#
+  tol.met = FALSE    # No tolerance met#
+  iter = 0           # No iterations#
+#
+  # Also, note that while while(1) is discouraged,#
+  # tol.met = TRUE below is the same as "break"#
+#
+  while(!tol.met){#
+    iter = iter + 1#
+    GS_list = GoldenSection1D_update(opt_fn = opt_fn, GS_list = GS_list)#
+    if( (GS_list$x_UB - GS_list$x_mid) < tol || iter > maxit ){ #
+      tol.met=TRUE #
+    }#
+  }#
+  return(list(x_mid = GS_list$x_mid, iter = iter))#
+}#
+#
+## This is for 1D. What if we wanted to use this#
+## in conjunction with multiple dimensions?#
+###
+## Eg, LASSO ; using coordinate ascent#
+#
+## Coordinate Ascent:#
+## Want to optimize f(mu_1, mu_2, mu_3, .., mu_n)#
+## While {convergence criteria not met}#
+##   for j in 1:n#
+##     Hold mu_i constant for i \neq j#
+##     Find mu_j that optimizes f(..., mu_j, ..)#
+##     Update mu_j#
+###
+## #
+## To find mu_j that optimizes f(...,mu_j, ..)#
+## can use any 1D algorithm#
+###
+## Suppose we are given GoldenSection as above#
+## Note that it takes in a function with only one#
+## input#
+###
+## What's the "best" way to make changes to prevent#
+## errors?#
+## Demonstrate with bimodal mixture model#
+#
+# Previous#
+compute_bimodal_mixture_fx_old<-function(mu1, mu2, xvec){#
+  return(sum(log(exp(-0.5*(xvec - mu1)^2) + exp(-0.5*(xvec - mu2)^2))))#
+}#
+#
+# Now#
+compute_bimodal_mixture_fx<-function(mu, xvec, opt_para_pos){#
+  m1 = mu[1]#
+  m2 = mu[2]#
+  xvec = xvec#
+#
+  if (opt_para_pos == 1){#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - opt_para)^2) + exp(-0.5*(xvec - m2)^2))))#
+      }#
+    )#
+  } else if (opt_para_pos == 2) {#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - m1)^2) + exp(-0.5*(xvec - opt_para)^2))))#
+      }#
+    )#
+  }#
+}#
+#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 1 )#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 2 )#
+# and try this#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 1 )(1)#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 2 )(2)#
+CoordinateAscent<-function(mu, x_LB_vec , x_UB_vec , bimodal_fn , xvec , tol=1e-8, maxit=1000){#
+#
+  iter = 0              # Initialization#
+  tol.met = FALSE#
+  muhist = matrix(0,nrow = maxit+1, ncol = 2)#
+  muhist[1,] = mu#
+#
+  while(!tol.met){  # Tolerance will be checked by how much we move mu#
+    oldmu = mu      # over one cycle accross the dimensions.#
+    for(ndims in 1:length(mu)){  #
+      iter = iter + 1     #
+      mu[ndims] = GoldenSection1D(opt_fn = bimodal_fn(mu = mu, xvec = xvec, opt_para_pos = ndims), x_LB = x_LB_vec[ndims], x_UB = x_UB_vec[ndims])$x_mid#
+      muhist[iter+1,] = mu#
+    }#
+#
+    if( max(abs(mu - oldmu))<tol | iter > maxit){ #
+      tol.met = TRUE#
+      muhist = muhist[1:(iter+1),]#
+    } else { #
+      oldmu = mu #
+    }#
+  } #
+  return(list(mu = mu, iter = iter, muhist = muhist))#
+}#
+CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+CA_res = CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)#
+show_contour(mu1range = c(2.5,5), mu2range = c(2.5,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions, opt_type = "CA", muhist = CA_res$muhist)
+compute_bimodal_mixture_fx<-function(mu, xvec, opt_para_pos){#
+  m1 = mu[1]#
+  m2 = mu[2]#
+  xvec = xvec#
+#
+  if (opt_para_pos == 1){#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - opt_para)^2) + exp(-0.5*(xvec - m2)^2))))#
+      }#
+    )#
+  } else if (opt_para_pos == 2) {#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - m1)^2) + exp(-0.5*(xvec - opt_para)^2))))#
+      }#
+    )#
+  }#
+}
+CA_res = CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+show_contour(mu1range = c(2.5,5), mu2range = c(2.5,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions, opt_type = "CA", muhist = CA_res$muhist)
+CA_res = CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx_new, xvec = faithful$eruptions)
+compute_bimodal_mixture_fx<-function(mu1, mu2, xvec){#
+  return(sum(log(exp(-0.5*(xvec - mu1)^2) + exp(-0.5*(xvec - mu2)^2))))#
+}
+# Now#
+compute_bimodal_mixture_fx_new<-function(mu, xvec, opt_para_pos){#
+  m1 = mu[1]#
+  m2 = mu[2]#
+  xvec = xvec#
+#
+  if (opt_para_pos == 1){#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - opt_para)^2) + exp(-0.5*(xvec - m2)^2))))#
+      }#
+    )#
+  } else if (opt_para_pos == 2) {#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - m1)^2) + exp(-0.5*(xvec - opt_para)^2))))#
+      }#
+    )#
+  }#
+}
+CA_res = CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx_new, xvec = faithful$eruptions)#
+show_contour(mu1range = c(2.5,5), mu2range = c(2.5,5), bimodal_fn = compute_bimodal_mixture_fx_old, xvec = faithful$eruptions, opt_type = "CA", muhist = CA_res$muhist)
+n = 1
+integrate(function(x) {return(x^n * exp(x))}, lower = 0, upper = 1)
+n = 5
+integrate(function(x) {return(x^n * exp(x))}, lower = 0, upper = 1)
+n = 20
+integrate(function(x) {return(x^n * exp(x))}, lower = 0, upper = 1)
+integrate(function(x) {return(x^n * exp(x))}, lower = 0, upper = 1) + 1
+integrate(function(x) {return(x^n * exp(x))}, lower = 0, upper = 1)
+str(integrate(function(x) {return(x^n * exp(x))}, lower = 0, upper = 1))
+true_val = rep(0, n+1)#
+  rec_val = rep(0, n+1)#
+  MC_val = rep(0, n+1)#
+  # this is slow, but mehhh#
+  for(j in 0:n){#
+    true_val[j +1] =  integrate(function(x) {return(x^j * exp(x))}, lower = 0, upper = 1)#
+  }
+true_val = rep(0, n+1)#
+  rec_val = rep(0, n+1)#
+  MC_val = rep(0, n+1)#
+  # this is slow, but mehhh#
+  for(j in 0:n){#
+    true_val[j +1] =  integrate(function(x) {return(x^j * exp(x))}, lower = 0, upper = 1)$value#
+  }
+true_val
+rec_val[1] = exp(1) - 1#
+  rec_val[2] = 1#
+  for(j in 2:n){#
+    rec_val[j+1] = exp(1) - (j+1)*rec_val[j]#
+  }
+rec_val
+rec_val[1] = exp(1) - 1#
+  rec_val[2] = 1#
+  for(j in 2:n){#
+    rec_val[j+1] = exp(1) - (j)*rec_val[j]#
+  }
+rec_al
+rec_val
+rec_val[1] = exp(1) - 1#
+  rec_val[2] = 1#
+  for(j in 2:n){#
+    rec_val[j+1] = exp(1) - (j)*rec_val[j]#
+  }
+rec_val
+true_val
+rexp
+rexp(10, rate = 1)
+evals = rexp(10000, n = 1)
+evals
+evals = rexp(n = 10000, rate = 1)
+evals
+mean(evals)
+evals = rexp(n = 10000, rate = 1)#
+  MC_val[1] = exp(1) -1#
+  for(j in 1:n){#
+    MC_val[j+1] = mean(evals^j)#
+  }
+MC_val
+evals
+evals^j
+evals
+evals = runif(n = 10000)
+evals
+evals = runif(n = 10000)#
+  MC_val[1] = exp(1) -1#
+  for(j in 1:n){#
+    MC_val[j+1] = evals^j * exp(j)#
+  }
+evals^j * exp(evals)
+# a silly idea#
+  evals = runif(n = 10000)#
+  MC_val[1] = exp(1) -1#
+  for(j in 1:n){#
+    MC_val[j+1] = mean(evals^j * exp(evals))#
+  }
+MC_val
+true_val
+evals = runif(n = 100000)#
+  MC_val[1] = exp(1) -1#
+  for(j in 1:n){#
+    MC_val[j+1] = mean(evals^j * exp(evals))#
+  }
+MC_val
+true_val
+evals = runif(n = 1000000)#
+  MC_val[1] = exp(1) -1#
+  for(j in 1:n){#
+    MC_val[j+1] = mean(evals^j * exp(evals))#
+  }
+MC_val
+plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")
+lines(1:20, true_val[2:21], col = "black")
+plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)
+par(mfrow = c(2,2))#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)
+par(mfrow = c(2,2))#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)#
+  legend("topright", legend = c("Actual", "MC Integral", "Recursion"), lty = c(1,2,2), col = c("black", "blue","red"))#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)
+legend("top", legend = c("Actual", "MC Integral", "Recursion"), lty = c(1,2,2), col = c("black", "blue","red"))
+make_integrate_plot<-function(n){#
+  true_val = rep(0, n+1)#
+  rec_val = rep(0, n+1)#
+  MC_val = rep(0, n+1)#
+  # this is slow, but mehhh#
+  for(j in 0:n){#
+    true_val[j +1] =  integrate(function(x) {return(x^j * exp(x))}, lower = 0, upper = 1)$value#
+  }#
+  rec_val[1] = exp(1) - 1#
+  rec_val[2] = 1#
+  for(j in 2:n){#
+    rec_val[j+1] = exp(1) - (j)*rec_val[j]#
+  }#
+  # a silly idea#
+  evals = runif(n = 1000000)#
+  MC_val[1] = exp(1) -1#
+  for(j in 1:n){#
+    MC_val[j+1] = mean(evals^j * exp(evals))#
+  }#
+  rm(evals)#
+#
+  par(mfrow = c(2,2))#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)#
+  legend("top", legend = c("Actual", "MC Integral", "Recursion"), lty = c(1,2,2), col = c("black", "blue","red"))#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, true_val[2:21], col = "black")#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, MC_val[2:21], col = "blue", lty = 2)#
+#
+  plot(0, type = "n", main = "Plot of integral with respect to n", xlim = c(1,20), ylim = c(0,1), xlab = "Value of n", ylab = "Value of y(n)")#
+#
+  lines(1:20, rec_val[2:21], col = "red", lty = 2)#
+#
+}
+make_integrate_plot(20)
+hist()
+?hist
+rm(list = ls())
+Secant_With_Readline<-function(x0, x1, fnx, wrong_update_step_fn, bds, epsilon = 1e-8, maxiter = 100, type = 1){#
+  iter = 1#
+  xvec = seq(min(bds[1],x0,x1), max(bds[2],x0,x1), length.out = 1000)#
+  yvec = fnx(xvec)#
+  plot(xvec,yvec$val,type = "l", ylab = "", xlab = "", #
+    main = paste("Initial plot of", yvec$name),col = "blue")#
+#
+  ## axis#
+  abline(h = 0)#
+  readline("Pause to check graph")#
+#
+  # Draw secants#
+  f1 = fnx(x1)$val#
+  f0 = fnx(x0)$val#
+  m = (f0 -f1)/(x0-x1)#
+  c = f0 - m*x0#
+  x_prev = x1#
+  x_now = wrong_update_step_fn(x0 = x0, x1 = x1, fnx = fnx, type = type)#
+  abline(a = c, b = m, col = "red")#
+  abline(v = x_now, lty = 2)#
+  f_now = fnx(x_now)$val#
+  lines(x_now,f_now, type = "p", pch = 4)#
+  readline("Pause to check graph")#
+#
+  while(1){#
+    x_tmp = x_now#
+    x_now = wrong_update_step_fn(x0 = x_prev, x1 = x_now, fnx = fnx, type = type)#
+    x_prev = x_tmp#
+    y_now = fnx(x_now)$val#
+    # Plot the new graph#
+    xvec = seq(min(bds[1],x_prev,x_now), max(bds[2],x_prev,x_now), length.out = 1000)#
+    yvec = fnx(xvec)#
+    plot(xvec,yvec$val,type = "l", ylab = "", xlab = "", #
+    main = paste("Updated plot of", yvec$name, "root at:", x_now),col = "blue")#
+    abline(h = 0)#
+    f1 = fnx(x_now)$val#
+    f0 = fnx(x_prev)$val#
+    m = (f0 -f1)/(x_prev-x_now)#
+    c = f0 - m*x_prev#
+    abline(a = c, b = m, col = "red")#
+    abline(v = x_now, lty = 2)#
+    lines(x_now,y_now, type = "p", pch = 4)#
+    readline("Pause to check graph")#
+    if (abs(x_now - x_prev) < epsilon){#
+      break#
+    }    #
+    if (iter > maxiter){#
+      break#
+    }  #
+    iter = iter + 1#
+  }#
+  return(x_now)#
+}#
+wrong_update_step_fn<-function(x0, x1, fnx, type = 1){#
+  if(type == 1){#
+    return(x1 - fnx(x1)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  } else if (type == 2){#
+    return(x1 - fnx(x0)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  } else if (type == 3){#
+    return(x0 - fnx(x0)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  } else if (type == 4){#
+    return(x0 - fnx(x1)$val * (x1 - x0)/(fnx(x1)$val - fnx(x0)$val))#
+  }#
+}#
+## A function#
+## (nice to have some metadata for generic fn names)#
+fnx<-function(x){#
+  name = "x*cos(x)"#
+  val = x*cos(x)#
+  return(list(name = name, val = val))#
+}
+## Example (language specific): Generalize code?#
+## One more example using optimization algorithms#
+#
+data(faithful)#
+#
+## Look at eruptions#
+hist(faithful$eruptions, main = "Histogram of Eruptions", xlab = "Eruptions", breaks = 20)#
+grid_search<-function(bimodal_fn, mu1range, mu2range, xvec){#
+  mu1_vec = seq(mu1range[1], mu1range[2], by = 0.01)#
+  mu2_vec = seq(mu2range[1], mu2range[2], by = 0.01)#
+#
+  mu_mat = matrix(0, nrow = length(mu1_vec), ncol = length(mu2_vec))#
+  for(i in 1:length(mu1_vec)){#
+    for(j in 1:length(mu2_vec)){#
+      mu_mat[i,j] = bimodal_fn(mu1_vec[i], mu2_vec[j], xvec)#
+    }#
+  }#
+  return(list(mu1_vec = mu1_vec, mu2_vec = mu2_vec, mu_mat = mu_mat))#
+}#
+compute_bimodal_mixture_fx<-function(mu1, mu2, xvec){#
+  return(sum(log(exp(-0.5*(xvec - mu1)^2) + exp(-0.5*(xvec - mu2)^2))))#
+}#
+#
+show_contour<-function(mu1range, mu2range, xvec, bimodal_fn, opt_type = "nil", muhist = NA, bimodal_dfn = NA, to_compute = "yes", mu_vars = NA){#
+#
+  # Compute grid#
+  if(to_compute == "yes"){#
+    mu_vars = grid_search(bimodal_fn = bimodal_fn, mu1range = mu1range, mu2range = mu2range, xvec = xvec)#
+  }#
+#
+  ptitle = paste("Contour plots of mu1 and mu2")#
+#
+  # Create title based on inputs#
+  if(opt_type == "CA"){#
+    ptitle = paste("Coordinate Ascent Steps")#
+  } else if (opt_type == "arrows") {#
+    ptitle = paste("Showing direction of gradient")#
+  } else if (opt_type == "SA") {#
+    ptitle = paste("Steepest Ascent steps")#
+  } else if (opt_type == "NR") {#
+    ptitle = paste("Newton Raphson steps")#
+  } else if (opt_type != "nil") {#
+    stop("Wrong opt_type")#
+  }#
+#
+  contour(mu_vars$mu1_vec,mu_vars$mu2_vec,mu_vars$mu_mat, main = ptitle, xlab = "mu 1",ylab = "mu 2",cex.lab=1.5,cex.axis=1.5, nlevels = 20) #
+  # Draw steps for convergence given various algorithms / parameters for opt_type#
+  if(opt_type != "nil" && opt_type != "arrows"){#
+    lines(muhist,type='b',lwd=2,col=2)#
+  } #
+  if (opt_type == "arrows" || opt_type == "SA" || opt_type == "NR"){#
+    # This function is defined below#
+    mu1_vec = seq(mu1range[1], mu1range[2], by = 0.01)#
+    mu2_vec = seq(mu2range[1], mu2range[2], by = 0.01)#
+#
+    arrow_list = get_arrow_list(mu1range = mu1range, mu2range = mu2range, bimodal_dfn = bimodal_dfn, xvec = xvec)#
+    arrows(arrow_list$starts[,1],arrow_list$starts[,2],arrow_list$ends[,1],arrow_list$ends[,2],col=4,code=2)#
+  }#
+}
+GoldenSection1D_update<-function(opt_fn, GS_list){#
+#
+  if( (GS_list$x_UB - GS_list$x_mid) > (GS_list$x_mid - GS_list$x_LB) ){  # Working on the right-hand side#
+    y = GS_list$x_mid + (GS_list$x_UB - GS_list$x_mid)/(1 + GS_list$gr)#
+    GS_list$f_y = opt_fn(y)#
+    if( GS_list$f_y > GS_list$y_mid){ #
+      GS_list$x_LB = GS_list$x_mid#
+      GS_list$y_LB = GS_list$y_mid#
+      GS_list$x_mid = y#
+      GS_list$y_mid = GS_list$f_y #
+    } else { #
+      GS_list$x_UB = y#
+      GS_list$y_UB = GS_list$f_y #
+    }#
+  } else {#
+    y = GS_list$x_mid - (GS_list$x_mid - GS_list$x_LB)/(1 + GS_list$gr)#
+    GS_list$f_y = opt_fn(y)#
+    if( GS_list$f_y > GS_list$y_mid){#
+      GS_list$x_UB = GS_list$x_mid#
+      GS_list$y_UB = GS_list$y_mid #
+      GS_list$x_mid = y #
+      GS_list$y_mid = GS_list$f_y #
+    } else { #
+      GS_list$x_LB = y#
+      GS_list$y_LB = GS_list$f_y #
+    }#
+  }#
+  return(GS_list)#
+}#
+#
+## A 1D implementation of GoldenSection#
+## Input: #
+## opt_fn : function to optimize#
+## x_LB   : "lower bound X"#
+## x_UB   : "upper bound X"#
+## tol    : tolerance#
+## maxit  : max iterations   #
+GoldenSection1D = function(opt_fn, x_LB, x_UB, tol=1e-8, maxit=100){#
+  # Pre-calculate golden ratio#
+  gr = (1 + sqrt(5))/2#
+#
+  x_mid = x_LB + (x_UB-x_LB)/(1+gr)#
+  # Initialize our list#
+  GS_list = list(#
+    gr = gr, #
+    x_mid = x_mid,#
+    x_UB = x_UB,#
+    x_LB = x_LB,#
+    y_LB = opt_fn(x_LB),#
+    y_UB = opt_fn(x_UB),#
+    y_mid = opt_fn(x_mid),#
+    f_y = NA#
+  )#
+  tol.met = FALSE    # No tolerance met#
+  iter = 0           # No iterations#
+#
+  # Also, note that while while(1) is discouraged,#
+  # tol.met = TRUE below is the same as "break"#
+#
+  while(!tol.met){#
+    iter = iter + 1#
+    GS_list = GoldenSection1D_update(opt_fn = opt_fn, GS_list = GS_list)#
+    if( (GS_list$x_UB - GS_list$x_mid) < tol || iter > maxit ){ #
+      tol.met=TRUE #
+    }#
+  }#
+  return(list(x_mid = GS_list$x_mid, iter = iter))#
+}#
+#
+## This is for 1D. What if we wanted to use this#
+## in conjunction with multiple dimensions?#
+###
+## Eg, LASSO ; using coordinate ascent#
+#
+## Coordinate Ascent:#
+## Want to optimize f(mu_1, mu_2, mu_3, .., mu_n)#
+## While {convergence criteria not met}#
+##   for j in 1:n#
+##     Hold mu_i constant for i \neq j#
+##     Find mu_j that optimizes f(..., mu_j, ..)#
+##     Update mu_j#
+###
+## #
+## To find mu_j that optimizes f(...,mu_j, ..)#
+## can use any 1D algorithm#
+###
+## Suppose we are given GoldenSection as above#
+## Note that it takes in a function with only one#
+## input#
+###
+## What's the "best" way to make changes to prevent#
+## errors?#
+## Demonstrate with bimodal mixture model#
+#
+# Previous#
+compute_bimodal_mixture_fx_old<-function(mu1, mu2, xvec){#
+  return(sum(log(exp(-0.5*(xvec - mu1)^2) + exp(-0.5*(xvec - mu2)^2))))#
+}#
+#
+# Now#
+compute_bimodal_mixture_fx_new<-function(mu, xvec, opt_para_pos){#
+  m1 = mu[1]#
+  m2 = mu[2]#
+  xvec = xvec#
+#
+  if (opt_para_pos == 1){#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - opt_para)^2) + exp(-0.5*(xvec - m2)^2))))#
+      }#
+    )#
+  } else if (opt_para_pos == 2) {#
+    return(#
+      function(opt_para){#
+        return(sum(log(exp(-0.5*(xvec - m1)^2) + exp(-0.5*(xvec - opt_para)^2))))#
+      }#
+    )#
+  }#
+}#
+#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 1 )#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 2 )#
+# and try this#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 1 )(1)#
+compute_bimodal_mixture_fx(mu = c(1,2), xvec = faithful$eruptions, opt_para_pos = 2 )(2)#
+CoordinateAscent<-function(mu, x_LB_vec , x_UB_vec , bimodal_fn , xvec , tol=1e-8, maxit=1000){#
+#
+  iter = 0              # Initialization#
+  tol.met = FALSE#
+  muhist = matrix(0,nrow = maxit+1, ncol = 2)#
+  muhist[1,] = mu#
+#
+  while(!tol.met){  # Tolerance will be checked by how much we move mu#
+    oldmu = mu      # over one cycle accross the dimensions.#
+    for(ndims in 1:length(mu)){  #
+      iter = iter + 1     #
+      mu[ndims] = GoldenSection1D(opt_fn = bimodal_fn(mu = mu, xvec = xvec, opt_para_pos = ndims), x_LB = x_LB_vec[ndims], x_UB = x_UB_vec[ndims])$x_mid#
+      muhist[iter+1,] = mu#
+    }#
+#
+    if( max(abs(mu - oldmu))<tol | iter > maxit){ #
+      tol.met = TRUE#
+      muhist = muhist[1:(iter+1),]#
+    } else { #
+      oldmu = mu #
+    }#
+  } #
+  return(list(mu = mu, iter = iter, muhist = muhist))#
+}#
+CA_res = CoordinateAscent(mu = c(3.6,3.5), x_LB_vec = c(1,3.5), x_UB_vec = c(4,5.5), bimodal_fn = compute_bimodal_mixture_fx_new, xvec = faithful$eruptions)
+show_contour(mu1range = c(2.5,5), mu2range = c(2.5,5), bimodal_fn = compute_bimodal_mixture_fx_old, xvec = faithful$eruptions, opt_type = "CA", muhist = CA_res$muhist)
+show_contour(mu1range = c(2,5), mu2range = c(2,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 1)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 4)
+Secant_With_Readline(x0 = 1, x1 = 1.2, fnx = fnx, wrong_update_step_fn = wrong_update_step_fn, bds = c(-5,5), type = 1)
+data(faithful)#
+#
+## Look at eruptions#
+hist(faithful$eruptions, main = "Histogram of Eruptions", xlab = "Eruptions", breaks = 20)
+show_contour(mu1range = c(2,5), mu2range = c(2,5), bimodal_fn = compute_bimodal_mixture_fx, xvec = faithful$eruptions)
+show_contour(mu1range = c(2.5,5), mu2range = c(2.5,5), bimodal_fn = compute_bimodal_mixture_fx_old, xvec = faithful$eruptions, opt_type = "CA", muhist = CA_res$muhist)
+avg_err = read.csv("colon_avg_err_when_normed_with_1000_iter.csv")
+avg_err
+avg_err = t(read.csv("colon_avg_err_when_normed_with_1000_iter.csv", header = FALSE))
+avg_err
+str(avg_err)
+avg_err = unlist(t(read.csv("colon_avg_err_when_normed_with_1000_iter.csv", header = FALSE)))
+avg_err
+str(avg_err)
+avg_err = unlist(t(read.csv("colon_avg_err_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_err = unlist(t(read.csv("colon_avg_err_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+#
+avg_sd = unlist(t(read.csv("colon_sd_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_sd = unlist(t(read.csv("colon_sd_with_RPCV_with_1000_iter.csv", header = FALSE)))
+avg_err
+rpcv_err
+avg_acc = unlist(t(read.csv("colon_avg_err_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_acc = unlist(t(read.csv("colon_avg_err_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+#
+avg_sd = unlist(t(read.csv("colon_sd_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_sd = unlist(t(read.csv("colon_sd_with_RPCV_with_1000_iter.csv", header = FALSE)))
+plot(0, type = "n", main = "K Nearest Neighbors for Colon Dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(0,100), ylim = c(0,1))
+kvec = rep(2,100,2)
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "K Nearest Neighbors for Colon Dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(0,100), ylim = c(0,1))#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")
+kvec
+kvec = rep(2,100, by = 2)
+kvec
+kvec = seq(2,100, by = 2)
+kvec
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "K Nearest Neighbors for Colon Dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(0,100), ylim = c(0,1))#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")
+plot(0, type = "n", main = "K Nearest Neighbors for Colon Dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1))#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for colon dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+#
+plot(0, type = "n", main = "SE for misclassification error for colon dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for colon dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for colon dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+avg_acc = unlist(t(read.csv("gisette_avg_err_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_acc = unlist(t(read.csv("gisette_avg_err_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+#
+avg_sd = unlist(t(read.csv("gisette_sd_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_sd = unlist(t(read.csv("gisette_sd_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for Gisette dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for Gisette dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+avg_acc = unlist(t(read.csv("gisette_avg_err_when_normed_with_50_iter.csv", header = FALSE)))#
+rpcv_acc = unlist(t(read.csv("gisette_avg_err_with_RPCV_with_50_iter.csv", header = FALSE)))#
+#
+avg_sd = unlist(t(read.csv("gisette_sd_when_normed_with_50_iter.csv", header = FALSE)))#
+rpcv_sd = unlist(t(read.csv("gisette_sd_with_RPCV_with_50_iter.csv", header = FALSE)))#
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for Gisette dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for Gisette dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+kvec
+avg_sd
+kvec = seq(10,100,10)#
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for Gisette dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.80645, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for Gisette dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+kvec = seq(10,100,10)#
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for Gisette dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.973, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for Gisette dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+avg_acc = unlist(t(read.csv("arcene_avg_err_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_acc = unlist(t(read.csv("arcene_avg_err_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+#
+avg_sd = unlist(t(read.csv("arcene_sd_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_sd = unlist(t(read.csv("arcene_sd_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+kvec = seq(10,100,10)#
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for Gisette dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.973, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for Gisette dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+avg_acc = unlist(t(read.csv("arcene_avg_err_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_acc = unlist(t(read.csv("arcene_avg_err_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+#
+avg_sd = unlist(t(read.csv("arcene_sd_when_normed_with_1000_iter.csv", header = FALSE)))#
+rpcv_sd = unlist(t(read.csv("arcene_sd_with_RPCV_with_1000_iter.csv", header = FALSE)))#
+kvec = seq(2,100,2)#
+par(mfrow =c(1,2))#
+ybounds = c(0, max(avg_sd, rpcv_sd))#
+ybounds_log = c(min(log(avg_sd), log(rpcv_sd)), max(log(avg_sd), log(rpcv_sd)))#
+#
+plot(0, type = "n", main = "Classification accuracy for Gisette dataset", xlab = "Number of columns", ylab = "Classification accuracy", xlim = c(10,100), ylim = c(0,1), cex = 0.7)#
+#
+abline(h = 0.973, col = "black", lty = 2)#
+lines(kvec, avg_acc, col = "black")#
+lines(kvec, rpcv_acc, col = "blue")#
+legend("bottomright", legend = c("Accuracy without random projections", "Normal random projections", "Random projections plus control variates"), lty = c(2,1,1), col = c("black","black","blue"))#
+plot(0, type = "n", main = "SE for misclassification error for Gisette dataset", xlab = "Number of columns", ylab = "Misclassification standard deviation", xlim = c(10,100), ylim = ybounds, cex = 0.7)#
+#
+lines(kvec, avg_sd, col = "black")#
+lines(kvec, rpcv_sd, col = "blue")#
+legend("bottomright", legend = c("Normal random projections", "Random projections plus control variates"), lty = c(1,1), col = c("black","blue"))
+25*100/60

@@ -1,4 +1,4 @@
-function [ true_par ] = update_basic_knn_csvs_for_actual_nn(XTrain, XTest, YTrain, YTest, nn_mat, data_pos, neighbor_pos, text_save_name)
+function [ true_par ] = update_basic_knn_csvs_for_actual_nn(XTrain, XTest, YTrain, YTest, nn_mat, data_pos, neighbor_pos, text_save_name, to_write)
 
   % Updates csv files if needed
   
@@ -8,7 +8,9 @@ function [ true_par ] = update_basic_knn_csvs_for_actual_nn(XTrain, XTest, YTrai
     labels  = basic_KNN( XTrain, XTest, YTrain, 'k', neighbor_pos);
     true_par = sum(labels == YTest)/size(YTest,1);
     nn_mat(neighbor_pos, data_pos) = true_par;
-    csvwrite(text_save_name, nn_mat);      
+    if to_write
+      csvwrite(text_save_name, nn_mat);     
+    end 
   end
   
 end
