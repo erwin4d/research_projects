@@ -2,6 +2,8 @@ function [XPair1, XPair2, normPair1, normPair2 ] = prepare_correct_idx_for_rpcv_
 
 
   X = center_matrix(X);  
+
+
   % Means we didn't prepare indexes, so let's do so and save it in our file
   if sum(idx_file(:,idx1) == 0) > 0 || sum(idx_file(:,idx2) == 0) > 0
     % Let's center the data
@@ -62,6 +64,7 @@ function [XPair1, XPair2, normPair1, normPair2 ] = prepare_correct_idx_for_rpcv_
   
   normPair1 = (compute_generic_all_norm(XPair1, false)).^2;
   normPair2 = (compute_generic_all_norm(XPair2, false)).^2;
+  
 
 
 end

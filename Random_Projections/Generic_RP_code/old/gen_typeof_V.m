@@ -25,9 +25,7 @@ function [ V ] = gen_typeof_V(X, k, varargin )
   % Get num_paras (cols) of X
   [ ~, p] = size(X);
   R = gen_typeof_R( p, k, 'option', inputs.option, 'opt_para', inputs.opt_para);
-  V.vmat = X * R.rmat; % again, remember no scaling parameter
-  V.rand_var = R.rand_var;
-  V.scaling_factor = R.scaling_factor;
-  V.signature = R.signature;
+  V = X * R; % again, remember no scaling parameter
+
 end
 

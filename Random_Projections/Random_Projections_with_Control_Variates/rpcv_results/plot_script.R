@@ -2,7 +2,7 @@
 
 read_and_load_data<-function(data_name, sim_type, iter_num = 1000, is_norm, type_of_mat, pos_in_perc){
   
-  this_WD = "/Users/keegankang/Google Drive/research_projects/Random_Projections/Random_Projections_with_Control_Variates/rpcv_results"
+  this_WD = "/Users/keegankang/Google Drive/Research SUTD/research_projects/Random_Projections/Random_Projections_with_Control_Variates/rpcv_results"
   
   types_vec = c("bias", "mse", "var")
   if(sim_type == "ED"){
@@ -130,7 +130,7 @@ mat_vecs = c("normal_mat", "binary_mat", "SB5_mat", "SB10_mat", "SRHT_mat")
 
 for (pp in 2:10){
   for(j in 1:length(mat_vecs)){
-    some_list = read_and_load_data(data_name = "colon", sim_type = "ED", is_norm = "normalized", type_of_mat = mat_vecs[j], pos_in_perc = pp)
+    some_list = read_and_load_data(data_name = "arcene", sim_type = "IP", is_norm = "normalized", type_of_mat = mat_vecs[j], pos_in_perc = pp)
 
     plot_all_three_para(some_list, size_main = 0.8, size_axis = 0.8, size_labels = 0.8, size_legend = 0.8)
     readline("Pause for contemplation")

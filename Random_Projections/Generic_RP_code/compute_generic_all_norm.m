@@ -1,13 +1,10 @@
-function [ norm_val ] = compute_generic_all_norm( mat, is_est, varargin)
+function [ norm_val ] = compute_generic_all_norm( mat, varargin)
 
   p = inputParser;  
   p.addRequired('mat',@(x) true);
-  p.addRequired('is_est',@islogical);
-  p.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB', 'SRHT'})));
-  p.addOptional('opt_para', -1, @(x) true);
   p.addOptional('is_sim', false, @islogical);
   p.addOptional('kvec', 1, @(x) true);
-  p.parse(mat, is_est,varargin{:});
+  p.parse(mat,varargin{:});
   inputs = p.Results;
   
 
@@ -16,33 +13,31 @@ function [ norm_val ] = compute_generic_all_norm( mat, is_est, varargin)
   % or an estimated vector of row norms using V
 
   % mat: X (or V)
-  % is_est : false   - compute actual norm using X as input
-  %          true  - compute estimated norms using V using V as input
+  
+  % If mat has no fields, assume we just want the norms.
+  
+  % Optional parameters (only if this is used for ordinary simulations)
+  % Usually, want to see how well random projections do for 1 cols, 2 cols, 3 cols, ... K cols
 
-  % Optional parameters
-  % option: type of random projection matrix
-  % opt_para: scaling factor for sparse bernoulli option
-  % is_sim: boolean ; true if computing matrix of norms for subset of kvec cols for simulations
-  %                   false - return just vector of row norms using K cols
-  % kvec: subset for is_sim above
-  if ~is_est
-  	% Compute norm of row of mat. Is exact estimate
+  % is_sim: if this is set to true, we compute the norm with each increasing column number
+  % kvec: subset for is_sim. For example, looking at 10 cols, 20 cols, ..
+
+  if isfield(mat,'vmat') == 0
   	norm_val = sqrt(sum(mat.^2,2));
   else
     % Compute norms given V
     % Note that we didn't include scaling factor in our previous functions
     % so we're putting them in now.
     % See derviations.pdf for working
-    [ ~, k ] = size(mat);
+    vmat = mat.vmat;
+    [ ~, k ] = size(vmat);
     if inputs.is_sim
-      norm_val = cumsum(mat.^2,2);
+      norm_val = cumsum(vmat.^2,2);
       norm_val = norm_val(:,inputs.kvec) ./ inputs.kvec;
     else
-      norm_val = sum(mat.^2,2)/k;
+      norm_val = sum(vmat.^2,2)/k;
     end
-    if strcmp(inputs.option, 'SB') == 1
-      norm_val = inputs.opt_para * norm_val;
-    end
+    norm_val = mat.scaling_factor * norm_val;
     norm_val = sqrt(norm_val);
   end
 
