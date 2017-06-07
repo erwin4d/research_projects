@@ -1,18 +1,19 @@
-function [ IP_vals ] = li_vectorized_NR_comp_IP( vi_vec_struct, vj_mat_struct, mi, mj_vec)
+function [ IP_vals ] = li_vectorized_NR_comp_IP( vi_vec, vj_mat, mi, mj_vec, varargin)
   
+  p = inputParser;  
+  p.addRequired('vi_vec',@(x) true);
+  p.addRequired('vj_mat',@(x) true);
+  p.addRequired('mi',@(x) true);
+  p.addRequired('mj_vec',@(x) true);
+  p.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB', 'SRHT'})));
+  p.addOptional('opt_para', -1, @(x) true);
+  p.parse(vi_vec, vj_mat, mi, mj_vec, varargin{:});
+  inputs = p.Results;  
+
+
   TOL = 1e-8;          % Initialize tolerance
   max_iter = 100;      % and max iterations
   iter = 0;            % and starting number of iter
-
-  if isfield(vi_vec_struct,'vmat') == 0
-    ['should take in a structure for vi_vec and vj_mat']
-    return
-  end
-
-  if vi_vec_struct.signature ~= vj_mat_struct.signature
-    ['The matrices are not formed from the same random matrix!']
-    return
-  end
 
   % Vectorized NR to compute MLE for Li's IP
 
@@ -26,17 +27,16 @@ function [ IP_vals ] = li_vectorized_NR_comp_IP( vi_vec_struct, vj_mat_struct, m
 
   % Thus, need to do some precomputations
 
-  vi_vec = vi_vec_struct.vmat;
-  vj_mat = vj_mat_struct.vmat;
-
   v_IP_vec = (vj_mat * vi_vec') ./ size(vj_mat,2); 
   len_a = size(v_IP_vec, 1);
 
-  v_IP_vec = v_IP_vec .* vi_vec_struct.scaling_factor;
-  
+  if strcmp(inputs.option, 'SB')
+    v_IP_vec = v_IP_vec .* inputs.opt_para;
+  end
+
   mimj_vec = mi * mj_vec;
-  norm_vi = compute_generic_all_norm( vi_vec_struct);
-  norm_vj_vec = compute_generic_all_norm( vj_mat_struct);
+  norm_vi = compute_generic_all_norm( vi_vec,  true, 'option', inputs.option, 'opt_para', inputs.opt_para, 'is_sim', false);
+  norm_vj_vec = compute_generic_all_norm( vj_mat,  true, 'option', inputs.option, 'opt_para', inputs.opt_para, 'is_sim', false);
 
 
   % Now to do vectorized NR 

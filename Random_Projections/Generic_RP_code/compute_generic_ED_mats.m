@@ -25,6 +25,7 @@ function [ ED ] = compute_generic_ED_mats( mat1, mat2, varargin)
   else
     if mat1.signature ~= mat2.signature
       'The matrices are not formed from the same random matrix!'
+      return
     end
     % Compute Euclidean distance given V
     % Note that we didn't include scaling factor in our previous functions
