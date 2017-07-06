@@ -1,18 +1,40 @@
-# Generic random projection code
+Generic random projection code
+This folder shows the power of random projections in getting estimates of
+Euclidean distances, inner products, and norms.
 
-This folder contains generic random projection code to generate random projection matrices and to compute an estimated Euclidean distance / inner product / norms of respective vectors.
+Angles, lp distances for even p to be added (much) later.
 
--  gen_typeof_R.m
+Types of random projection matrices worked with
+ - N(0,1)
+ - Rademacher
+ - Sparse Bernoulli
 
-Generates the type of random projection matrix required. Note: The SRHT here is not optimal. Will probably work on this to find the appropriate cutoff point for the recursion.
 
-- gen_typeof_V.m
+This folder contains generic random projection code to demo the accuracy of random projections.
 
-Creates V = XR, without the scaling factor, since we can always scale the estimates later and avoid a pesky square root.
+  - gen_typeof_R.m
 
-- compute_generic_all_norm.m ; compute_generic_ED.m ; compute_generic_IP.m
+This function allows the user to generate three types of random projection matrices for demonstration purposes. 
 
-Computes the estimates / actual norms, Euclidean distances, and inner products. 
+  - gen_typeof_V.m
+
+This function allows the user to generate the V matrix (V := XR) for demonstration purposes.
+
+  - compare_generic_norm_demo.m
+
+This function plots the average RMSE of all estimated norms in the dataset with a pre-selected
+random projection matrix. This is to allow the user to get a sense of the error in random projections.
+
+ 
+  - compare_generic_pairwise_demo.m
+
+This function plots the average RMSE of all estimated pairwise distances of choice (currently, Euclidean distances and inner products only) with a pre-selected random projection matrix. This is to allow the user to get a sense of the error in random projections.
+
+  
+  - get_true_vals.m
+
+This function gets the true pairwise estimates of choice (currently, Euclidean distances and inner products only) given some matrix X.
+
 
 - derivations.pdf
 
@@ -24,7 +46,3 @@ Database Friendly Random Projections, Very Sparse Random Projections, and Improv
 
 They give some analysis and explanation on the types of random projections in this folder.
 
-
-To Do: 
-  + update compute_generic_ED.m and compute_generic_IP.m to get pairwise ED and IP for multiple vectors, returning a m by n matrix
-  + unit testing for randomness + above functionality (plausibly easier to verify by correct MSEs and such by plotting)

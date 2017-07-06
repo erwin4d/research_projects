@@ -3,7 +3,7 @@ function [ R ] = gen_typeof_R( p, k, varargin)
   pars = inputParser;  
   pars.addRequired('p',@(x) x > 0);
   pars.addRequired('k',@(x) x > 0);
-  pars.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB', 'SRHT'})));
+  pars.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB'})));
   pars.addOptional('opt_para', -1, @(x) true);
   pars.parse(p, k ,varargin{:});
 
@@ -11,6 +11,18 @@ function [ R ] = gen_typeof_R( p, k, varargin)
 
   % This generates a random projection matrix rmat of
   % dimensions p x k 
+
+  % Example usage:
+  % gen_typeof_R(200, 50, 'option', 'normal')            
+  %   This generates a 200 by 50 random matrix with entries N(0,1)
+
+  % gen_typeof_R(200, 50, 'option', 'SB', 'opt_para', 1)
+  % gen_typeof_R(200, 50, 'option', 'binary')
+  %   These generate a 200 by 50 random matrix with i.i.d. binary entries
+
+  % gen_typeof_R(200, 50, 'option', 'SB', 'opt_para', 5)
+  %   This generates a 200 by 50 random matrix with i.i.d. SB(5) entries
+
 
   % Return a structure with three fields
   %  rmat - the matrix
@@ -39,20 +51,13 @@ function [ R ] = gen_typeof_R( p, k, varargin)
   	% sample -1/sqrt(s), 0, 1/sqrt(s) because the scaling factor
   	% can be factored out later
   	R.rmat = reshape(randsample([-1,0,1],p*k,true,[1/(2*inputs.opt_para),1-1/inputs.opt_para,1/(2*inputs.opt_para)]),[p,k]);
-    R.rand_var = 'SB';
+    if inputs.opt_para == 1
+      R.rand_var = 'binary';
+    else
+      R.rand_var = 'SB';
+    end
     R.scaling_factor = inputs.opt_para;
-  elseif strcmp(inputs.option, 'SRHT')
-  	% Generate random projection matrix using Subsampled Randomized Hadamard Transform
-  	% opt_para here is the Hadamard matrix of size p * p 
-    R_diag = randsample([-1,1],p,true,[0.5,0.5])';
-    ind1 = randsample(2^(ceil(log2(p))),(k),'true');
-    ub = max([ind1]);    
-    R_tmp1 = repmat(R_diag(1:p),1,ub) .* inputs.opt_para(1:p, 1:ub);
-    R.rmat = R_tmp1(:,ind1);
-    R.rand_var = 'SRHT';
-    R.scaling_factor = 1;
   end
   R.signature = normrnd(0,1,1,1);
-
 end
 
