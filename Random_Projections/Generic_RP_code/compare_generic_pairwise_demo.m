@@ -37,16 +37,6 @@ function [rmse_vec ] = compare_generic_pairwise_demo(X, niter, varargin)
   else
     partition = inputs.partition;
   end
-  
-  % Given a matrix X_{n x p}, compute all pairwise Euclidean distances
-  % with a random projection matrix with k = 1, 2, .. 100 cols
-
-  % Example input:
-
-  % compare_generic_ED_demo(X, 1000, 'option', 'SB', opt_para, '5')
-  % Look at RMSE of estimated norms using SB matrix of parameter 5.
-
-  % We look at the average RMSE.
 
   para.partition_start = 1:partition:para.N;
   para.partition_end = partition:partition:para.N;

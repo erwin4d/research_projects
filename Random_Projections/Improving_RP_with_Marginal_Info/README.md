@@ -1,5 +1,18 @@
 # Improving Random Projections with Marginal Information
 
-Matlab code for computing the MLE of the inner product is put in this folder. The code duplicates the code from the paper: "Improving Random Projections Using Marginal Information".
+This is a really cool paper using the likelihood function of bivariate normal to estimate the inner product. The relevant paper is included.
 
-We demonstrate the effectiveness of Li's method for the same dataset.
+Matlab code is given here to demo this (compute all pairwise observations). The relevant functions are as follows
+
+- li_MLE_IP_demo.m
+
+This computes the average RMSE of the pairwise inner products for a dataset both using the ordinary method, and Li's method. The comparison is shown.
+
+
+- cardano_fn.m
+
+This computes the roots of Li's method using Cardano's formula. It may error for low values of K.
+
+- li_vectorized_NR.m
+
+This computes the roots of Li's method using Newton Raphson. It is vectorized. 
