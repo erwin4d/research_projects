@@ -69,12 +69,11 @@ function [ ] = li_MLE_IP_demo(X, niter, varargin)
           currV.V2 = big_V.vmat(para.partition_start(yseg):para.partition_end(yseg),1:k);
           [ests] = get_V_ests_all(currV);
           
-
           % Update ordinary estimate (for comparison)
           rmse.ord(iter_num,kvals) = rmse.ord(iter_num,kvals) + get_rmse_all(ests.v1v2, para, xseg, yseg);
           
           %[li_ip] = cardano_fn(ests);
-          [ li_ip ] = li_vectorized_NR(ests);
+          li_ip = get_typeof_ests(ests, 'li_mle');
 
           rmse.li(iter_num,kvals) = rmse.li(iter_num,kvals) + get_rmse_all(li_ip, para, xseg, yseg);
 
