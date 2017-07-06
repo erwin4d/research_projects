@@ -1,4 +1,4 @@
-function [ ] = compare_generic_norm_demo(X, niter, varargin)
+function [ rmse_vec] = compare_generic_norm_demo(X, niter, varargin)
 
   
   p = inputParser;  

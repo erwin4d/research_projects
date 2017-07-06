@@ -1,4 +1,4 @@
-function [ ] = compare_generic_pairwise_demo(X, niter, varargin)
+function [rmse_vec ] = compare_generic_pairwise_demo(X, niter, varargin)
 
   % Look at the average RMSE for pairwise <quantity> over entire dataset X
   % use random projection matrix of columns K = 10,20, ... 100
@@ -73,9 +73,7 @@ function [ ] = compare_generic_pairwise_demo(X, niter, varargin)
     V = gen_typeof_V(X, max(kvec), 'option', option, 'opt_para', opt_para);
     for kvals = 1:length(kvec)
       k = kvec(kvals); 
-      V_est = V.vmat(:,1:k);
-      para_est = triu(get_true_vals(V_est, partition_x, partition_y, pairwise)) / k * V.scaling_factor;
-      rmse_vec(iter_num,kvals) = sqrt(sum(sum( (triu(para_est) - triu(true_val)).^2))/tot_num);
+      rmse_vec(iter_num,kvals) = get_ordinary_pairwise_rmse_for_kval(V, k, true_val, tot_num, partition_x, partition_y, pairwise);
     end
     % Plot: May want to edit plot settings for kvec starting from 10.
     %       May also want to tweak k as well.
@@ -87,10 +85,7 @@ function [ ] = compare_generic_pairwise_demo(X, niter, varargin)
     end
   end
 
-
-
-
-
+  
 
 end
 
