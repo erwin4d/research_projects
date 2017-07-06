@@ -1,3 +1,0 @@
-# Minhash
-
-Basic minhash algorithm
