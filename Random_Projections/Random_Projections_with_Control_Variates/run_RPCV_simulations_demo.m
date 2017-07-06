@@ -27,125 +27,44 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
 
   % Initialize kvec to always be 2:2:100 ; could change here
   kvec = [2:2:100];
-  num_eigs = 2;
+  num_eig = 2;
+  num_rand = 2;
   % Load in dataset percentiles
 
-  [ EDPair1, EDPair2, sqnormEDPair1, sqnormEDPair2] = load_datasets_for_rpcv_sims(data_name, 'ED', is_norm);
-  [ IPPair1, IPPair2, sqnormIPPair1, sqnormIPPair2] = load_datasets_for_rpcv_sims(data_name, 'IP', is_norm);
+  [ EDInfo] = load_datasets_for_rpcv_sims(data_name, 'ED', is_norm);
+  [ IPInfo] = load_datasets_for_rpcv_sims(data_name, 'IP', is_norm);
 
-  num_para = size(EDPair1, 2);
+  num_para = size(EDInfo.pair1, 2);
   % look at top two eigenvectors only (could potentially do more, but stop at 2)
 
-  [eig_vecs] = get_eigs_datasets_for_rpcv_sims(data_name, num_eigs);
+  [eig_vecs] = get_eigs_datasets_for_rpcv_sims(data_name, num_eig);
   [rand_vecs] = get_rand_vecs_for_rpcv_sims(num_para);
 
   % Compute exact vals (either ED or IP)
-  true_ED_vals = sqrt(sum((EDPair1 - EDPair2).^2,2));
-  true_IP_vals = sum( IPPair1 .* IPPair2,2);
-  
-  [EDPair_for_ED_rpcv_comp_eigvec_pair1, EDPair_for_ED_rpcv_comp_eigvec_pair2] = get_edip_pairs_for_rpcv_sims(eig_vecs, EDPair1, EDPair2, 'ED');
-
-  [EDPair_for_IP_rpcv_comp_eigvec_pair1, EDPair_for_IP_rpcv_comp_eigvec_pair2] = get_edip_pairs_for_rpcv_sims(eig_vecs, EDPair1, EDPair2, 'IP');
+  true_ED_vals = sqrt(sum((EDInfo.pair1 - EDInfo.pair2).^2,2));
+  true_IP_vals = sum( IPInfo.pair1 .* IPInfo.pair2,2);
 
 
-  [IPPair_for_ED_rpcv_comp_eigvec_pair1, IPPair_for_ED_rpcv_comp_eigvec_pair2] = get_edip_pairs_for_rpcv_sims(eig_vecs, IPPair1, IPPair2, 'ED');
-
-  [IPPair_for_IP_rpcv_comp_eigvec_pair1, IPPair_for_IP_rpcv_comp_eigvec_pair2] = get_edip_pairs_for_rpcv_sims(eig_vecs, IPPair1, IPPair2, 'IP');
-
-
- [EDPair_for_ED_rpcv_comp_randvec_pair1, EDPair_for_ED_rpcv_comp_randvec_pair2] = get_edip_pairs_for_rpcv_sims(rand_vecs, EDPair1, EDPair2, 'ED');
-
-  [EDPair_for_IP_rpcv_comp_randvec_pair1, EDPair_for_IP_rpcv_comp_randvec_pair2] = get_edip_pairs_for_rpcv_sims(rand_vecs, EDPair1, EDPair2, 'IP');
-
-
-  [IPPair_for_ED_rpcv_comp_randvec_pair1, IPPair_for_ED_rpcv_comp_randvec_pair2] = get_edip_pairs_for_rpcv_sims(rand_vecs, IPPair1, IPPair2, 'ED');
-
-  [IPPair_for_IP_rpcv_comp_randvec_pair1, IPPair_for_IP_rpcv_comp_randvec_pair2] = get_edip_pairs_for_rpcv_sims(rand_vecs, IPPair1, IPPair2, 'IP');
-
-
+  [EDInfo] = get_edip_pairs_for_rpcv_sims(eig_vecs, rand_vecs, EDInfo);
+  [IPInfo] = get_edip_pairs_for_rpcv_sims(eig_vecs, rand_vecs, IPInfo);  
   
   % Let's start by creating ten 4 dim matrices to store our estimates (normal RPCV)
 
-  err_mat_ED_ord = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); % 5 different types of RP matrices
-  err_mat_ED_li = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_cv_emp = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_cv_thr_ord = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES);
-  err_mat_ED_cv_thr_li = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES);
+  num_quantiles = 11;
 
-  err_mat_IP_ord = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); % 5 different types of RP matrices
-  err_mat_IP_li = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_cv_emp = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_cv_thr_ord = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_cv_thr_li = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
+  [single_rpcv_struct] = create_single_rpcv_structure( zeros(nsims, num_quantiles, length(kvec), NUM_TYPES_MATRICES), true_ED_vals, true_IP_vals, data_name, nsims);
 
   % Multiple CV (empirical)
 
-  err_mat_ED_mult_cv_emp_edtype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_emp_iptype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_emp_edtype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_emp_iptype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_IP_mult_cv_emp_edtype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_emp_iptype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_emp_edtype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_emp_iptype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_ED_mult_cv_emp_edtype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_emp_iptype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_emp_edtype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_emp_iptype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_IP_mult_cv_emp_edtype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_emp_iptype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_emp_edtype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_emp_iptype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
+  empirical_mult_rpcv_struct = create_mult_rpcv_structure( zeros(nsims, num_quantiles, length(kvec), NUM_TYPES_MATRICES), true_ED_vals, true_IP_vals, data_name, nsims, 'empirical');
 
 
   % Multiple CV (using estimated IP)
 
-  err_mat_ED_mult_cv_thr_edtype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_thr_iptype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_thr_edtype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_thr_iptype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_IP_mult_cv_thr_edtype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_thr_iptype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_thr_edtype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_thr_iptype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_ED_mult_cv_thr_edtype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_thr_iptype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_thr_edtype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_thr_iptype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_IP_mult_cv_thr_edtype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_thr_iptype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_thr_edtype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_thr_iptype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
+  est_IP_mult_rpcv_struct = create_mult_rpcv_structure( zeros(nsims, num_quantiles, length(kvec), NUM_TYPES_MATRICES), true_ED_vals, true_IP_vals, data_name, nsims, 'IP_from_data');
 
   % Multiple CV (using li's IP)
-
-  err_mat_ED_mult_cv_lis_edtype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_lis_iptype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_lis_edtype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_lis_iptype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_IP_mult_cv_lis_edtype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_lis_iptype_one_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_lis_edtype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_lis_iptype_two_mult_evec = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_ED_mult_cv_lis_edtype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_lis_iptype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_lis_edtype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_ED_mult_cv_lis_iptype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
-  err_mat_IP_mult_cv_lis_edtype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_lis_iptype_one_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_lis_edtype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-  err_mat_IP_mult_cv_lis_iptype_two_mult_rand = zeros(nsims, 11, length(kvec), NUM_TYPES_MATRICES); 
-
+  li_IP_mult_rpcv_struct = create_mult_rpcv_structure( zeros(nsims, num_quantiles, length(kvec), NUM_TYPES_MATRICES), true_ED_vals, true_IP_vals, data_name, nsims, 'IP_from_li');
 
   k_max = max(kvec);
   Had = createHad( num_para ); % Create Hadamard matrix (not going to recursively multiply matrices later)
@@ -155,16 +74,13 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
     [num2str(iters), ' ... ', data_name]   
 
     % Create our results V.. 
-    [V_EDPair1, V_EDPair2, V_IPPair1, V_IPPair2, V_eig_vecs, V_rand_vecs] = create_rpcv_types_of_V( EDPair1, EDPair2, IPPair1, IPPair2, eig_vecs, rand_vecs, num_para, k_max, NUM_TYPES_MATRICES, Had);
+    [big_V] = create_rpcv_types_of_V( EDInfo, IPInfo, eig_vecs, rand_vecs, num_para, k_max, NUM_TYPES_MATRICES, Had);
     % so far so good
     for kvals = 1:length(kvec);
       k = kvec(kvals);
       for types = 1:NUM_TYPES_MATRICES;
         % Let's do the computation so
-        small_V_EDPair1 = V_EDPair1(:, 1:k, types);
-        small_V_EDPair2 = V_EDPair2(:, 1:k, types);
-        small_V_IPPair1 = V_IPPair1(:, 1:k, types);
-        small_V_IPPair2 = V_IPPair2(:, 1:k, types);
+        [small_V_EDPair1, small_V_EDPair2, small_V_IPPair1,small_V_IPPair2, small_V_eigvec, small_V_randvec ] = rpcv_v_decoder(big_V, k, types, num_quantiles, num_eig, num_rand);
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -172,7 +88,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        err_mat_ED_ord(iters,:,kvals,types) = run_RPCV_ED_task_one_sim(small_V_EDPair1, small_V_EDPair2, types);
+        single_rpcv_struct.err_mat_ED_ord.store(iters,:,kvals,types) = compute_generic_ED_mats(small_V_EDPair1,small_V_EDPair2);
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,7 +96,8 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Just need to compute this as a vector - no need to save
-        ord_IP_est_for_ED = run_RPCV_IP_task_six_sim(small_V_EDPair1, small_V_EDPair2, types);
+
+        ord_IP_est_for_ED = compute_generic_IP_mats(small_V_EDPair1,small_V_EDPair2);
       
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,15 +105,14 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Just need to compute this as a vector - no need to save
-        li_est_IP_for_ED = run_RPCV_IP_task_seven_sim(small_V_EDPair1, small_V_EDPair2, sqnormEDPair1, sqnormEDPair2, types);
+        li_est_IP_for_ED = run_RPCV_IP_task_seven_sim(small_V_EDPair1, small_V_EDPair2, EDInfo.normPair1, EDInfo.normPair2);
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %% Use Li's estimate of IP to compute ED (this should be bad - sanity check)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        err_mat_ED_li(iters,:,kvals,types) = run_RPCV_ED_task_two_sim(sqnormEDPair1, sqnormEDPair2, li_est_IP_for_ED);
-
+        single_rpcv_struct.err_mat_ED_li.store(iters,:,kvals,types) = run_RPCV_ED_task_two_sim(EDInfo.normPair1, EDInfo.normPair2, li_est_IP_for_ED);
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,7 +120,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        err_mat_ED_cv_emp(iters,:,kvals,types) = run_RPCV_ED_task_three_sim(small_V_EDPair1, small_V_EDPair2, sqnormEDPair1, sqnormEDPair2, types);
+        single_rpcv_struct.err_mat_ED_cv_emp.store(iters,:,kvals,types) = run_RPCV_ED_task_three_sim(small_V_EDPair1, small_V_EDPair2, EDInfo.normPair1, EDInfo.normPair2, types);
 
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -213,7 +129,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        err_mat_ED_cv_thr_ord(iters,:,kvals,types) = run_RPCV_ED_task_four_sim(small_V_EDPair1, small_V_EDPair2, sqnormEDPair1, sqnormEDPair2, ord_IP_est_for_ED, types);
+        single_rpcv_struct.err_mat_ED_cv_thr_ord.store(iters,:,kvals,types) = run_RPCV_ED_task_four_sim(small_V_EDPair1, small_V_EDPair2, EDInfo.normPair1, EDInfo.normPair2, ord_IP_est_for_ED, types);
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -221,7 +137,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-       err_mat_ED_cv_thr_li(iters,:,kvals,types) = run_RPCV_ED_task_four_sim(small_V_EDPair1, small_V_EDPair2, sqnormEDPair1, sqnormEDPair2, li_est_IP_for_ED, types);
+        single_rpcv_struct.err_mat_ED_cv_thr_li.store(iters,:,kvals,types) = run_RPCV_ED_task_four_sim(small_V_EDPair1, small_V_EDPair2, EDInfo.normPair1, EDInfo.normPair2, li_est_IP_for_ED, types);
 
 
 
@@ -230,7 +146,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %% Compute ordinary estimates of IP with IP Pairs   
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        err_mat_IP_ord(iters,:,kvals,types) = run_RPCV_IP_task_six_sim(small_V_IPPair1, small_V_IPPair2, types);
+        single_rpcv_struct.err_mat_IP_ord.store(iters,:,kvals,types) = compute_generic_IP_mats(small_V_IPPair1, small_V_IPPair2);
 
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -238,7 +154,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %% Use Li's method to compute IP of ED Pairs   
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        err_mat_IP_li(iters,:,kvals,types) = run_RPCV_IP_task_seven_sim(small_V_IPPair1, small_V_IPPair2, sqnormIPPair1, sqnormIPPair2, types);
+        single_rpcv_struct.err_mat_IP_li.store(iters,:,kvals,types) = run_RPCV_IP_task_seven_sim(small_V_IPPair1, small_V_IPPair2, IPInfo.normPair1, IPInfo.normPair2);
 
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,7 +162,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %% Compute Empirical Control Variate of IP pairs 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        err_mat_IP_cv_emp(iters,:,kvals,types) = run_RPCV_IP_task_eight_sim(small_V_IPPair1, small_V_IPPair2, sqnormIPPair1, sqnormIPPair2, types);
+        single_rpcv_struct.err_mat_IP_cv_emp.store(iters,:,kvals,types) = run_RPCV_IP_task_eight_sim(small_V_IPPair1, small_V_IPPair2, IPInfo.normPair1, IPInfo.normPair2, types);
 
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -255,7 +171,7 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        err_mat_IP_cv_thr_ord(iters,:,kvals,types) = run_RPCV_IP_task_nine_sim(small_V_IPPair1, small_V_IPPair2, sqnormIPPair1, sqnormIPPair2, err_mat_IP_ord(iters,:,kvals,types)', types);
+        single_rpcv_struct.err_mat_IP_cv_thr_ord.store(iters,:,kvals,types) = run_RPCV_IP_task_nine_sim(small_V_IPPair1, small_V_IPPair2, IPInfo.normPair1, IPInfo.normPair2, single_rpcv_struct.err_mat_IP_ord.store(iters,:,kvals,types)', types);
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -263,7 +179,122 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-        err_mat_IP_cv_thr_ord(iters,:,kvals,types) = run_RPCV_IP_task_nine_sim(small_V_IPPair1, small_V_IPPair2, sqnormIPPair1, sqnormIPPair2, err_mat_IP_li(iters,:,kvals,types)', types);
+        single_rpcv_struct.err_mat_IP_cv_thr_ord.store(iters,:,kvals,types) = run_RPCV_IP_task_nine_sim(small_V_IPPair1, small_V_IPPair2, IPInfo.normPair1, IPInfo.normPair2, single_rpcv_struct.err_mat_IP_li.store(iters,:,kvals,types)', types);
+
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for ED, using ED CV
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        empirical_mult_rpcv_struct.one_evec_by_ED_for_ED.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_EDPair1, small_V_EDPair2, small_V_eigvec, EDInfo.eigvecs_ED_1, EDInfo.eigvecs_ED_2, types, 'ED-ish', 'est_ED');
+
+        empirical_mult_rpcv_struct.one_rand_by_ED_for_ED.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_EDPair1, small_V_EDPair2, small_V_randvec, EDInfo.random_ED_1, EDInfo.random_ED_2, types, 'ED-ish', 'est_ED');        
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for ED, using IP CV
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        empirical_mult_rpcv_struct.one_evec_by_IP_for_ED.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_EDPair1, small_V_EDPair2, small_V_eigvec, EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, types, 'IP-ish', 'est_ED');
+
+
+        empirical_mult_rpcv_struct.one_rand_by_IP_for_ED.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_EDPair1, small_V_EDPair2, small_V_randvec, EDInfo.random_IP_1, EDInfo.random_IP_2, types,'IP-ish', 'est_ED');
+
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for IP, using ED CV
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        empirical_mult_rpcv_struct.one_evec_by_ED_for_IP.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_IPPair1, small_V_IPPair2, small_V_eigvec, IPInfo.eigvecs_ED_1, IPInfo.eigvecs_ED_2, types, 'ED-ish', 'est_IP');
+
+        empirical_mult_rpcv_struct.one_rand_by_ED_for_IP.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_IPPair1, small_V_IPPair2, small_V_randvec, IPInfo.random_ED_1, IPInfo.random_ED_2, types, 'ED-ish', 'est_IP');  
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for IP, using IP CV
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        empirical_mult_rpcv_struct.one_evec_by_IP_for_IP.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_IPPair1, small_V_IPPair2, small_V_eigvec, IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, types, 'IP-ish', 'est_IP');
+
+
+        empirical_mult_rpcv_struct.one_rand_by_IP_for_IP.store(iters,:,kvals,types) = get_mult_emp_onevec(small_V_IPPair1, small_V_IPPair2, small_V_randvec, IPInfo.random_IP_1, IPInfo.random_IP_2, types,'IP-ish', 'est_IP');      
+        
+
+         
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for ED, using ED CV
+        %% Using IP from data and LI
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        est_IP_mult_rpcv_struct.one_evec_by_ED_for_ED.store(iters,:,kvals,types) =         get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_eigvec, EDInfo.eigvecs_ED_1, EDInfo.eigvecs_ED_2, types, 'ED-ish', 'est_ED', EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, ord_IP_est_for_ED);
+
+        est_IP_mult_rpcv_struct.one_rand_by_ED_for_ED.store(iters,:,kvals,types) =         get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_randvec, EDInfo.random_ED_1, EDInfo.random_ED_2, types, 'ED-ish', 'est_ED', EDInfo.random_IP_1, EDInfo.random_IP_2, ord_IP_est_for_ED);
+
+
+        li_IP_mult_rpcv_struct.one_evec_by_ED_for_ED.store(iters,:,kvals,types) =         get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_eigvec, EDInfo.eigvecs_ED_1, EDInfo.eigvecs_ED_2, types, 'ED-ish', 'est_ED', EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, li_est_IP_for_ED);
+
+        li_IP_mult_rpcv_struct.one_rand_by_ED_for_ED.store(iters,:,kvals,types) =         get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_randvec, EDInfo.random_ED_1, EDInfo.random_ED_2, types, 'ED-ish', 'est_ED', EDInfo.random_IP_1, EDInfo.random_IP_2, li_est_IP_for_ED);
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for ED, using IP CV
+        %% Using IP from data and LI
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+        est_IP_mult_rpcv_struct.one_evec_by_IP_for_ED.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_eigvec, EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, types, 'IP-ish', 'est_ED', EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, ord_IP_est_for_ED);
+
+
+        est_IP_mult_rpcv_struct.one_rand_by_IP_for_ED.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_randvec, EDInfo.random_IP_1, EDInfo.random_IP_2, types,'IP-ish', 'est_ED',EDInfo.random_IP_1, EDInfo.random_IP_2, ord_IP_est_for_ED);
+
+
+        li_IP_mult_rpcv_struct.one_evec_by_IP_for_ED.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_eigvec, EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, types, 'IP-ish', 'est_ED', EDInfo.eigvecs_IP_1, EDInfo.eigvecs_IP_2, li_est_IP_for_ED);
+
+
+        li_IP_mult_rpcv_struct.one_rand_by_IP_for_ED.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_EDPair1, small_V_EDPair2, small_V_randvec, EDInfo.random_IP_1, EDInfo.random_IP_2, types,'IP-ish', 'est_ED',EDInfo.random_IP_1, EDInfo.random_IP_2, li_est_IP_for_ED);
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for IP, using ED CV
+        %% Using IP from data and LI
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        est_IP_mult_rpcv_struct.one_evec_by_ED_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_eigvec, IPInfo.eigvecs_ED_1, IPInfo.eigvecs_ED_2, types, 'ED-ish', 'est_IP', IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, single_rpcv_struct.err_mat_IP_ord.store(iters,:,kvals,types)');
+
+        est_IP_mult_rpcv_struct.one_rand_by_ED_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_randvec, IPInfo.random_ED_1, IPInfo.random_ED_2, types, 'ED-ish', 'est_IP', IPInfo.random_IP_1, IPInfo.random_IP_2, single_rpcv_struct.err_mat_IP_ord.store(iters,:,kvals,types)');  
+
+        li_IP_mult_rpcv_struct.one_evec_by_ED_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_eigvec, IPInfo.eigvecs_ED_1, IPInfo.eigvecs_ED_2, types, 'ED-ish', 'est_IP', IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, single_rpcv_struct.err_mat_IP_li.store(iters,:,kvals,types)');
+
+        li_IP_mult_rpcv_struct.one_rand_by_ED_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_randvec, IPInfo.random_ED_1, IPInfo.random_ED_2, types, 'ED-ish', 'est_IP', IPInfo.random_IP_1, IPInfo.random_IP_2, single_rpcv_struct.err_mat_IP_li.store(iters,:,kvals,types)');  
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %% Compute Mult CV for IP, using IP CV
+        %% Using IP from data and LI
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        est_IP_mult_rpcv_struct.one_evec_by_IP_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_eigvec, IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, types, 'IP-ish', 'est_IP', IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, single_rpcv_struct.err_mat_IP_ord.store(iters,:,kvals,types)');
+
+
+        est_IP_mult_rpcv_struct.one_rand_by_IP_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_randvec, IPInfo.random_IP_1, IPInfo.random_IP_2, types,'IP-ish', 'est_IP',IPInfo.random_IP_1, IPInfo.random_IP_2, single_rpcv_struct.err_mat_IP_ord.store(iters,:,kvals,types)');      
+
+       li_IP_mult_rpcv_struct.one_evec_by_IP_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_eigvec, IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, types, 'IP-ish', 'est_IP', IPInfo.eigvecs_IP_1, IPInfo.eigvecs_IP_2, single_rpcv_struct.err_mat_IP_li.store(iters,:,kvals,types)');
+
+
+        li_IP_mult_rpcv_struct.one_rand_by_IP_for_IP.store(iters,:,kvals,types) = get_mult_plugin_ip_onevec(small_V_IPPair1, small_V_IPPair2, small_V_randvec, IPInfo.random_IP_1, IPInfo.random_IP_2, types,'IP-ish', 'est_IP',IPInfo.random_IP_1, IPInfo.random_IP_2, single_rpcv_struct.err_mat_IP_li.store(iters,:,kvals,types)');      
+
       end
     end
   end
@@ -271,17 +302,75 @@ function [ ] = run_RPCV_simulations_demo(data_name, nsims, is_norm)
   % Compute MSE, Var, Bias and save
   % Ten Tasks
   % First Task: 
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_ED_ord, true_ED_vals, is_norm, 'ord_ED');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_ED_li, true_ED_vals, is_norm, 'ord_ED_using_bin_exp');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_ED_cv_emp, true_ED_vals, is_norm, 'empirical_CV_ED');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_ED_cv_thr_ord, true_ED_vals, is_norm, 'theory_CV_via_naive_est_ED');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_ED_cv_thr_li, true_ED_vals, is_norm, 'theory_CV_via_li_est_ED');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_ED_ord, true_ED_vals, is_norm, 'ord_ED');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_ED_li, true_ED_vals, is_norm, 'ord_ED_using_bin_exp');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_ED_cv_emp, true_ED_vals, is_norm, 'empirical_CV_ED');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_ED_cv_thr_ord, true_ED_vals, is_norm, 'theory_CV_via_naive_est_ED');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_ED_cv_thr_li, true_ED_vals, is_norm, 'theory_CV_via_li_est_ED');
 
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_IP_ord, true_IP_vals, is_norm, 'ord_IP');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_IP_li, true_IP_vals, is_norm, 'li_IP');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_IP_cv_emp, true_IP_vals, is_norm, 'empirical_CV_IP');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_IP_cv_thr_ord, true_IP_vals, is_norm, 'theory_CV_via_naive_est_IP');
-  compute_mse_var_bias_for_rpcv_sim(data_name, err_mat_IP_cv_thr_li, true_IP_vals, is_norm, 'theory_CV_via_li_est_IP');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_IP_ord, true_IP_vals, is_norm, 'ord_IP');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_IP_li, true_IP_vals, is_norm, 'li_IP');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_IP_cv_emp, true_IP_vals, is_norm, 'empirical_CV_IP');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_IP_cv_thr_ord, true_IP_vals, is_norm, 'theory_CV_via_naive_est_IP');
+  compute_mse_var_bias_for_rpcv_sim(data_name, single_rpcv_struct.err_mat_IP_cv_thr_li, true_IP_vals, is_norm, 'theory_CV_via_li_est_IP');
+
+
+
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_evec_by_ED_for_ED, true_ED_vals, is_norm, 'emp_one_evec_by_ED_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_evec_by_IP_for_ED, true_ED_vals, is_norm, 'emp_one_evec_by_IP_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_rand_by_ED_for_ED, true_ED_vals, is_norm, 'emp_one_rand_by_ED_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_rand_by_IP_for_ED, true_ED_vals, is_norm, 'emp_one_rand_by_IP_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_evec_by_ED_for_IP, true_IP_vals, is_norm, 'emp_one_evec_by_ED_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_evec_by_IP_for_IP, true_IP_vals, is_norm, 'emp_one_evec_by_IP_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_rand_by_ED_for_IP, true_IP_vals, is_norm, 'emp_one_rand_by_ED_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, empirical_mult_rpcv_struct.one_rand_by_IP_for_IP, true_IP_vals, is_norm, 'emp_one_rand_by_IP_for_IP');
+
+
+
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_evec_by_ED_for_ED, true_ED_vals, is_norm, 'subst_naive_ip_one_evec_by_ED_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_evec_by_IP_for_ED, true_ED_vals, is_norm, 'subst_naive_ip_one_evec_by_IP_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_rand_by_ED_for_ED, true_ED_vals, is_norm, 'subst_naive_ip_one_rand_by_ED_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_rand_by_IP_for_ED, true_ED_vals, is_norm, 'subst_naive_ip_one_rand_by_IP_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_evec_by_ED_for_IP, true_IP_vals, is_norm, 'subst_naive_ip_one_evec_by_ED_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_evec_by_IP_for_IP, true_IP_vals, is_norm, 'subst_naive_ip_one_evec_by_IP_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_rand_by_ED_for_IP, true_IP_vals, is_norm, 'subst_naive_ip_one_rand_by_ED_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, est_IP_mult_rpcv_struct.one_rand_by_IP_for_IP, true_IP_vals, is_norm, 'subst_naive_ip_one_rand_by_IP_for_IP');
+
+
+
+
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_evec_by_ED_for_ED, true_ED_vals, is_norm, 'subst_li_ip_one_evec_by_ED_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_evec_by_IP_for_ED, true_ED_vals, is_norm, 'subst_li_ip_one_evec_by_IP_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_rand_by_ED_for_ED, true_ED_vals, is_norm, 'subst_li_ip_one_rand_by_ED_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_rand_by_IP_for_ED, true_ED_vals, is_norm, 'subst_li_ip_one_rand_by_IP_for_ED');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_evec_by_ED_for_IP, true_IP_vals, is_norm, 'subst_li_ip_one_evec_by_ED_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_evec_by_IP_for_IP, true_IP_vals, is_norm, 'subst_li_ip_one_evec_by_IP_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_rand_by_ED_for_IP, true_IP_vals, is_norm, 'subst_li_ip_one_rand_by_ED_for_IP');
+
+  compute_mse_var_bias_for_rpcv_sim(data_name, li_IP_mult_rpcv_struct.one_rand_by_IP_for_IP, true_IP_vals, is_norm, 'subst_li_ip_one_rand_by_IP_for_IP');
 
 
 

@@ -1,0 +1,679 @@
+sqrt(3.2131e-05)*3
+sqrt(2.9983e-05)*3
+sqrt(3.9644e-05)*3
+sqrt(3.7801e-05)*3
+sqrt(4.0097e-05)*3
+sqrt(3.797e-05)*3
+sqrt(4.0588e-05)*3
+sqrt(3.8618e-05)*3
+choose(900,2)
+sqrt(0.0042084)*3
+sqrt(0.00042793)*3
+sqrt(0.00058055)*3
+sqrt(0.00070122)*3
+sqrt(0.0003295)*3
+sqrt(0.00045623)*3
+sqrt(0.00030119)*3
+sqrt(1.3937e-05)*3
+sqrt(1.4936e-05)*3
+sqrt(9.229e-06)*3
+sqrt(7.2667e-06)*3
+sqrt(6.9856e-06)*3
+sqrt(5.0722e-06)*3
+sqrt(3.8421e-06)*3
+28^2
+choose(10000,2)
+clear all
+avec = seq(-1,1,by = 0.01)#
+#
+origvar = 1+avec^2#
+bnvar = (1-avec^2)^2 / (1+avec^2)
+bnvar
+avec = seq(-1,1,by = 0.01)#
+#
+origvar = 1+avec^2#
+bnvar = (1-avec^2)^2 / (1+avec^2)#
+newvar = 1 + avec^2 + (4 *avec^2)/(1 + avec^2)^2 + (4 * avec^4)/(1 + avec^2)^2 - (8 *avec^2)/(#
+ 1 + avec^2)
+plot(0, type = "n", main = "Variance", xlab = "normalized inner product", ylab = "variance", xlim = c(-1,1),ylim = c(0,2))#
+lines(avec,origvar)#
+lines(avec,bnvar, col = "blue")#
+lines(avec,newvar, col = "red")
+newvar
+bnvar
+a13 = 0.2#
+a23 = 0.2#
+a14 = 0.2#
+a24 = 0.2#
+origvar = 1+avec^2#
+bnvar = (1-avec^2)^2 / (1+avec^2)#
+newvar = 1 + avec^2 + 2*a13^2*a23^2 + 2*a14^2*a24^2 + (-a14*a23 - a13*a24)^2 + 2*(-2*a13^2*a23^2 - 2*a14^2 *a24^2 + 1/2 (-a14*a23 - a13*a24)*(2*a14*a23 + 2*a13*a24))
+a13 = 0.2#
+a23 = 0.2#
+a14 = 0.2#
+a24 = 0.2#
+origvar = 1+avec^2#
+bnvar = (1-avec^2)^2 / (1+avec^2)#
+newvar = 1 + avec^2 + 2*a13^2*a23^2 + 2*a14^2*a24^2 + (-a14*a23 - a13*a24)^2 + 2*(-2*a13^2*a23^2 - 2*a14^2 *a24^2 + 1/2 *(-a14*a23 - a13*a24)*(2*a14*a23 + 2*a13*a24))
+plot(0, type = "n", main = "Variance", xlab = "normalized inner product", ylab = "variance", xlim = c(-1,1),ylim = c(0,2))#
+lines(avec,origvar)#
+lines(avec,bnvar, col = "blue")#
+lines(avec,newvar, col = "red")
+a13 = 0.4#
+a23 = 0.4#
+a14 = 0.4#
+a24 = 0.4#
+origvar = 1+avec^2#
+bnvar = (1-avec^2)^2 / (1+avec^2)#
+newvar = 1 + avec^2 + 2*a13^2*a23^2 + 2*a14^2*a24^2 + (-a14*a23 - a13*a24)^2 + 2*(-2*a13^2*a23^2 - 2*a14^2 *a24^2 + 1/2 *(-a14*a23 - a13*a24)*(2*a14*a23 + 2*a13*a24))#
+#
+plot(0, type = "n", main = "Variance", xlab = "normalized inner product", ylab = "variance", xlim = c(-1,1),ylim = c(0,2))#
+lines(avec,origvar)#
+lines(avec,bnvar, col = "blue")#
+lines(avec,newvar, col = "red")
+460
+638
+638*2
+1100/2
+550/5
+par(mfrow = c(1,2))#
+#
+avec = seq(-0.999, 0.999, by = 0.001)#
+#
+yvec = 8*(avec - 1)^2 #
+#zvec = 8*(avec - 1)^2 * (2*avec / (1 + avec^2)) + 4*(1+avec^2)*(1- 2*avec/(1+avec^2))#
+#
+zvec = yvec - 4*(1-avec)^4/(1+avec^2)#
+#
+ybds = c(min(yvec,zvec), max(yvec,zvec))#
+#
+plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Inner product", ylab = "Variance", main = "Variance against true inner product for Euclidean distance", cex.main =0.75)#
+lines(avec, yvec)#
+lines(avec, zvec, col = "blue")#
+legend("topright", legend = c("Original variance", "Variance after CV correction"), lty = c(1,1), col = c("black","blue"), cex = 0.75)#
+## For inner product#
+#
+yvec = 1 + avec^2#
+zvec = yvec - (4*avec^2)/(1+avec^2)#
+ybds = c(min(yvec,zvec), max(yvec,zvec))#
+#
+plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Normalized inner product", ylab = "Variance", main = "Comparison of variances") #, cex.main = 0.75)#
+lines(avec, yvec)#
+lines(avec, zvec, col = "blue")#
+legend("topright", legend = c("Original variance", "Improved variance"), lty = c(1,1), col = c("black","blue"), bg = "white")  #, cex = 0.75)
+par(mfrow = c(1,2))#
+#
+avec = seq(-0.999, 0.999, by = 0.001)#
+#
+yvec = 8*(avec - 1)^2 #
+#zvec = 8*(avec - 1)^2 * (2*avec / (1 + avec^2)) + 4*(1+avec^2)*(1- 2*avec/(1+avec^2))#
+#
+zvec = yvec - 4*(1-avec)^4/(1+avec^2)#
+#
+ybds = c(min(yvec,zvec), max(yvec,zvec))#
+#
+plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Normalized inner product", ylab = "Variance", main = "Comparison of variances for Euclidean distance", cex.main =0.75)#
+lines(avec, yvec)#
+lines(avec, zvec, col = "blue")#
+legend("topright", legend = c("Original variance", "Improved variance"), lty = c(1,1), col = c("black","blue"), cex = 0.75)#
+## For inner product#
+#
+yvec = 1 + avec^2#
+zvec = yvec - (4*avec^2)/(1+avec^2)#
+ybds = c(min(yvec,zvec), max(yvec,zvec))#
+#
+plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Normalized inner product", ylab = "Variance", main = "Comparison of variances for inner product") #, cex.main = 0.75)#
+lines(avec, yvec)#
+lines(avec, zvec, col = "blue")#
+legend("topright", legend = c("Original variance", "Improved variance"), lty = c(1,1), col = c("black","blue"), bg = "white")  #, cex = 0.75)
+par(mfrow = c(1,2))#
+#
+avec = seq(-0.999, 0.999, by = 0.001)#
+#
+yvec = 8*(avec - 1)^2 #
+#zvec = 8*(avec - 1)^2 * (2*avec / (1 + avec^2)) + 4*(1+avec^2)*(1- 2*avec/(1+avec^2))#
+#
+zvec = yvec - 4*(1-avec)^4/(1+avec^2)#
+#
+ybds = c(min(yvec,zvec), max(yvec,zvec))#
+#
+plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Normalized inner product", ylab = "Variance", main = "Comparison of variances for Euclidean distance")#
+lines(avec, yvec)#
+lines(avec, zvec, col = "blue")#
+legend("topright", legend = c("Original variance", "Improved variance"), lty = c(1,1), col = c("black","blue"))#
+## For inner product#
+#
+yvec = 1 + avec^2#
+zvec = yvec - (4*avec^2)/(1+avec^2)#
+ybds = c(min(yvec,zvec), max(yvec,zvec))#
+#
+plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Normalized inner product", ylab = "Variance", main = "Comparison of variances for inner product") #, cex.main = 0.75)#
+lines(avec, yvec)#
+lines(avec, zvec, col = "blue")#
+legend("topright", legend = c("Original variance", "Improved variance"), lty = c(1,1), col = c("black","blue"), bg = "white")  #, cex = 0.75)
+1/28
+250*(28)
+library(plsgenomics)
+Colon$X
+data(Colon)
+Colon$X
+colMeans(colon$X)
+colMeans(Colon$X)
+rep(colMeans(Colon$X),62)
+matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
+X
+colMeans(X)
+colSums(X^2)
+library(plsgenomics)#
+#
+data(Colon)#
+#
+# First, scale it.#
+#
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
+X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)
+colSums(X^2)
+X
+eigen
+## Let's just do this for Colon...#
+#
+library(plsgenomics)#
+#
+data(Colon)#
+#
+# First, scale it.#
+#
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)#
+eigz = eigen(X)
+s for Colon...#
+#
+library(plsgenomics)#
+#
+data(Colon)#
+#
+# First, scale it.#
+#
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)#
+eigz = eigen(cov(X))
+eigz
+str(eigz$vectors)
+eigz$vectors[,1]
+eigz$vectors[,1] %*% eigz$vectors[,2]
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]
+x1
+x2
+x3
+x4
+X = rbind(x1,x2,x3,x4)
+dim(X)
+X
+X %*% t(X)
+R = matrix(rnorm(1000*200),nrow = 200)#
+  V = X %*% R
+dim(R)
+dim(X)
+R = matrix(rnorm(1000*200),nrow = 2000)#
+  V = X %*% R
+dim(V)
+R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = X %*% R
+V
+sign(V)
+V = sign(X %*% R)
+V
+vec1 = V[,1]
+vec2 = V[,2]
+vec1
+vec2
+R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = sign(X %*% R)
+vec1 = V[1,]
+vec2 = V[2,]
+vec1
+vec2
+vec1 == vec2
+sum(vec1 == vec2)
+sum(vec1 == vec2)/length(vec1)
+find_equal<-function(vec1, vec2){#
+  return(sum(vec1 == vec2)/length(vec1))#
+}
+find_equal<-function(vec1, vec2){#
+  return(sum(vec1 == vec2)/length(vec1))#
+}#
+#
+cor12 = rep(0,1000)#
+cor13 = rep(0,1000)#
+cor14 = rep(0,1000)#
+cor23 = rep(0,1000)#
+cor24 = rep(0,1000)#
+cor34 = rep(0,1000)#
+#
+for(j in 1:1000){#
+  R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = sign(X %*% R)#
+  cor12[j] = find_equal(V[1,],V[2,])#
+  cor13[j] = find_equal(V[1,],V[3,])#
+  cor14[j] = find_equal(V[1,],V[4,])#
+  cor23[j] = find_equal(V[2,],V[3,])#
+  cor24[j] = find_equal(V[2,],V[4,])#
+  cor34[j] = find_equal(V[3,],V[4,])#
+}
+j
+for(j in 1:1000){#
+  if (j %% 10 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = sign(X %*% R)#
+  cor12[j] = find_equal(V[1,],V[2,])#
+  cor13[j] = find_equal(V[1,],V[3,])#
+  cor14[j] = find_equal(V[1,],V[4,])#
+  cor23[j] = find_equal(V[2,],V[3,])#
+  cor24[j] = find_equal(V[2,],V[4,])#
+  cor34[j] = find_equal(V[3,],V[4,])#
+}
+cor12
+mean(cor12)
+mean(cor13)
+mean(cor14)
+mean(cor22)
+mean(cor23)
+mean(cor24)
+mean(cor34)
+cor(cor12,cor34)
+cor12
+cor34
+cor(cor12,cor34)
+plot(cor12,cor34, type = "p")
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)
+X
+X = rbind(X[1,],X[2,],x3,x4)
+X
+X %*% t(X)
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)
+colSums(X^2)
+X[1,]
+X[1,] %*% X[,2]
+X[1,] %*% t(X[2,])
+X[1,] %*% X[2,]
+sum(X[1,]^2)
+X[1,]
+rX = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),62),nrow = 62, byrow = TRUE)
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),62),nrow = 62, byrow = TRUE)
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, bycol = TRUE)#
+eigz = eigen(cov(X))#
+#
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]
+x1
+sum(x1^2)
+X = rbind(X[1,],X[2,],x1,x2)
+X %*% t(X)
+X[1,]
+X[1,]^2
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
+colSums(X^2)
+sqrt(rowSums(X^2))
+rep(sqrt(rowSums(X^2)),62)
+matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, bycol = TRUE)
+matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
+X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
+colSums(X^2)
+rowSums(X^2)
+eigz = eigen(cov(X))
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]#
+#
+X = rbind(X[1,],X[2,],x1,x2)
+X
+X %*% t(X)
+eq12 = rep(0,1000)#
+eq13 = rep(0,1000)#
+eq14 = rep(0,1000)#
+eq23 = rep(0,1000)#
+eq24 = rep(0,1000)#
+eq34 = rep(0,1000)#
+for(j in 1:1000){#
+  if (j %% 10 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}
+eq12
+mean(eq12)
+mean(eq13)
+mean(eq14)
+mean(eq23)
+mean(eq24)
+mean(eq34)
+cor(eq12,eq13)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+mean(eq12)
+mean(eq13)
+mean(eq34)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+X = rbind(X[31,],X[46,],x1,x2)
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
+X = rbind(X[31,],X[46,],x1,x2)
+X
+X %*% T(X)
+X %*% t(X)
+eq12 = rep(0,1000)#
+eq13 = rep(0,1000)#
+eq14 = rep(0,1000)#
+eq23 = rep(0,1000)#
+eq24 = rep(0,1000)#
+eq34 = rep(0,1000)#
+for(j in 1:1000){#
+  if (j %% 50 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}
+mean(eq12)
+mean(eq13)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+clear all
+load_mnist <- function() {#
+  load_image_file <- function(filename) {#
+    ret = list()#
+    f = file(filename,'rb')#
+    readBin(f,'integer',n=1,size=4,endian='big')#
+    ret$n = readBin(f,'integer',n=1,size=4,endian='big')#
+    nrow = readBin(f,'integer',n=1,size=4,endian='big')#
+    ncol = readBin(f,'integer',n=1,size=4,endian='big')#
+    x = readBin(f,'integer',n=ret$n*nrow*ncol,size=1,signed=F)#
+    ret$x = matrix(x, ncol=nrow*ncol, byrow=T)#
+    close(f)#
+    ret#
+  }#
+  load_label_file <- function(filename) {#
+    f = file(filename,'rb')#
+    readBin(f,'integer',n=1,size=4,endian='big')#
+    n = readBin(f,'integer',n=1,size=4,endian='big')#
+    y = readBin(f,'integer',n=n,size=1,signed=F)#
+    close(f)#
+    y#
+  }#
+  train <<- load_image_file('mnist/train-images-idx3-ubyte')#
+  test <<- load_image_file('mnist/t10k-images-idx3-ubyte')#
+  train$y <<- load_label_file('mnist/train-labels-idx1-ubyte')#
+  test$y <<- load_label_file('mnist/t10k-labels-idx1-ubyte')  #
+}
+load_mnist <- function() {#
+  load_image_file <- function(filename) {#
+    ret = list()#
+    f = file(filename,'rb')#
+    readBin(f,'integer',n=1,size=4,endian='big')#
+    ret$n = readBin(f,'integer',n=1,size=4,endian='big')#
+    nrow = readBin(f,'integer',n=1,size=4,endian='big')#
+    ncol = readBin(f,'integer',n=1,size=4,endian='big')#
+    x = readBin(f,'integer',n=ret$n*nrow*ncol,size=1,signed=F)#
+    ret$x = matrix(x, ncol=nrow*ncol, byrow=T)#
+    close(f)#
+    ret#
+  }#
+  load_label_file <- function(filename) {#
+    f = file(filename,'rb')#
+    readBin(f,'integer',n=1,size=4,endian='big')#
+    n = readBin(f,'integer',n=1,size=4,endian='big')#
+    y = readBin(f,'integer',n=n,size=1,signed=F)#
+    close(f)#
+    y#
+  }#
+  train <<- load_image_file('train-images-idx3-ubyte')#
+  test <<- load_image_file('t10k-images-idx3-ubyte')#
+  train$y <<- load_label_file('train-labels-idx1-ubyte')#
+  test$y <<- load_label_file('t10k-labels-idx1-ubyte')  #
+}
+load_mnist()
+dim(test)
+str(test)
+test$X
+test$x
+X = test$x
+X = X- matrix(rep(colMeans(X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
+28^2
+X = test$x
+X = test$x#
+X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)
+rowSums(X^2)
+eigz = eigen(cov(X))#
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]
+x1
+X = rbind(X[524,],X[7436,],x1,x2)
+X %*% t(X)
+eq12 = rep(0,1000)#
+eq13 = rep(0,1000)#
+eq14 = rep(0,1000)#
+eq23 = rep(0,1000)#
+eq24 = rep(0,1000)#
+eq34 = rep(0,1000)#
+for(j in 1:1000){#
+  if (j %% 50 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(1000*800),nrow = 2000)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}
+dim(X)
+for(j in 1:1000){#
+  if (j %% 50 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(784*2000),nrow = 2000)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}
+dim(R)
+dim(X)
+for(j in 1:1000){#
+  if (j %% 50 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(784*2000),nrow = 784)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+X = rbind(x1,x2,x3,x4)
+eq12 = rep(0,1000)#
+eq13 = rep(0,1000)#
+eq14 = rep(0,1000)#
+eq23 = rep(0,1000)#
+eq24 = rep(0,1000)#
+eq34 = rep(0,1000)#
+for(j in 1:1000){#
+  if (j %% 50 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(784*2000),nrow = 784)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}#
+#
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+X = test$x#
+X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)
+X = rbind(X[5,],X[1065,],x1,x2)
+dim(X)
+X %*% t(X)
+test $y
+test$y
+X = test$x#
+X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)#
+#
+eigz = eigen(cov(X))#
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]#
+#
+X = rbind(X[9829,],X[9997,],x1,x2)
+X %*% t(X)
+eq12 = rep(0,1000)#
+eq13 = rep(0,1000)#
+eq14 = rep(0,1000)#
+eq23 = rep(0,1000)#
+eq24 = rep(0,1000)#
+eq34 = rep(0,1000)#
+for(j in 1:1000){#
+  if (j %% 50 == 0){#
+    cat("j is", j, "\n")#
+  }#
+  R = matrix(rnorm(784*2000),nrow = 784)#
+  V = sign(X %*% R)#
+  eq12[j] = find_equal(V[1,],V[2,])#
+  eq13[j] = find_equal(V[1,],V[3,])#
+  eq14[j] = find_equal(V[1,],V[4,])#
+  eq23[j] = find_equal(V[2,],V[3,])#
+  eq24[j] = find_equal(V[2,],V[4,])#
+  eq34[j] = find_equal(V[3,],V[4,])#
+}
+X_ip = X %*% t(X)#
+X_ang = acos(X_ip)
+X_ip
+X_ang
+acos(1)
+acos(1.001)
+X_ip[X_ip > 1]
+X_ip[X_ip > 1] = 1
+X_ip = X %*% t(X)#
+X_ip[X_ip > 1] = 1#
+X_ang = acos(X_ip)
+X_ang
+X_ip = X %*% t(X)#
+diag(X_ip) = 1
+X_ang = acos(X_ip)
+X_ang
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+eq12
+eq13
+eq24
+eq34
+eq12
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+X_ip
+X_ang
+cor(eq12,eq13)#
+cor(eq12,eq14)#
+cor(eq12,eq23)#
+cor(eq12,eq24)#
+cor(eq12,eq34)
+cor(eq12,eq13)/var(eq13)
+cor(eq12,eq13)^2/var(eq13)
+cor(eq12,eq13)/var(eq13)
+var(eq13)
+eq13
+cor(eq12,eq14)/var(eq14)
+5.65/10
+5/10
+eq12
+eq13
+eq23
+eq24

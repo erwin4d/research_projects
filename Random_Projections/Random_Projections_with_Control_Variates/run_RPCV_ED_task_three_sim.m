@@ -3,7 +3,8 @@ function [est_vals ] = run_RPCV_ED_task_three_sim(small_V_EDPair1, small_V_EDPai
   % This computes the empirical control variate given two pairs
   % Not really going to vectorize this (see KNN code for vectorized version)
   
- 
+  small_V_EDPair1 = small_V_EDPair1.vmat;
+  small_V_EDPair2 = small_V_EDPair2.vmat;  
   if types == 1
     Avec = (small_V_EDPair1 - small_V_EDPair2).^2;
     Bvec = small_V_EDPair1.^2 + small_V_EDPair2.^2;

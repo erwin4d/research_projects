@@ -1,200 +1,194 @@
 # Plots the results
+read_and_load_data<-function(data_name, matrix_type, qnum, est_type){
 
-read_and_load_data<-function(data_name, sim_type, iter_num = 1000, is_norm, type_of_mat, pos_in_perc){
+  # Find bias
+  setwd("/Users/keegankang/Google Drive/Research SUTD/research_projects/Random_Projections/Random_Projections_with_Control_Variates/rpcv_results")
+  wd_str = getwd()
+
+  bias_start_str = paste(wd_str, "/", data_name, "_bias_1000_iter_", matrix_type, "_mat_normalized_for_", sep = "")
+  mse_start_str = paste(wd_str, "/", data_name, "_mse_1000_iter_", matrix_type, "_mat_normalized_for_", sep = "") 
+  var_start_str = paste(wd_str, "/", data_name, "_var_1000_iter_", matrix_type, "_mat_normalized_for_", sep = "")  
+
+  start_str_vec = c(bias_start_str, mse_start_str, var_start_str)
+  name_str_vec = c("bias", "mse", "var")
+
+
+
+  biglist = vector("list",3)
   
-  this_WD = "/Users/keegankang/Google Drive/Research SUTD/research_projects/Random_Projections/Random_Projections_with_Control_Variates/rpcv_results"
+  for(j in 1:3){
+    start_str = paste(wd_str, "/", data_name, "_", name_str_vec[j], "_1000_iter_", matrix_type, "_mat_normalized_for_", sep = "")    
+    if (est_type == "ED"){ 
+      end_str = "_ED.csv"
+    } else if (est_type == "IP"){
+      end_str = "_IP.csv"
+      baseline_li = unlist(read.csv(paste(start_str, "li_IP.csv", sep = ""), header = FALSE)[qnum,])
+    }  
+    baseline_ord = unlist(read.csv(paste(start_str, "ord", end_str, sep = ""), header = FALSE)[qnum,])
+
+    ## One CV
+    ## Arrange this as empirical, ip_est, li_est
+    one_cv = matrix(0, nrow = 3, ncol = 50)
+    one_cv[1,] = unlist(read.csv(paste(start_str, "empirical_CV", end_str, sep = ""), header = FALSE)[qnum,])
+    one_cv[2,] = unlist(read.csv(paste(start_str, "theory_CV_via_naive_est", end_str, sep = ""), header = FALSE)[qnum,])
+    one_cv[3,] = unlist(read.csv(paste(start_str, "theory_CV_via_li_est", end_str, sep = ""), header = FALSE)[qnum,])
   
-  types_vec = c("bias", "mse", "var")
-  if(sim_type == "ED"){
-    task_vec = c("ord_ED", "ord_ED_using_bin_exp", "empirical_CV_ED", "theory_CV_via_naive_est_ED", "theory_CV_via_li_est_ED")
-    #legend_vec = c("Ordinary ED estimates", "Substituting IP estimate for ED", "Empirical CV for ED", "Theoretical CV for ED using computed IP", "Theoretical CV for ED using Li's IP" )
+    emp_try4 = matrix(0, nrow = 4, ncol = 50)
+    emp_try4[1,] = unlist(read.csv(paste(start_str, "emp_one_evec_by_ED_for", end_str, sep = ""), header = FALSE)[qnum,])
+    emp_try4[2,] = unlist(read.csv(paste(start_str, "emp_one_evec_by_IP_for", end_str, sep = ""), header = FALSE)[qnum,])
+    emp_try4[3,] = unlist(read.csv(paste(start_str, "emp_one_rand_by_ED_for", end_str, sep = ""), header = FALSE)[qnum,])
+    emp_try4[4,] = unlist(read.csv(paste(start_str, "emp_one_rand_by_IP_for", end_str, sep = ""), header = FALSE)[qnum,])
 
-  } else if (sim_type == "IP") {
-    task_vec = c("ord_IP", "li_IP", "empirical_CV_IP", "theory_CV_via_naive_est_IP", "theory_CV_via_li_est_IP")
-    #legend_vec = c("Ordinary IP estimates", "Li's IP estimates", "Empirical CV for IP", "Theoretical CV for IP using computed IP", "Theoretical CV for IP using Li's IP" )
+    naive_ip_try4 = matrix(0, nrow = 4, ncol = 50)
+    naive_ip_try4[1,] = unlist(read.csv(paste(start_str, "subst_naive_ip_one_evec_by_ED_for", end_str, sep = ""), header = FALSE)[qnum,])
+    naive_ip_try4[2,] = unlist(read.csv(paste(start_str, "subst_naive_ip_one_evec_by_IP_for", end_str, sep = ""), header = FALSE)[qnum,])
+    naive_ip_try4[3,] = unlist(read.csv(paste(start_str, "subst_naive_ip_one_rand_by_ED_for", end_str, sep = ""), header = FALSE)[qnum,])
+    naive_ip_try4[4,] = unlist(read.csv(paste(start_str, "subst_naive_ip_one_rand_by_IP_for", end_str, sep = ""), header = FALSE)[qnum,])
+
+    li_ip_try4 = matrix(0, nrow = 4, ncol = 50)
+    li_ip_try4[1,] = unlist(read.csv(paste(start_str, "subst_li_ip_one_evec_by_ED_for", end_str, sep = ""), header = FALSE)[qnum,])
+    li_ip_try4[2,] = unlist(read.csv(paste(start_str, "subst_li_ip_one_evec_by_IP_for", end_str, sep = ""), header = FALSE)[qnum,])
+    li_ip_try4[3,] = unlist(read.csv(paste(start_str, "subst_li_ip_one_rand_by_ED_for", end_str, sep = ""), header = FALSE)[qnum,])
+    li_ip_try4[4,] = unlist(read.csv(paste(start_str, "subst_li_ip_one_rand_by_IP_for", end_str, sep = ""), header = FALSE)[qnum,])
+
+    if (est_type == "ED"){ 
+      this_list = list(baseline_ord, one_cv, emp_try4, naive_ip_try4, li_ip_try4)
+      name_vec = paste(name_str_vec[j], "_", c("baseline_ord", "one_cv", "emp_try4", "naive_ip_try4", "li_ip_try4"), sep = "")
+      names(this_list) = name_vec
+    } else if (est_type == "IP"){
+      this_list = list(baseline_ord, baseline_li, one_cv, emp_try4, naive_ip_try4, li_ip_try4)
+      name_vec = paste(name_str_vec[j], "_", c("baseline_ord", "baseline_li", "one_cv", "emp_try4", "naive_ip_try4", "li_ip_try4"), sep = "")
+      names(this_list) = name_vec      
+    }
+    biglist[[j]] = this_list
   }
-  # Example
 
-  bias_mat = matrix(0, nrow = 5, ncol = 50)
-  mse_mat = matrix(0, nrow = 5, ncol = 50)
-  var_mat = matrix(0, nrow = 5, ncol = 50)
+  names(biglist) = paste(name_str_vec, "mat", sep = "")
+  return(biglist)
+}
+
+biglist = read_and_load_data(data_name = "colon", matrix_type = "normal", qnum = 5, est_type = "ED")
+
+
+plot_bias_fn<-function(est_type, data_name, matrix_type, qnum){
+
+  biglist = read_and_load_data(data_name = data_name, matrix_type = matrix_type, qnum = qnum, est_type = est_type)
+  bias_info = biglist$biasmat
+  col_vec = c("black", "blue", "red", "magenta", "green")
+  kvec = seq(2,100,2)  
+  # Plot single CV la
+  tit_str = paste(data_name, "-", matrix_type, "-", (qnum-1)*10, " percentile for ", est_type, sep = "")
+
+
+  if (est_type == "ED"){ 
+    curr_mat_plot = rbind(bias_info$bias_baseline_ord, bias_info$bias_one_cv)
+    name_vec = c("Naive estimate", "Empirical estimate", "Naive IP plugin", "Li IP plugin")
+  } else if (est_type == "IP"){
+    curr_mat_plot = rbind(bias_info$bias_baseline_ord, bias_info$bias_baseline_li, bias_info$bias_one_cv[1:2,])    
+    name_vec = c("Naive estimate", "Li estimate", "Empirical estimate", "Naive IP plugin")
+  }
+
+  ybounds = c(0, max(curr_mat_plot))
+  plot(0, type = "n", main = paste("Bias plot for", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Relative bias", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
+  }
+  legend("topright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
+
   
-  for(zz in 1:5){
-    cv_file = paste(this_WD, "/", data_name, "_", iter_num, "_iter/", data_name, "_", types_vec[1], "_", iter_num, "_iter_", type_of_mat, "_", is_norm, "_for_", task_vec[zz], ".csv", sep = "")
-    cv_res = read.table(cv_file, header = FALSE, sep = ",")
-    bias_mat[zz,] = c(unlist(cv_res[pos_in_perc,]))
-
-    cv_file = paste(this_WD, "/", data_name, "_", iter_num, "_iter/", data_name, "_", types_vec[2], "_", iter_num, "_iter_", type_of_mat, "_", is_norm, "_for_", task_vec[zz], ".csv", sep = "")
-    cv_res = read.table(cv_file, header = FALSE, sep = ",")
-    mse_mat[zz,] = c(unlist(cv_res[pos_in_perc,]))
-
-    cv_file = paste(this_WD, "/", data_name, "_", iter_num, "_iter/", data_name, "_", types_vec[3], "_", iter_num, "_iter_", type_of_mat, "_", is_norm, "_for_", task_vec[zz], ".csv", sep = "")
-    cv_res = read.table(cv_file, header = FALSE, sep = ",")
-    var_mat[zz,] = c(unlist(cv_res[pos_in_perc,]))
-
+  curr_mat_plot = bias_info$bias_emp_try4
+  name_vec = c("EDCV - eigvec", "IPCV - eigvec", "EDCV - randvec", "IPCV - randvec")
+ 
+  ybounds = c(0, max(curr_mat_plot))
+  plot(0, type = "n", main = paste("Bias plot for empirical", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Relative bias", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
   }
+  legend("topright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
 
-  if(sim_type == "ED"){
-    bias_mat = bias_mat[c(1,3,4,5),]
-    mse_mat = mse_mat[c(1,3,4,5),]
-    var_mat = var_mat[c(1,3,4,5),]
-    legend_vec = c("Ordinary ED estimates", "Empirical CV for ED", "Theoretical CV for ED using computed IP", "Theoretical CV for ED using Li's IP" )
-    frac_legend_vec = c("Baseline of ED with empirical CV", "Baseline of ED with theoretical CV (estimated IP)", "Baseline of ED with theoretical CV (Li's IP)")
-
-
-  } else if (sim_type == "IP") {
-    bias_mat = bias_mat[1:4,]
-    mse_mat = mse_mat[1:4,]
-    var_mat = var_mat[1:4,]
-
-    legend_vec = c("Ordinary IP estimates", "Li's IP estimates", "Empirical CV for IP", "Theoretical CV for IP using computed IP" )
-    frac_legend_vec = c("Baseline of IP with empirical CV", "Baseline of ED with theoretical CV (estimated IP)")
+  curr_mat_plot = bias_info$bias_naive_ip_try4
+  name_vec = c("EDCV - eigvec", "IPCV - eigvec", "EDCV - randvec", "IPCV - randvec")
+ 
+  ybounds = c(0, max(curr_mat_plot))
+  plot(0, type = "n", main = paste("Bias plot for naive IP", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Relative bias", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
   }
+  legend("topright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
 
-  return(list(bias_mat = bias_mat, mse_mat = mse_mat, var_mat = var_mat, data_name = data_name, sim_type = sim_type, is_norm = is_norm, type_of_mat = type_of_mat, pos_in_perc = pos_in_perc, legend_vec = legend_vec, frac_legend_vec = frac_legend_vec))
+  curr_mat_plot = bias_info$bias_li_ip_try4
+  name_vec = c("EDCV - eigvec", "IPCV - eigvec", "EDCV - randvec", "IPCV - randvec")
+ 
+  ybounds = c(0, max(curr_mat_plot))
+  plot(0, type = "n", main = paste("Bias plot for li IP", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Relative bias", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
+  }
+  legend("topright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
 
 }
 
 
-## Now: Plot bias, var, MSE at once
+plot_var_fn<-function(est_type, data_name, matrix_type, qnum){
+  biglist = read_and_load_data(data_name = data_name, matrix_type = matrix_type, qnum = qnum, est_type = est_type)
+  var_info = biglist$varmat
+  col_vec = c("black", "blue", "red", "magenta", "green")
+  kvec = seq(2,100,2)  
+  # Plot single CV la
+  tit_str = paste(data_name, "-", matrix_type, "-", (qnum-1)*10, " percentile for ", est_type, sep = "")
 
-show_bias_plot<-function(some_list, kvec, col_vec, lty_vec, size_main, size_axis, size_labels, size_legend){
-  bias_mat = some_list$bias_mat
-  ybounds = c(0, max(bias_mat[,10:50])) # Cut off the first part
-  xbounds = c(0, 100)
-  ptile = some_list$pos_in_perc*10
-  main_str = paste("Relative bias of ", ptile, "th percentile pair with ",some_list$type_of_mat, "rix", sep = "") # something like this so
-  plot(0, type = "n", xlab = "Columns of projection matrix", ylab = "Relative Bias", ylim = ybounds, xlim = xbounds, main = main_str, cex.main = size_main, cex.axis = size_axis, cex.lab = size_labels)
 
-  for(j in 1:4){
-    lines(kvec, bias_mat[j,], col = col_vec[j], lty = lty_vec[j])
+  if (est_type == "ED"){ 
+    bl = var_info$var_baseline_ord
+    curr_mat_plot = var_info$var_one_cv / matrix(rep(bl,3), byrow = TRUE, nrow =3 )
+    name_vec = c("Empirical estimate", "Naive IP plugin", "Li IP plugin")
+  } else if (est_type == "IP"){
+    bl = var_info$var_baseline_li
+    curr_mat_plot = var_info$var_one_cv[1:2,] / matrix(rep(bl,2), byrow = TRUE, nrow =2 )
+    name_vec = c("Empirical estimate", "Naive IP plugin")
   }
-  legend_vec = some_list$legend_vec
-  legend("topright", legend = legend_vec, lty = lty_vec, col = col_vec, cex = size_legend, bg = "white")
-  legend("topleft", legend = paste(some_list$data_name, "dataset"), bg = "white", cex = size_legend)
+
+  ybounds = c(0, max(curr_mat_plot[,10:50]))
+  plot(0, type = "n", main = paste("Rho plot for", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Ratio rho", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
+  }
+  legend("bottomright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
+
+  
+  curr_mat_plot = var_info$var_emp_try4 / matrix(rep(bl,4), byrow = TRUE, nrow =4 )
+  name_vec = c("EDCV - eigvec", "IPCV - eigvec", "EDCV - randvec", "IPCV - randvec")
+ 
+  ybounds = c(0, max(curr_mat_plot[,10:50]))
+  plot(0, type = "n", main = paste("Rho plot for", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Ratio rho", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
+  }
+  legend("bottomright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
+
+
+  curr_mat_plot = var_info$var_naive_ip_try4 / matrix(rep(bl,4), byrow = TRUE, nrow =4 )
+  name_vec = c("EDCV - eigvec", "IPCV - eigvec", "EDCV - randvec", "IPCV - randvec")
+ 
+  ybounds = c(0, max(curr_mat_plot[,10:50]))
+  plot(0, type = "n", main = paste("Rho plot for", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Ratio rho", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
+  }
+  legend("bottomright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
+
+
+  curr_mat_plot = var_info$var_li_ip_try4 / matrix(rep(bl,4), byrow = TRUE, nrow =4 )
+  name_vec = c("EDCV - eigvec", "IPCV - eigvec", "EDCV - randvec", "IPCV - randvec")
+ 
+  ybounds = c(0, max(curr_mat_plot[,10:50]))
+  plot(0, type = "n", main = paste("Rho plot for", tit_str), xlim = c(0,100), ylim = ybounds, ylab = "Ratio rho", xlab = "Number of columns")
+  for(j in 1:dim(curr_mat_plot)[1]){
+    lines(kvec, curr_mat_plot[j,], col = col_vec[j])
+  }
+  legend("bottomright", legend = name_vec, lty = rep(1, dim(curr_mat_plot)[1]), col = col_vec[1:dim(curr_mat_plot)[1]])
 
 }
 
-show_var_plot<-function(some_list, kvec, col_vec, lty_vec, size_main, size_axis, size_labels, size_legend){
-  var_mat = some_list$var_mat
-  ybounds = c(0, max(var_mat[,10:50])) # Cut off the first part
-  xbounds = c(0, 100)
-  ptile = some_list$pos_in_perc*10
-  main_str = paste("Relative variance of ", ptile, "th percentile pair with ",some_list$type_of_mat, "rix", sep = "") # something like this so
-  plot(0, type = "n", xlab = "Columns of projection matrix", ylab = "Relative variance", ylim = ybounds, xlim = xbounds, main = main_str, cex.main = size_main, cex.axis = size_axis, cex.lab = size_labels)
-
-  for(j in 1:4){
-    lines(kvec, var_mat[j,], col = col_vec[j], lty = lty_vec[j])
-  }
-  legend_vec = some_list$legend_vec
-  legend("topright", legend = legend_vec, lty = 1, col = col_vec, cex = size_legend, bg = "white")
-  legend("topleft", legend = paste(some_list$data_name, "dataset"), bg = "white", cex = size_legend)
-
-}
-
-
-show_mse_plot<-function(some_list, kvec, col_vec, lty_vec, size_main, size_axis, size_labels, size_legend){
-  mse_mat = some_list$mse_mat
-  ybounds = c(0, max(mse_mat[,10:50])) # Cut off the first part
-  xbounds = c(0, 100)
-  ptile = some_list$pos_in_perc*10
-  main_str = paste("Relative MSE of ", ptile, "th percentile pair with ",some_list$type_of_mat, "rix", sep = "") # something like this so
-  plot(0, type = "n", xlab = "Columns of projection matrix", ylab = "Relative MSE", ylim = ybounds, xlim = xbounds, main = main_str, cex.main = size_main, cex.axis = size_axis, cex.lab = size_labels)
-
-  for(j in 1:4){
-    lines(kvec, mse_mat[j,], col = col_vec[j], lty = lty_vec[j])
-  }
-  legend_vec = some_list$legend_vec
-  legend("topright", legend = legend_vec, lty = 1, col = col_vec, cex = size_legend, bg = "white")
-  legend("topleft", legend = paste(some_list$data_name, "dataset"), bg = "white", cex = size_legend)
-
-}
-
-plot_all_three_para<-function(some_list, size_main = 0.7, size_axis = 0.7, size_labels = 0.7, size_legend = 0.7){
-  par(mfrow = c(1,3))
-  kvec = seq(2,100,2)
-  lty_vec = c(1,1,1,1)
-  col_vec = c("black", "blue", "green", "red", "blue")  
-  show_bias_plot(some_list, kvec = kvec, col_vec = col_vec, lty_vec = lty_vec, size_main = size_main, size_axis = size_axis, size_labels = size_labels, size_legend = size_legend)
-
-  show_var_plot(some_list, kvec = kvec, col_vec = col_vec, lty_vec = lty_vec, size_main = size_main, size_axis = size_axis, size_labels = size_labels, size_legend = size_legend)
-
-  show_mse_plot(some_list, kvec = kvec, col_vec = col_vec, lty_vec = lty_vec, size_main = size_main, size_axis = size_axis, size_labels = size_labels, size_legend = size_legend)
-
-}
-
-
-# Check to see if works, yes.
-
-mat_vecs = c("normal_mat", "binary_mat", "SB5_mat", "SB10_mat", "SRHT_mat")
-
-for (pp in 2:10){
-  for(j in 1:length(mat_vecs)){
-    some_list = read_and_load_data(data_name = "arcene", sim_type = "IP", is_norm = "normalized", type_of_mat = mat_vecs[j], pos_in_perc = pp)
-
-    plot_all_three_para(some_list, size_main = 0.8, size_axis = 0.8, size_labels = 0.8, size_legend = 0.8)
-    readline("Pause for contemplation")
-
-  }
-}
-
-# Plot fraction of variance: 
-# Empirical / Baseline
-# Theoretical / Baseline
-# Theoretical / Baseline
-plot_var_fraction<-function(some_list_ED, some_list_IP, size_main = 0.8, size_axis = 0.8, size_labels = 0.8, size_legend = 0.8){
-  par(mfrow = c(1,2))
-  kvec = seq(2,100,2)
-  lty_vec = c(1,1,1,1)
-  col_vec = c("black", "blue", "green", "red")  
-
-  # First do ED
-  mse_mat = some_list_ED$mse_mat
-
-
-  ybounds = c(0, 1)
-  xbounds = c(0, 100)
-  ptile = some_list_ED$pos_in_perc*10
-  main_str = paste("Variance reduction of ", ptile, "th percentile pair with ",some_list_ED$type_of_mat, "rix", sep = "") # something like this so
-  plot(0, type = "n", xlab = "Columns of projection matrix", ylab = expression(paste("Ratio ", rho)), ylim = ybounds, xlim = xbounds, main = main_str, cex.main = size_main, cex.axis = size_axis, cex.lab = size_labels)
-
-  for(j in 2:4){
-    lines(kvec, mse_mat[j,]/mse_mat[1,], col = col_vec[j], lty = lty_vec[j])
-  }
-  legend_vec = some_list_ED$frac_legend_vec
-  legend("bottomright", legend = legend_vec, lty = 1, col = col_vec[2:4], cex = size_legend, bg = "white")
-  legend("bottomleft", legend = paste(some_list_ED$data_name, "dataset"), bg = "white", cex = size_legend)
-
-
-
-  mse_mat = some_list_IP$mse_mat
-
-
-  ybounds = c(0, 1)
-  xbounds = c(0, 100)
-  ptile = some_list_IP$pos_in_perc*10
-  main_str = paste("Variance reduction of ", ptile, "th percentile pair with ",some_list_IP$type_of_mat, "rix", sep = "") # something like this so
-  plot(0, type = "n", xlab = "Columns of projection matrix", ylab = expression(paste("Ratio ", rho)), ylim = ybounds, xlim = xbounds, main = main_str, cex.main = size_main, cex.axis = size_axis, cex.lab = size_labels)
-
-  for(j in 3:4){
-    lines(kvec, mse_mat[j,]/mse_mat[2,], col = col_vec[j], lty = lty_vec[j])
-  }
-  legend_vec = some_list_IP$frac_legend_vec
-  legend("bottomright", legend = legend_vec, lty = 1, col = col_vec[3:4], cex = size_legend, bg = "white")
-  legend("bottomleft", legend = paste(some_list_IP$data_name, "dataset"), bg = "white", cex = size_legend)
-
-}
-
-
-mat_vecs = c("normal_mat", "binary_mat", "SB5_mat", "SB10_mat", "SRHT_mat")
-
-for (pp in 2:10){
-  for(j in 1:length(mat_vecs)){
-    some_list_ED = read_and_load_data(data_name = "nips", sim_type = "ED", is_norm = "normalized", type_of_mat = mat_vecs[j], pos_in_perc = pp)
-    some_list_IP = read_and_load_data(data_name = "nips", sim_type = "IP", is_norm = "normalized", type_of_mat = mat_vecs[j], pos_in_perc = pp)
-
-    plot_var_fraction(some_list_ED, some_list_IP, size_main = 0.8, size_axis = 0.8, size_labels = 0.8, size_legend = 0.7)
-    readline("Pause for contemplation")
-
-  }
-}
+par(mfrow = c(2,2))
+plot_bias_fn(est_type = "ED", data_name = "colon", matrix_type = "normal", qnum = 5)

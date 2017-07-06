@@ -1,6 +1,6 @@
 function [] = compute_mse_var_bias_for_rpcv_sim(data_name, err_mat, true_val, is_norm, oth_name)
   
-
+  err_mat = err_mat.store;
   [iter, pectiles, len_kvec, ~] = size(err_mat);
 
   START_STR = ['rpcv_results/', data_name, '_'];

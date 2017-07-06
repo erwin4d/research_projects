@@ -1,4 +1,4 @@
-function [XPair1, XPair2, normPair1, normPair2 ] = load_datasets_for_rpcv_sims(data_name, sim_type, is_norm)
+function [XStruct ] = load_datasets_for_rpcv_sims(data_name, sim_type, is_norm)
   
   DATASETS = 4;
   % namely, arcene, colon, kos, nips
@@ -54,6 +54,13 @@ function [XPair1, XPair2, normPair1, normPair2 ] = load_datasets_for_rpcv_sims(d
   end
   
   [XPair1, XPair2, normPair1, normPair2 ] = prepare_correct_idx_for_rpcv_sims(X, data_name, idx1, idx2, idx_file, CSVFILENAME, sim_type, is_norm);
+
+
+
+  XStruct.pair1 = XPair1;
+  XStruct.pair2 = XPair2;
+  XStruct.normPair1 = normPair1;
+  XStruct.normPair2 = normPair2;
 
 
 end

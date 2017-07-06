@@ -49,7 +49,7 @@ function [ R ] = gen_typeof_R( p, k, varargin)
     ub = max([ind1]);    
     R_tmp1 = repmat(R_diag(1:p),1,ub) .* inputs.opt_para(1:p, 1:ub);
     R.rmat = R_tmp1(:,ind1);
-    R.rand_var = 'SRHT'
+    R.rand_var = 'SRHT';
     R.scaling_factor = 1;
   end
   R.signature = normrnd(0,1,1,1);

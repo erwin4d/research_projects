@@ -1,4 +1,4 @@
-function [ IP_vals ] = li_vectorized_NR_comp_two_mats_IP( vi_mat, vj_mat, m1_vec, m2_vec, types)
+function [ IP_vals ] = li_vectorized_NR_comp_two_mats_IP( vi_mat, vj_mat, m1_vec, m2_vec)
 
   % Given X1, X2 with same number of rows,
   % compute inner product between X1(j,:), X2(j,:)
@@ -12,7 +12,7 @@ function [ IP_vals ] = li_vectorized_NR_comp_two_mats_IP( vi_mat, vj_mat, m1_vec
   % Want to find pairwise inner product of <v_i1 v_j1>, <v_i2, v_j2>, ...
   
   % Thus, need to do some precomputations
-  [ ip_vals, v1_vals, v2_vals] = run_RPCV_IP_task_seven_helper(vi_mat, vj_mat, types);
+  [ ip_vals, v1_vals, v2_vals] = run_RPCV_IP_task_seven_helper(vi_mat, vj_mat);
 
   mimj_vec = m1_vec .* m2_vec;
 
