@@ -16,3 +16,8 @@ This computes the roots of Li's method using Cardano's formula. It may error for
 - li_vectorized_NR.m
 
 This computes the roots of Li's method using Newton Raphson. It is vectorized. 
+
+
+Note that not all datasets perform well with this method. If a dataset has many vectors which are close to uncorrelated, Li's method may not yield an improvement, or may even be worse than ordinary random projections.
+
+Some good datasets to try this on: Arcene dataset, MNIST dataset.
