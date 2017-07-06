@@ -36,9 +36,9 @@ This function plots the average RMSE of all estimated pairwise distances of choi
 This function gets the true pairwise estimates of choice (currently, Euclidean distances and inner products only) given some matrix X.
 
   
-  - get_ordinary_pairwise_rmse_for_kval
+  - get_V_ests_generic
 
-This function gets all pairwise RMSE (supposing vectorization is possible - eg if no memory constraints) for fixed kval and iteration number. 
+This function gets the required estimated values before computing all pairwise RMSE for fixed kval and iteration number. 
 
 
 

@@ -1,111 +1,82 @@
-function [ ] = li_MLE_IP_demo(word1, word2)
+function [ ] = li_MLE_IP_demo(X, niter, varargin)
 
-  nsims = 1000;
-  kvec = [2:2:100];
+  % Look at the average RMSE for pairwise <quantity> over entire dataset X
+  % use random projection matrix of columns K = 10,20, ... 100 using
+  % li's method
 
-  % Type of random matrix: choice!
-  option = 'normal'; % random normal matrix
-  opt_para = 0; % technically no opt para
+  % Inputs
+  %            X: dataset
+  %        niter: number of iterations
+  %       option: type of random proj matrix
+  %     opt_para: optional para for above random projection matrix
+  %     pairwise: type of pairwise estimate needed
+  %  partition_x: for computing true values - partition the x (vectorization / memory tradeoff)
+  %  partition_y: for computing true values - partition the y (vectorization / memory tradeoff)
 
+  % Example inputs
+  % li_MLE_IP_demo(X, 1000, 'option', 'normal', 'opt_para', -1, 'partition_x', 250, 'partition_y', 250)
 
-
-
-  % Demonstrate Li's method on Microsoft Word dataset
-  % and also to test vectorized NR
-  % Plot this every 50 iterations or so
-
-  [w1, w2 ] = read_msoft_words_li(word1, word2, 'existence');
-
-  X = [w1;w2];
-  % normalize
-  X = normalize_matrix_obs( X );
-
-  % Marginal norms (should be 1) - but just in case
-  m1 = sum(X(1,:).^2);
-  m2 = sum(X(2,:).^2);
-  true_IP = compute_generic_IP(X);
-
-  % Run simulations
-  max_k = max(kvec);
   
-  % err_mat for ordinary method and li's method
-  err_mat_ord = create_struct_to_save(zeros(nsims, length(kvec)), [word1, '_',  word2], 'naive_est_IP', nsims, true_IP);
+  
+  p = inputParser;  
+  p.addRequired('X',@(x) true);
+  p.addRequired('niter',@(x) x > 0);
+  p.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB'})));
+  p.addOptional('opt_para', -1, @(x) true);
+  p.addOptional('partition_x', -1, @(x) true); 
+  p.addOptional('partition_y', -1, @(x) true); 
 
-  err_mat_li = create_struct_to_save(zeros(nsims, length(kvec)), [word1, '_',  word2], 'li_est_IP', nsims, true_IP);
+  p.parse(X, niter,varargin{:});
+  inputs = p.Results;
+  option = inputs.option;
+  opt_para = inputs.opt_para;
+
+  N = size(X,1);  
+  if inputs.partition_x == -1
+    partition_x = size(X,1); % Careful, will do matrix multplication on whole X
+  else
+    partition_x = inputs.partition_x;
+  end
+
+  if inputs.partition_y == -1
+    partition_y = size(X,1); % Careful, will do matrix multplication on whole X
+  else
+    partition_y = inputs.partition_y;
+  end
+
+
+  kvec = 10:10:100;
+  rmse_vec = zeros(niter,length(kvec));
+
+  X = normalize_matrix_obs(X); % normalize to have length 1 for standardized comparison of RMSE
+  
+  % Get true_vals
+  trueval.ip = triu(get_true_vals(X, partition_x, partition_y, 'inner_product'));
+
+
+
+  % We don't compute the inner product I think
+  tot_num = (N*(N-1))/2;
 
   figure;
-
-  for iter = 1:nsims
-    iter 
-    V = gen_typeof_V( X, max_k, 'option', option, 'opt_para', 1 );
-    err_mat_ord.store(iter, :) = compute_generic_IP( V, 'is_sim', true, 'kvec', kvec);
-    
-    for kval = 1:length(kvec)
-      k = kvec(kval);
-      v1vec = V;
-      v1vec.vmat = V.vmat(1,1:k);
-      v2vec = V;
-      v2vec.vmat = V.vmat(2,1:k);
-      err_mat_li.store(iter, kval) = li_vectorized_NR_comp_IP( v1vec ,v2vec, m1, m2);
+  for iter_num = 1:niter;
+    iter_num
+    V = gen_typeof_V(X, max(kvec), 'option', option, 'opt_para', opt_para);
+    for kvals = 1:length(kvec)
+      k = kvec(kvals); 
+      rmse_vec(iter_num,kvals) = get_ordinary_pairwise_rmse_for_kval(V, k, true_val, tot_num, partition_x, partition_y, pairwise);
     end
-
-    % Show the relative RMSE at every 2 iterations
-    if mod(iter, 2) == 0
-      clf('reset')      
-      [ rmse_ord, ~] = compute_exp_and_MSE(err_mat_ord.store(1:iter, :), err_mat_ord, false);
-      [ rmse_li, ~] = compute_exp_and_MSE(err_mat_li.store(1:iter, :), err_mat_li, false);
-      local_plot_mse(kvec, rmse_ord, rmse_li, word1, word2, iter, false);
+    % Plot: May want to edit plot settings for kvec starting from 10.
+    %       May also want to tweak k as well.
+    %       Note RMSE is independent of p! 
+    if mod(iter_num, 10) == 0
+      clf('reset');
+      local_plot_pairwise_err(kvec, rmse_vec, pairwise, iter_num, false)
       drawnow
-
-      % Save every 50 iter
-      if mod(iter, 50) == 0
-        [ rmse_ord, rel_err_ord] = compute_exp_and_MSE(err_mat_ord.store(1:iter, :), err_mat_ord, true);
-        [ rmse_li, rel_err_li] = compute_exp_and_MSE(err_mat_li.store(1:iter, :), err_mat_li, false);
-      end
     end
-
-  end
-  
-  [ rmse_ord, rel_err_ord] = compute_exp_and_MSE(err_mat_ord.store, err_mat_ord, true);
-  [ rmse_li, rel_err_li] = compute_exp_and_MSE(err_mat_li.store, err_mat_li, true);
-
-  
-  % Plot relative bias 
-  local_plot_rel_err(kvec, rel_err_ord, rel_err_li, word1, word2, iter);
-  
-  % Plot relative MSE
-  local_plot_mse(kvec, rmse_ord, rmse_li, word1, word2, iter, true);
-
-
-
-end
-
-function [ ] = local_plot_rel_err(kvec, rel_err_ord, rel_err_li, word1, word2, iter)
-
-  figure;
-  plot(kvec,rel_err_ord, '-r', 'DisplayName', 'Ordinary Estimation'); hold all
-  plot(kvec,rel_err_li, '-b', 'DisplayName', 'MLE Estimation');
-  grid on;
-  title([word1, '-', word2,' Relative bias in estimation of IP for ', num2str(iter), ' iterations'], 'FontWeight', 'bold');
-  xlabel('Number of columns K', 'FontWeight', 'bold');
-  legend('-DynamicLegend');
-  ylabel('Relative Bias', 'FontWeight', 'bold');
-
-end
-
-function [ ] = local_plot_mse(kvec, rmse_ord, rmse_li, word1, word2, iter, fig_para)
-
-  if fig_para
-    figure;
   end
 
-  plot(kvec,rmse_ord, '-r', 'DisplayName', 'Ordinary Estimation'); hold all
-  plot(kvec,rmse_li, '-b', 'DisplayName', 'MLE Estimation');
-  grid on;
-  title([word1, '-', word2,' Relative RMSE in estimation of IP for ', num2str(iter), ' iterations'], 'FontWeight', 'bold');
-  xlabel('Number of columns K', 'FontWeight', 'bold');
-  legend('-DynamicLegend');
-  ylabel('Relative RMSE', 'FontWeight', 'bold');
+
+
 
 end
-

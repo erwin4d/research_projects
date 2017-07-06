@@ -9,11 +9,10 @@ function [rmse_vec ] = compare_generic_pairwise_demo(X, niter, varargin)
   %       option: type of random proj matrix
   %     opt_para: optional para for above random projection matrix
   %     pairwise: type of pairwise estimate needed
-  %  partition_x: for computing true values - partition the x (vectorization / memory tradeoff)
-  %  partition_y: for computing true values - partition the y (vectorization / memory tradeoff)
+  %    partition: for computing true values - partition the x and y (vectorization / memory tradeoff)
 
   % Example inputs
-  % compare_generic_pairwise_demo(X, 1000, 'option', 'normal', 'opt_para', -1, 'pairwise', 'inner_product', 'partition_x', 250, 'partition_y', 250)
+  % compare_generic_pairwise_demo(X, 1000, 'option', 'normal', 'opt_para', -1, 'pairwise', 'inner_product', 'partition', 250)
 
   
   
@@ -23,8 +22,7 @@ function [rmse_vec ] = compare_generic_pairwise_demo(X, niter, varargin)
   p.addOptional('option', 'none', @(x) any(strcmp(x,{'normal', 'binary', 'SB'})));
   p.addOptional('opt_para', -1, @(x) true);
   p.addOptional('pairwise', 'none', @(x) any(strcmp(x,{'squared_euclidean_distance', 'inner_product'})));
-  p.addOptional('partition_x', -1, @(x) true); 
-  p.addOptional('partition_y', -1, @(x) true); 
+  p.addOptional('partition', -1, @(x) true); 
 
   p.parse(X, niter,varargin{:});
   inputs = p.Results;
@@ -33,19 +31,12 @@ function [rmse_vec ] = compare_generic_pairwise_demo(X, niter, varargin)
   opt_para = inputs.opt_para;
   disp(['Computing estimates of ', pairwise])
 
-  N = size(X,1);  
-  if inputs.partition_x == -1
-    partition_x = size(X,1); % Careful, will do matrix multplication on whole X
+  para.N = size(X,1);  
+  if inputs.partition == -1
+    partition = size(X,1); % Careful, will do matrix multplication on whole X
   else
-    partition_x = inputs.partition_x;
+    partition = inputs.partition;
   end
-
-  if inputs.partition_y == -1
-    partition_y = size(X,1); % Careful, will do matrix multplication on whole X
-  else
-    partition_y = inputs.partition_y;
-  end
-
   
   % Given a matrix X_{n x p}, compute all pairwise Euclidean distances
   % with a random projection matrix with k = 1, 2, .. 100 cols
@@ -56,24 +47,47 @@ function [rmse_vec ] = compare_generic_pairwise_demo(X, niter, varargin)
   % Look at RMSE of estimated norms using SB matrix of parameter 5.
 
   % We look at the average RMSE.
+
+  para.partition_start = 1:partition:para.N;
+  para.partition_end = partition:partition:para.N;
+
+  if(para.partition_end(end)) ~= para.N
+    para.partition_end = [para.partition_end, para.N];
+  end
   
+
   kvec = 10:10:100;
   rmse_vec = zeros(niter,length(kvec));
 
   X = normalize_matrix_obs(X); % normalize to have length 1 for standardized comparison of RMSE
   
   % Get true_vals
-  true_val = triu(get_true_vals(X, partition_x, partition_y, pairwise));
+  para.true_val = triu(get_true_vals(X, para, pairwise));
     
-  tot_num = (N*(N+1))/2;
+  para.tot_num = (para.N*(para.N+1))/2;
 
   figure;
   for iter_num = 1:niter;
     iter_num
-    V = gen_typeof_V(X, max(kvec), 'option', option, 'opt_para', opt_para);
+    big_V = gen_typeof_V(X, max(kvec), 'option', option, 'opt_para', opt_para);
     for kvals = 1:length(kvec)
       k = kvec(kvals); 
-      rmse_vec(iter_num,kvals) = get_ordinary_pairwise_rmse_for_kval(V, k, true_val, tot_num, partition_x, partition_y, pairwise);
+      % We do the loop here which is repeated (use in subsequent experiments, so not as simplified)
+      currV.scale = big_V.scaling_factor / k;
+      for xseg = 1:length(para.partition_start)
+        currV.V1 = big_V.vmat(para.partition_start(xseg):para.partition_end(xseg),1:k);
+        for yseg = xseg:length(para.partition_start)
+          currV.V2 = big_V.vmat(para.partition_start(yseg):para.partition_end(yseg),1:k);
+          if xseg ~= yseg
+            truevals = get_V_ests_generic(currV, pairwise) ; 
+          else
+            truevals = triu(get_V_ests_generic(currV, pairwise)) ;             
+          end
+          
+          rmse_vec(iter_num,kvals) = rmse_vec(iter_num,kvals) + sum(sum((para.true_val(para.partition_start(xseg):para.partition_end(xseg), para.partition_start(yseg):para.partition_end(yseg)) - truevals).^2));
+        end
+      end
+      rmse_vec(iter_num,kvals) = sqrt(rmse_vec(iter_num,kvals) / para.tot_num);
     end
     % Plot: May want to edit plot settings for kvec starting from 10.
     %       May also want to tweak k as well.
