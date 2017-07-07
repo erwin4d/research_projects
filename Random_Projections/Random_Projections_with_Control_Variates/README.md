@@ -4,7 +4,7 @@ This was a paper (Random Projection with Control Variates) submitted to ICPRAM 2
 
 In this folder, there is code to do more extensive experiments (compute RMSE of all pairwise distances of inner products and Euclidean distances on normalized data), so as to get a sense of how control variates perform, rather than showing how well it does on certain pairs of vectors.
 
-# tl;dr summary of control variates (see below).
+# tl;dr summary of control variates
 
 The graph on Page 11 (Control Variates as a Variance Reduction Technique for Random Projections) show how control variates perform for the Euclidean distance and inner product respectively.
 
