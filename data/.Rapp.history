@@ -1,80 +1,3 @@
-sqrt(3.2131e-05)*3
-sqrt(2.9983e-05)*3
-sqrt(3.9644e-05)*3
-sqrt(3.7801e-05)*3
-sqrt(4.0097e-05)*3
-sqrt(3.797e-05)*3
-sqrt(4.0588e-05)*3
-sqrt(3.8618e-05)*3
-choose(900,2)
-sqrt(0.0042084)*3
-sqrt(0.00042793)*3
-sqrt(0.00058055)*3
-sqrt(0.00070122)*3
-sqrt(0.0003295)*3
-sqrt(0.00045623)*3
-sqrt(0.00030119)*3
-sqrt(1.3937e-05)*3
-sqrt(1.4936e-05)*3
-sqrt(9.229e-06)*3
-sqrt(7.2667e-06)*3
-sqrt(6.9856e-06)*3
-sqrt(5.0722e-06)*3
-sqrt(3.8421e-06)*3
-28^2
-choose(10000,2)
-clear all
-avec = seq(-1,1,by = 0.01)#
-#
-origvar = 1+avec^2#
-bnvar = (1-avec^2)^2 / (1+avec^2)
-bnvar
-avec = seq(-1,1,by = 0.01)#
-#
-origvar = 1+avec^2#
-bnvar = (1-avec^2)^2 / (1+avec^2)#
-newvar = 1 + avec^2 + (4 *avec^2)/(1 + avec^2)^2 + (4 * avec^4)/(1 + avec^2)^2 - (8 *avec^2)/(#
- 1 + avec^2)
-plot(0, type = "n", main = "Variance", xlab = "normalized inner product", ylab = "variance", xlim = c(-1,1),ylim = c(0,2))#
-lines(avec,origvar)#
-lines(avec,bnvar, col = "blue")#
-lines(avec,newvar, col = "red")
-newvar
-bnvar
-a13 = 0.2#
-a23 = 0.2#
-a14 = 0.2#
-a24 = 0.2#
-origvar = 1+avec^2#
-bnvar = (1-avec^2)^2 / (1+avec^2)#
-newvar = 1 + avec^2 + 2*a13^2*a23^2 + 2*a14^2*a24^2 + (-a14*a23 - a13*a24)^2 + 2*(-2*a13^2*a23^2 - 2*a14^2 *a24^2 + 1/2 (-a14*a23 - a13*a24)*(2*a14*a23 + 2*a13*a24))
-a13 = 0.2#
-a23 = 0.2#
-a14 = 0.2#
-a24 = 0.2#
-origvar = 1+avec^2#
-bnvar = (1-avec^2)^2 / (1+avec^2)#
-newvar = 1 + avec^2 + 2*a13^2*a23^2 + 2*a14^2*a24^2 + (-a14*a23 - a13*a24)^2 + 2*(-2*a13^2*a23^2 - 2*a14^2 *a24^2 + 1/2 *(-a14*a23 - a13*a24)*(2*a14*a23 + 2*a13*a24))
-plot(0, type = "n", main = "Variance", xlab = "normalized inner product", ylab = "variance", xlim = c(-1,1),ylim = c(0,2))#
-lines(avec,origvar)#
-lines(avec,bnvar, col = "blue")#
-lines(avec,newvar, col = "red")
-a13 = 0.4#
-a23 = 0.4#
-a14 = 0.4#
-a24 = 0.4#
-origvar = 1+avec^2#
-bnvar = (1-avec^2)^2 / (1+avec^2)#
-newvar = 1 + avec^2 + 2*a13^2*a23^2 + 2*a14^2*a24^2 + (-a14*a23 - a13*a24)^2 + 2*(-2*a13^2*a23^2 - 2*a14^2 *a24^2 + 1/2 *(-a14*a23 - a13*a24)*(2*a14*a23 + 2*a13*a24))#
-#
-plot(0, type = "n", main = "Variance", xlab = "normalized inner product", ylab = "variance", xlim = c(-1,1),ylim = c(0,2))#
-lines(avec,origvar)#
-lines(avec,bnvar, col = "blue")#
-lines(avec,newvar, col = "red")
-460
-638
-638*2
-1100/2
 550/5
 par(mfrow = c(1,2))#
 #
@@ -151,306 +74,171 @@ plot(0, type = "n", xlim = c(-1,1), ylim = ybds, xlab = "Normalized inner produc
 lines(avec, yvec)#
 lines(avec, zvec, col = "blue")#
 legend("topright", legend = c("Original variance", "Improved variance"), lty = c(1,1), col = c("black","blue"), bg = "white")  #, cex = 0.75)
-1/28
-250*(28)
-library(plsgenomics)
-Colon$X
-data(Colon)
-Colon$X
-colMeans(colon$X)
-colMeans(Colon$X)
-rep(colMeans(Colon$X),62)
-matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
-X
-colMeans(X)
-colSums(X^2)
-library(plsgenomics)#
+vec = c(1,2,3,4,4)
+which(vec == 4)
+## idk, so let's test#
 #
-data(Colon)#
-#
-# First, scale it.#
-#
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
-X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)
-colSums(X^2)
-X
-eigen
-## Let's just do this for Colon...#
-#
-library(plsgenomics)#
-#
-data(Colon)#
-#
-# First, scale it.#
-#
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)#
-eigz = eigen(X)
-s for Colon...#
-#
-library(plsgenomics)#
-#
-data(Colon)#
-#
-# First, scale it.#
-#
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)#
-eigz = eigen(cov(X))
-eigz
-str(eigz$vectors)
-eigz$vectors[,1]
-eigz$vectors[,1] %*% eigz$vectors[,2]
-x1 = eigz$vectors[,1]#
-x2 = eigz$vectors[,2]#
-x3 = eigz$vectors[,3]#
-x4 = eigz$vectors[,4]
-x1
-x2
-x3
-x4
-X = rbind(x1,x2,x3,x4)
-dim(X)
-X
-X %*% t(X)
-R = matrix(rnorm(1000*200),nrow = 200)#
-  V = X %*% R
-dim(R)
-dim(X)
-R = matrix(rnorm(1000*200),nrow = 2000)#
-  V = X %*% R
-dim(V)
-R = matrix(rnorm(1000*800),nrow = 2000)#
-  V = X %*% R
-V
-sign(V)
-V = sign(X %*% R)
-V
-vec1 = V[,1]
-vec2 = V[,2]
-vec1
-vec2
-R = matrix(rnorm(1000*800),nrow = 2000)#
-  V = sign(X %*% R)
-vec1 = V[1,]
-vec2 = V[2,]
-vec1
-vec2
-vec1 == vec2
-sum(vec1 == vec2)
-sum(vec1 == vec2)/length(vec1)
-find_equal<-function(vec1, vec2){#
-  return(sum(vec1 == vec2)/length(vec1))#
-}
-find_equal<-function(vec1, vec2){#
-  return(sum(vec1 == vec2)/length(vec1))#
+get_zero_idx<-function(vec){#
+  # annoyingly annoying but still#
+  return(which(vec == 0))#
 }#
 #
-cor12 = rep(0,1000)#
-cor13 = rep(0,1000)#
-cor14 = rep(0,1000)#
-cor23 = rep(0,1000)#
-cor24 = rep(0,1000)#
-cor34 = rep(0,1000)#
+get_one_idx<-function(vec){#
+  # annoyingly annoying but still#
+  return(which(vec == 1))#
+}#
 #
-for(j in 1:1000){#
-  R = matrix(rnorm(1000*800),nrow = 2000)#
-  V = sign(X %*% R)#
-  cor12[j] = find_equal(V[1,],V[2,])#
-  cor13[j] = find_equal(V[1,],V[3,])#
-  cor14[j] = find_equal(V[1,],V[4,])#
-  cor23[j] = find_equal(V[2,],V[3,])#
-  cor24[j] = find_equal(V[2,],V[4,])#
-  cor34[j] = find_equal(V[3,],V[4,])#
-}
-j
-for(j in 1:1000){#
-  if (j %% 10 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(1000*800),nrow = 2000)#
-  V = sign(X %*% R)#
-  cor12[j] = find_equal(V[1,],V[2,])#
-  cor13[j] = find_equal(V[1,],V[3,])#
-  cor14[j] = find_equal(V[1,],V[4,])#
-  cor23[j] = find_equal(V[2,],V[3,])#
-  cor24[j] = find_equal(V[2,],V[4,])#
-  cor34[j] = find_equal(V[3,],V[4,])#
-}
-cor12
-mean(cor12)
-mean(cor13)
-mean(cor14)
-mean(cor22)
-mean(cor23)
-mean(cor24)
-mean(cor34)
-cor(cor12,cor34)
-cor12
-cor34
-cor(cor12,cor34)
-plot(cor12,cor34, type = "p")
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)
-X
-X = rbind(X[1,],X[2,],x3,x4)
-X
-X %*% t(X)
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(colSums(X^2)),62),nrow = 62, byrow = TRUE)
-colSums(X^2)
-X[1,]
-X[1,] %*% X[,2]
-X[1,] %*% t(X[2,])
-X[1,] %*% X[2,]
-sum(X[1,]^2)
-X[1,]
-rX = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),62),nrow = 62, byrow = TRUE)
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),62),nrow = 62, byrow = TRUE)
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, bycol = TRUE)#
-eigz = eigen(cov(X))#
+get_four_idx<-function(vec1,vec2,vec3,vec4){#
+	return(length(union(union(union(vec1,vec2),vec3),vec4)))#
+}#
 #
-x1 = eigz$vectors[,1]#
-x2 = eigz$vectors[,2]#
-x3 = eigz$vectors[,3]#
-x4 = eigz$vectors[,4]
-x1
-sum(x1^2)
-X = rbind(X[1,],X[2,],x1,x2)
-X %*% t(X)
-X[1,]
-X[1,]^2
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)
-colSums(X^2)
-sqrt(rowSums(X^2))
-rep(sqrt(rowSums(X^2)),62)
-matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, bycol = TRUE)
-matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
-X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
-colSums(X^2)
-rowSums(X^2)
-eigz = eigen(cov(X))
-x1 = eigz$vectors[,1]#
-x2 = eigz$vectors[,2]#
-x3 = eigz$vectors[,3]#
-x4 = eigz$vectors[,4]#
+get_cdsh<-function(V){#
+  vec1 = V[1,]#
+  vec2 = V[2,]#
+  vec3 = V[3,]#
+  vec4 = V[4,]#
 #
-X = rbind(X[1,],X[2,],x1,x2)
-X
-X %*% t(X)
-eq12 = rep(0,1000)#
-eq13 = rep(0,1000)#
-eq14 = rep(0,1000)#
-eq23 = rep(0,1000)#
-eq24 = rep(0,1000)#
-eq34 = rep(0,1000)#
-for(j in 1:1000){#
-  if (j %% 10 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(1000*800),nrow = 2000)#
-  V = sign(X %*% R)#
-  eq12[j] = find_equal(V[1,],V[2,])#
-  eq13[j] = find_equal(V[1,],V[3,])#
-  eq14[j] = find_equal(V[1,],V[4,])#
-  eq23[j] = find_equal(V[2,],V[3,])#
-  eq24[j] = find_equal(V[2,],V[4,])#
-  eq34[j] = find_equal(V[3,],V[4,])#
+  C1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  C1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  C1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  C1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  C = C1a + C1b + C1c + C1d#
+  D1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  D1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  D1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  D1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+  D = D1a + D1b + D1c + D1d#
+#
+  H1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  H1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  H1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  H1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  H = H1a + H1b + H1c + H1d#
+#
+  S1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  S1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  S1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  S1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))  #
+#
+  S = S1a + S1b + S1c + S1d#
+  return(list(C = C, D = D, H = H, S= S))#
+#
 }
-eq12
-mean(eq12)
-mean(eq13)
-mean(eq14)
-mean(eq23)
-mean(eq24)
-mean(eq34)
-cor(eq12,eq13)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-mean(eq12)
-mean(eq13)
-mean(eq34)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-X = rbind(X[31,],X[46,],x1,x2)
-X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
-X = rbind(X[31,],X[46,],x1,x2)
-X
-X %*% T(X)
-X %*% t(X)
-eq12 = rep(0,1000)#
-eq13 = rep(0,1000)#
-eq14 = rep(0,1000)#
-eq23 = rep(0,1000)#
-eq24 = rep(0,1000)#
-eq34 = rep(0,1000)#
-for(j in 1:1000){#
-  if (j %% 50 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(1000*800),nrow = 2000)#
-  V = sign(X %*% R)#
-  eq12[j] = find_equal(V[1,],V[2,])#
-  eq13[j] = find_equal(V[1,],V[3,])#
-  eq14[j] = find_equal(V[1,],V[4,])#
-  eq23[j] = find_equal(V[2,],V[3,])#
-  eq24[j] = find_equal(V[2,],V[4,])#
-  eq34[j] = find_equal(V[3,],V[4,])#
+X = matrix(rnorm(4*10000),nrow = 4)#
+R = matrix(rnorm(10000 * 100), nrow = 10000)#
+V = X %*% R
+V
+sign(V)
+V = sign(V)
+res = get_cdsh(V)
+res
+232+256+276+261
+232+256
+get_four_idx<-function(vec1,vec2,vec3,vec4){#
+	return(length(intersect(intersect(intersect(vec1,vec2),vec3),vec4)))#
 }
-mean(eq12)
-mean(eq13)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-clear all
-load_mnist <- function() {#
-  load_image_file <- function(filename) {#
-    ret = list()#
-    f = file(filename,'rb')#
-    readBin(f,'integer',n=1,size=4,endian='big')#
-    ret$n = readBin(f,'integer',n=1,size=4,endian='big')#
-    nrow = readBin(f,'integer',n=1,size=4,endian='big')#
-    ncol = readBin(f,'integer',n=1,size=4,endian='big')#
-    x = readBin(f,'integer',n=ret$n*nrow*ncol,size=1,signed=F)#
-    ret$x = matrix(x, ncol=nrow*ncol, byrow=T)#
-    close(f)#
-    ret#
-  }#
-  load_label_file <- function(filename) {#
-    f = file(filename,'rb')#
-    readBin(f,'integer',n=1,size=4,endian='big')#
-    n = readBin(f,'integer',n=1,size=4,endian='big')#
-    y = readBin(f,'integer',n=n,size=1,signed=F)#
-    close(f)#
-    y#
-  }#
-  train <<- load_image_file('mnist/train-images-idx3-ubyte')#
-  test <<- load_image_file('mnist/t10k-images-idx3-ubyte')#
-  train$y <<- load_label_file('mnist/train-labels-idx1-ubyte')#
-  test$y <<- load_label_file('mnist/t10k-labels-idx1-ubyte')  #
-}
+X = matrix(rnorm(4*10000),nrow = 4)#
+R = matrix(rnorm(10000 * 100), nrow = 10000)#
+V = X %*% R#
+V = sign(V)#
+res = get_cdsh(V)
+res
+V
+get_zero_idx<-function(vec){#
+  # annoyingly annoying but still#
+  return(which(vec == -1))#
+}#
+#
+get_one_idx<-function(vec){#
+  # annoyingly annoying but still#
+  return(which(vec == 1))#
+}#
+#
+get_four_idx<-function(vec1,vec2,vec3,vec4){#
+	return(length(intersect(intersect(intersect(vec1,vec2),vec3),vec4)))#
+}#
+#
+get_cdsh<-function(V){#
+  vec1 = V[1,]#
+  vec2 = V[2,]#
+  vec3 = V[3,]#
+  vec4 = V[4,]#
+  # 0000#
+  C1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 0011  #
+  C1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1100#
+  C1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 1111#
+#
+  C1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  C = C1a + C1b + C1c + C1d#
+  # 0001  #
+  D1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 0010#
+  D1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  # 1101#
+  D1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1110#
+#
+  D1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+  D = D1a + D1b + D1c + D1d#
+  # 0101  #
+  H1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  # 0110#
+#
+  H1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 1001#
+#
+  H1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1010#
+#
+  H1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  H = H1a + H1b + H1c + H1d#
+  # 0100#
+#
+  S1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 0111#
+#
+  S1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1000#
+#
+  S1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 1011#
+  S1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))  #
+#
+  S = S1a + S1b + S1c + S1d#
+  return(list(C = C, D = D, H = H, S= S))#
+#
+}#
+X = matrix(rnorm(4*10000),nrow = 4)#
+R = matrix(rnorm(10000 * 100), nrow = 10000)#
+V = X %*% R#
+V = sign(V)#
+res = get_cdsh(V)
+res
+23+21+30
++26
+C-D
+21-23
 load_mnist <- function() {#
   load_image_file <- function(filename) {#
     ret = list()#
@@ -476,29 +264,1167 @@ load_mnist <- function() {#
   test <<- load_image_file('t10k-images-idx3-ubyte')#
   train$y <<- load_label_file('train-labels-idx1-ubyte')#
   test$y <<- load_label_file('t10k-labels-idx1-ubyte')  #
-}
-load_mnist()
-dim(test)
-str(test)
-test$X
-test$x
-X = test$x
-X = X- matrix(rep(colMeans(X),62),nrow = 62, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)
-28^2
-X = test$x
+}#
+#
 X = test$x#
 X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
 X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)
-rowSums(X^2)
+getwd()
+load_mnist()
+X = test$x#
+X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)#
+#
 eigz = eigen(cov(X))#
 x1 = eigz$vectors[,1]#
 x2 = eigz$vectors[,2]#
 x3 = eigz$vectors[,3]#
-x4 = eigz$vectors[,4]
-x1
-X = rbind(X[524,],X[7436,],x1,x2)
-X %*% t(X)
+x4 = eigz$vectors[,4]#
+#
+X = rbind(X[9829,],X[9997,],x1,x2)
+dim(X)
+R = matrix(rnorm(784 * 200), nrow = 784)#
+V = X %*% R#
+V = sign(V)#
+res = get_cdsh(V)
+res
+res$C
+get_thet_ests<-function(res){#
+  C = res$C#
+  D = res$D#
+  H = res$H#
+  S = res$S#
+#
+  theta_C = pi*(1-2*C)#
+  theta_D = pi*(1-2*D)#
+  theta_H = 2*pi*H#
+  theta_S = 2*pi*S#
+#
+  return(list(theta_C = theta_C, theta_D = theta_D, theta_H = theta_H, theta_S = theta_S))#
+}
+get_thet_ests(res)
+get_cdsh<-function(V){#
+  vec1 = V[1,]#
+  vec2 = V[2,]#
+  vec3 = V[3,]#
+  vec4 = V[4,]#
+  # 0000#
+  C1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 0011  #
+  C1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1100#
+  C1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 1111#
+#
+  C1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  C = C1a + C1b + C1c + C1d#
+  # 0001  #
+  D1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 0010#
+  D1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  # 1101#
+  D1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1110#
+#
+  D1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+  D = D1a + D1b + D1c + D1d#
+  # 0101  #
+  H1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+#
+  # 0110#
+#
+  H1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 1001#
+#
+  H1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1010#
+#
+  H1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_zero_idx(vec4))#
+#
+  H = H1a + H1b + H1c + H1d#
+  # 0100#
+#
+  S1a = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 0111#
+#
+  S1b = get_four_idx(vec1 = get_zero_idx(vec1), vec2 = get_one_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))#
+  # 1000#
+#
+  S1c = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_zero_idx(vec3), vec4 = get_zero_idx(vec4))#
+  # 1011#
+  S1d = get_four_idx(vec1 = get_one_idx(vec1), vec2 = get_zero_idx(vec2), vec3 = get_one_idx(vec3), vec4 = get_one_idx(vec4))  #
+#
+  S = S1a + S1b + S1c + S1d#
+  return(list(C = C, D = D, H = H, S= S, fact = C+D+H+S))#
+#
+}
+get_thet_ests<-function(res){#
+  C = res$C/res$fact#
+  D = res$D/res$fact#
+  H = res$H/res$fact#
+  S = res$S/res$fact#
+#
+  theta_C = pi*(1-2*C)#
+  theta_D = pi*(1-2*D)#
+  theta_H = 2*pi*H#
+  theta_S = 2*pi*S#
+#
+  return(list(theta_C = theta_C, theta_D = theta_D, theta_H = theta_H, theta_S = theta_S))#
+}#
+R = matrix(rnorm(784 * 200), nrow = 784)#
+V = X %*% R#
+V = sign(V)#
+res = get_cdsh(V)
+res
+get_thet_ests(res)
+V[1,]
+V[1,] + V[2,]
+v12 = 0.5*abs(V[1,] + V[2,])
+v12
+v12 = 0.5*abs(V[1,] + V[2,])#
+v34 = 0.5*abs(V[3,] + V[4,])
+v34
+cor(v12,v34)
+cor(V12,v34)/var(v34)
+cor(v12,v34)/var(v34)
+abs(V[3,] + V[4,])
+0.5*abs(V[3,] + V[4,])
+sum(0.5*abs(V[3,] + V[4,]))/200
+sum(0.5*abs(V[3,] + V[4,]))/200
+(sum(0.5*abs(V[3,] + V[4,]))/200 - 0.5)
+cor(v12,v34)/var(v34)
+cor(v12,v34)/var(v34)*(sum(0.5*abs(V[3,] + V[4,]))/200 - 0.5)
+sum(0.5*abs(V[1,] + V[2,]))/200 + cor(v12,v34)/var(v34)*(sum(0.5*abs(V[3,] + V[4,]))/200 - 0.5)
+sum(0.5*abs(V[1,] + V[2,]))/200
+cov(v12,v34)
+cor(v12,v34)
+cov(v12,v34)/var(v34)*(sum(0.5*abs(V[3,] + V[4,]))/200 - 0.5)
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+for(j in 1:1000){#
+	if (j %% 10 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	v12 = 0.5*abs(V[1,] + V[2,])#
+	v34 = 0.5*abs(V[3,] + V[4,])#
+  estp[j] = sum(0.5*abs(V[1,] + V[2,]))/200#
+	cvp[j] = estp[j] - cov(v12,v34)/var(v34)*(sum(0.5*abs(V[3,] + V[4,]))/200 - 0.5)#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+}
+estp
+cvp
+mean(estp)
+mean(cvp)
+var(esttheta)
+var(cvtheta)
+cvtheta
+mean(cvtheta)
+mean(esttheta)
+estp
+cvp
+X
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)
+X_ang
+X_ip
+mean(esttheta)
+esttheta
+X_ip
+X_ang
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	v12 = 0.5*abs(V[1,] + V[2,])#
+	v34 = 0.5*abs(V[3,] + V[4,])#
+  estp[j] = sum(0.5*abs(V[1,] + V[2,]))/200#
+	cvp[j] = estp[j] - cov(v12,v34)/var(v34)*(sum(0.5*abs(V[3,] + V[4,]))/200 - 0.5)#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+X_ip
+X_ip[1,3]
+X_ip[1,4]
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[1,] + V[4,])#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - X_ip[1,4])#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+actual-est
+estp
+cvp
+mean(estp)
+mean(cvp)
+mean(rmse_est)
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[1,] + V[4,])#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] + cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - X_ip[1,4])#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[1,] + V[4,])
+cv_val
+sum(cv_val)/200 - X_ip[1,4]
+sum(cv_val)/200
+X
+max(X)
+min(X)
+X = test$x
+X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)
+eigz = eigen(cov(X))#
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]#
+#
+X = rbind(X[9829,],X[9997,],x1,x2)
+X
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)
+X_ang
+X_ip
+X_ang
+R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[1,] + V[4,])
+actual_est
+cv_val
+sum(actual_est)/200
+sum(cv_val)/200
+X_ip[1,4]
+X_ang
+X_ang[1,4]
+(1-X_ang[1,4]/pi)
+(1-X_ang[1,4]/pi)
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[1,] + V[4,])#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - (1-X_ang[1,4]/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+estp
+cvp
+mean(estp)
+mean(cvp)
+esttheta
+cvtheta
+rmse_est
+rmse_cv
+rmse_est
+rmse_cv
+cov(actual_est,cv_val)/var(cv_val)
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[1,] + V[3,])#
+	ang_val = X_ang[1,3]#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+cov(actual_est,cv_val)/var(cv_val)
+cov(actual_est,cv_val)
+X
+X_ip
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[2,] + V[3,])#
+	ang_val = X_ang[2,3]#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+cov(actual_est,cv_val)
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[2,] + V[4,])#
+	ang_val = X_ang[2,4]#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+cov(actual_est,cv_val)
+cor(actual_est,cv_val)
+rmse_est
+rmse_cv
+0.0945 - 0.0943
+2e-04 * 10000
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * 200), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[3,] + V[4,])#
+	ang_val = X_ang[3,4]#
+  estp[j] = sum(actual_est)/200#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/200 - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[2,] + V[3,])#
+	ang_val = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/N - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 30#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[2,] + V[3,])#
+	ang_val = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/N - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 50#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val = 0.5*abs(V[2,] + V[3,])#
+	ang_val = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] - cov(actual_est,cv_val)/var(cv_val)*(sum(cv_val)/N - (1-ang_val/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+cv_val = 0.5*abs(V[1,] + V[3,]) + 0.5*abs(V[2,] + V[3,])
+cv_val
+actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi + sum(cv_val_2)/N - (1-ang_val_2)/pi))
+cvp
+estp
+cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi + sum(cv_val_2)/N - (1-ang_val_2)/pi))
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi + sum(cv_val_2)/N - (1-ang_val_2)/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])
+cv_val_1
+cv_val_2
+actual_est = 0.5*abs(V[1,] + V[2,])
+actual_est
+YMat = matrix(actual_est,ncol = 1)
+YMat
+YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)
+lm
+lm(YMat ~ Z1 + Z2)
+fit = lm(YMat ~ Z1 + Z2)
+fit
+fit$coef
+fit$coef[1]
+c1 = -fit$coef[2]  #
+  c2 = -fit$coef[3]
+c1
+c
+c3
+c2
+mean(Z1)
+Z1 = matrix(cv_val_1, ncol = 1)
+cv_val_1
+sum(cv_val_1)
+X_ang
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	#YMat = matrix(actual_est,ncol = 1)#
+  #Z1 = matrix(cv_val_1, ncol = 1)#
+  #Z2 = matrix(cv_val_2, ncol = 1)#
+  #fit = lm(YMat ~ Z1 + Z2)#
+#
+  #c1 = -fit$coef[2]  #
+  #c2 = -fit$coef[3]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	#cvp[j] = estp[j] + c1*( mean(Z1) - ang_val_1  )#
+#
+	cvp[j] = estp[j]  - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1)/pi + sum(cv_val_2)/N - (1-ang_val_2)/pi)#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+mean(Z1)
+ang_val_1
+(1-ang_val_1)/pi
+ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]
+(1-ang_val_1)/pi
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100
+R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2)#
+#
+  c1 = -fit$coef[2]  #
+  c2 = -fit$coef[3]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]
+ang_val_1
+Z1
+mean(Z1)
+(1-ang_val_1)/pi
+1 - ang_val_1/pi
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	#YMat = matrix(actual_est,ncol = 1)#
+  #Z1 = matrix(cv_val_1, ncol = 1)#
+  #Z2 = matrix(cv_val_2, ncol = 1)#
+  #fit = lm(YMat ~ Z1 + Z2)#
+#
+  #c1 = -fit$coef[2]  #
+  #c2 = -fit$coef[3]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	#cvp[j] = estp[j] + c1*( mean(Z1) - (1-ang_val_1)/pi  )#
+#
+	cvp[j] = estp[j]  - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi) + sum(cv_val_2)/N - (1-ang_val_2/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2)
+mean(Z1)
+(1-ang_val_1)/pi
+(1-ang_val_1/pi)
+(1-ang_val_2/pi)
+mean(Z2)
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2)#
+#
+  c1 = -fit$coef[2]  #
+  c2 = -fit$coef[3]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] + c1*( mean(Z1) - (1-ang_val_1/pi)) + c2*( mean(Z2) - (1-ang_val_2/pi))#
+#
+	#cvp[j] = estp[j]  - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi) + sum(cv_val_2)/N - (1-ang_val_2/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+rmse_est
+rmse_cv
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 50#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2)#
+#
+  c1 = -fit$coef[2]  #
+  c2 = -fit$coef[3]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] + c1*( mean(Z1) - (1-ang_val_1/pi)) + c2*( mean(Z2) - (1-ang_val_2/pi))#
+#
+	#cvp[j] = estp[j]  - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi) + sum(cv_val_2)/N - (1-ang_val_2/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 200#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2)#
+#
+  c1 = -fit$coef[2]  #
+  c2 = -fit$coef[3]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] + c1*( mean(Z1) - (1-ang_val_1/pi)) + c2*( mean(Z2) - (1-ang_val_2/pi))#
+#
+	#cvp[j] = estp[j]  - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi) + sum(cv_val_2)/N - (1-ang_val_2/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+	cv_val_3 = 0.5*abs(V[1,] + V[4,])#
+	cv_val_4 = 0.5*abs(V[2,] + V[4,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  Z3 = matrix(cv_val_3, ncol = 1)#
+  Z4 = matrix(cv_val_4, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2 + Z3 + Z4)
+Z4
+estp = rep(0,1000)#
+cvp = rep(0,1000)#
+esttheta = rep(0,1000)#
+cvtheta = rep(0,1000)#
+#
+rmse_est = 0#
+rmse_cv = 0#
+#
+X_ip = X %*% t(X)#
+diag(X_ip) = 1#
+X_ang = acos(X_ip)#
+N = 100#
+#
+for(j in 1:1000){#
+	if (j %% 50 == 0){#
+		cat("j is", j, "\n")#
+	}#
+	R = matrix(rnorm(784 * N), nrow = 784)#
+	V = X %*% R#
+	V = sign(V)#
+#
+	actual_est = 0.5*abs(V[1,] + V[2,])#
+	cv_val_1 = 0.5*abs(V[1,] + V[3,])#
+	cv_val_2 = 0.5*abs(V[2,] + V[3,])#
+	cv_val_3 = 0.5*abs(V[1,] + V[4,])#
+	cv_val_4 = 0.5*abs(V[2,] + V[4,])#
+#
+	YMat = matrix(actual_est,ncol = 1)#
+  Z1 = matrix(cv_val_1, ncol = 1)#
+  Z2 = matrix(cv_val_2, ncol = 1)#
+  Z3 = matrix(cv_val_3, ncol = 1)#
+  Z4 = matrix(cv_val_4, ncol = 1)#
+  fit = lm(YMat ~ Z1 + Z2 + Z3 + Z4)#
+#
+  c1 = -fit$coef[2]  #
+  c2 = -fit$coef[3]  #
+  c3 = -fit$coef[4]  #
+  c4 = -fit$coef[5]  #
+#
+	ang_val_1 = X_ang[1,3]#
+  ang_val_2 = X_ang[2,3]#
+	ang_val_3 = X_ang[1,4]#
+  ang_val_4 = X_ang[2,4]#
+  estp[j] = sum(actual_est)/N#
+	cvp[j] = estp[j] + c1*( mean(Z1) - (1-ang_val_1/pi)) + c2*( mean(Z2) - (1-ang_val_2/pi)) + c3*( mean(Z3) - (1-ang_val_3/pi)) + c4*( mean(Z4) - (1-ang_val_4/pi))#
+#
+	#cvp[j] = estp[j]  - cov(actual_est,cv_val_1 + cv_val_2)/var(cv_val_1 + cv_val_2)*(sum(cv_val_1)/N - (1-ang_val_1/pi) + sum(cv_val_2)/N - (1-ang_val_2/pi))#
+#
+  esttheta[j] = pi*(1-estp[j])#
+  cvtheta[j] = pi*(1-cvp[j])#
+#
+  rmse_est = rmse_est + (esttheta[j] - X_ang[1,2])^2#
+  rmse_cv = rmse_cv + (cvtheta[j] - X_ang[1,2])^2#
+}#
+#
+rmse_est = sqrt(rmse_est/1000)#
+rmse_cv = sqrt(rmse_cv/1000)
+rmse_est
+rmse_cv
+library(plsgenomics)#
+#
+data(Colon)#
+#
+# First, scale it.#
+#
+X = Colon$X - matrix(rep(colMeans(Colon$X),62),nrow = 62, byrow = TRUE)#
+X = X / matrix(rep(sqrt(rowSums(X^2)),2000),nrow = 62, byrow = FALSE)#
+eigz = eigen(cov(X))#
+#
+x1 = eigz$vectors[,1]#
+x2 = eigz$vectors[,2]#
+x3 = eigz$vectors[,3]#
+x4 = eigz$vectors[,4]#
+#
+X = rbind(X[31,],X[46,],x1,x2)#
+#
+find_equal<-function(vec1, vec2){#
+  return(sum(vec1 == vec2)/length(vec1))#
+}#
+#
 eq12 = rep(0,1000)#
 eq13 = rep(0,1000)#
 eq14 = rep(0,1000)#
@@ -518,162 +1444,26 @@ for(j in 1:1000){#
   eq24[j] = find_equal(V[2,],V[4,])#
   eq34[j] = find_equal(V[3,],V[4,])#
 }
-dim(X)
-for(j in 1:1000){#
-  if (j %% 50 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(784*2000),nrow = 2000)#
-  V = sign(X %*% R)#
-  eq12[j] = find_equal(V[1,],V[2,])#
-  eq13[j] = find_equal(V[1,],V[3,])#
-  eq14[j] = find_equal(V[1,],V[4,])#
-  eq23[j] = find_equal(V[2,],V[3,])#
-  eq24[j] = find_equal(V[2,],V[4,])#
-  eq34[j] = find_equal(V[3,],V[4,])#
-}
-dim(R)
-dim(X)
-for(j in 1:1000){#
-  if (j %% 50 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(784*2000),nrow = 784)#
-  V = sign(X %*% R)#
-  eq12[j] = find_equal(V[1,],V[2,])#
-  eq13[j] = find_equal(V[1,],V[3,])#
-  eq14[j] = find_equal(V[1,],V[4,])#
-  eq23[j] = find_equal(V[2,],V[3,])#
-  eq24[j] = find_equal(V[2,],V[4,])#
-  eq34[j] = find_equal(V[3,],V[4,])#
-}
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-X = rbind(x1,x2,x3,x4)
-eq12 = rep(0,1000)#
-eq13 = rep(0,1000)#
-eq14 = rep(0,1000)#
-eq23 = rep(0,1000)#
-eq24 = rep(0,1000)#
-eq34 = rep(0,1000)#
-for(j in 1:1000){#
-  if (j %% 50 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(784*2000),nrow = 784)#
-  V = sign(X %*% R)#
-  eq12[j] = find_equal(V[1,],V[2,])#
-  eq13[j] = find_equal(V[1,],V[3,])#
-  eq14[j] = find_equal(V[1,],V[4,])#
-  eq23[j] = find_equal(V[2,],V[3,])#
-  eq24[j] = find_equal(V[2,],V[4,])#
-  eq34[j] = find_equal(V[3,],V[4,])#
-}#
-#
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-X = test$x#
-X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)
-X = rbind(X[5,],X[1065,],x1,x2)
-dim(X)
-X %*% t(X)
-test $y
-test$y
-X = test$x#
-X = X- matrix(rep(colMeans(X),10000),nrow = 10000, byrow = TRUE)#
-X = X / matrix(rep(sqrt(rowSums(X^2)),784),nrow = 10000, byrow = FALSE)#
-#
-eigz = eigen(cov(X))#
-x1 = eigz$vectors[,1]#
-x2 = eigz$vectors[,2]#
-x3 = eigz$vectors[,3]#
-x4 = eigz$vectors[,4]#
-#
-X = rbind(X[9829,],X[9997,],x1,x2)
-X %*% t(X)
-eq12 = rep(0,1000)#
-eq13 = rep(0,1000)#
-eq14 = rep(0,1000)#
-eq23 = rep(0,1000)#
-eq24 = rep(0,1000)#
-eq34 = rep(0,1000)#
-for(j in 1:1000){#
-  if (j %% 50 == 0){#
-    cat("j is", j, "\n")#
-  }#
-  R = matrix(rnorm(784*2000),nrow = 784)#
-  V = sign(X %*% R)#
-  eq12[j] = find_equal(V[1,],V[2,])#
-  eq13[j] = find_equal(V[1,],V[3,])#
-  eq14[j] = find_equal(V[1,],V[4,])#
-  eq23[j] = find_equal(V[2,],V[3,])#
-  eq24[j] = find_equal(V[2,],V[4,])#
-  eq34[j] = find_equal(V[3,],V[4,])#
-}
-X_ip = X %*% t(X)#
-X_ang = acos(X_ip)
-X_ip
-X_ang
-acos(1)
-acos(1.001)
-X_ip[X_ip > 1]
-X_ip[X_ip > 1] = 1
-X_ip = X %*% t(X)#
-X_ip[X_ip > 1] = 1#
-X_ang = acos(X_ip)
-X_ang
-X_ip = X %*% t(X)#
-diag(X_ip) = 1
-X_ang = acos(X_ip)
-X_ang
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
+cov(eq12,eq13)#
+cov(eq12,eq14)#
+cov(eq12,eq23)#
+cov(eq12,eq24)#
+cov(eq12,eq34)
+cor(eq12,eq13)
+cov
 eq12
-eq13
-eq24
+eq15
 eq34
-eq12
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-X_ip
-X_ang
-cor(eq12,eq13)#
-cor(eq12,eq14)#
-cor(eq12,eq23)#
-cor(eq12,eq24)#
-cor(eq12,eq34)
-cor(eq12,eq13)/var(eq13)
-cor(eq12,eq13)^2/var(eq13)
-cor(eq12,eq13)/var(eq13)
+cov(eq12,eq13)#
+cov(eq12,eq14)#
+cov(eq12,eq23)#
+cov(eq12,eq24)#
+cov(eq12,eq34)
 var(eq13)
-eq13
-cor(eq12,eq14)/var(eq14)
-5.65/10
-5/10
-eq12
-eq13
-eq23
-eq24
+cov(eq12,eq13)^2/var(eq13)#
+cov(eq12,eq14)^2/var(eq14)#
+cov(eq12,eq23)^2/var(eq23)#
+cov(eq12,eq24)^2/var(eq24)#
+cov(eq12,eq34)^2/var(eq34)
+log(0.5/0.5)
+log(0.9/0.1)

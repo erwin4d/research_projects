@@ -1,8 +1,21 @@
 # Random Projections With Control Variates
-This was a paper submitted to ICPRAM 2016. The paper is in this folder. 
-Future updates will be added.
 
-To do:
-  + Put generic code to compute CV for arbitrary pair of vectors
-  + Put code to generate plots in paper here
-  + Put code to use RPCV with KNN 
+This was a paper (Random Projection with Control Variates) submitted to ICPRAM 2017 (February). An extended version was written (Control Variates as a Variance Reduction Technique for Random Projections) as well, but there doesn't seem to be any indication if it has been accepted...
+
+In this folder, there is code to do more extensive experiments (compute RMSE of all pairwise distances of inner products and Euclidean distances on normalized data), so as to get a sense of how control variates perform, rather than showing how well it does on certain pairs of vectors.
+
+# tl;dr summary of control variates (see below).
+
+The graph on Page 11 (Control Variates as a Variance Reduction Technique for Random Projections) show how control variates perform for the Euclidean distance and inner product respectively.
+
+As vectors are far apart, control variates for Euclidean distances perform well. You can use the code provided to try this on datasets where vectors are far apart.
+
+While the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate) provides better variance reduction, rather than computing the empirical control variate correction.
+
+As vectors are correlated, control variates for inner products perform well. You can use the code provided to try this on datasets where vectors are corelated. 
+
+Again, while the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate - which we have to compute anyway!) provides better variance reduction, rather than computing the empirical control variate correction.
+
+
+
+

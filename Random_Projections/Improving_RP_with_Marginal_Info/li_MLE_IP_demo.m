@@ -9,7 +9,6 @@ function [ ] = li_MLE_IP_demo(X, niter, varargin)
   %        niter: number of iterations
   %       option: type of random proj matrix
   %     opt_para: optional para for above random projection matrix
-  %     pairwise: type of pairwise estimate needed
   %    partition: for computing true values - partition the x and y (vectorization / memory tradeoff)
 
   % Example inputs
@@ -73,7 +72,7 @@ function [ ] = li_MLE_IP_demo(X, niter, varargin)
           rmse.ord(iter_num,kvals) = rmse.ord(iter_num,kvals) + get_rmse_all(ests.v1v2, para, xseg, yseg);
           
           %[li_ip] = cardano_fn(ests);
-          li_ip = get_typeof_ests(ests, 'li_mle');
+          li_ip = get_typeof_ests(ests, 'li_mle', []);
 
           rmse.li(iter_num,kvals) = rmse.li(iter_num,kvals) + get_rmse_all(li_ip, para, xseg, yseg);
 
