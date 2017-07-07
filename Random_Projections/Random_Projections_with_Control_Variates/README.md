@@ -17,5 +17,9 @@ As vectors are correlated, control variates for inner products perform well. You
 Again, while the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate - which we have to compute anyway!) provides better variance reduction, rather than computing the empirical control variate correction.
 
 
+# Why is this useful?
 
+For Euclidean distances, consider complete linkage clustering (this looks at the furthest distance between two clusters). Control variates improves this distance estimate. 
+
+For inner products, consider similarity detection (vectors which are correlated). Control variates improve the inner product estimate.
 
