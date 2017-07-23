@@ -7,9 +7,9 @@ function [ IP_vals ] = li_vectorized_NR(ests)
   % We vectorize newton raphson to make it fast to find the root.
 
 
-  v1v2_mat = ests.v1v2;
-  v1norm_mat = ests.v1norm;
-  v2norm_mat = ests.v2norm;
+  v1v2_mat = ests.small_v1v2;
+  v1norm_mat = ests.small_v1norm;
+  v2norm_mat = ests.small_v2norm;
   m1_mat = ones(ests.n1,ests.n2);
   m2_mat = ones(ests.n1,ests.n2);
   %m1m2_mat = ones(ests.n1,ests.n2);

@@ -10,11 +10,11 @@ The graph on Page 11 (Control Variates as a Variance Reduction Technique for Ran
 
 As vectors are far apart, control variates for Euclidean distances perform well. You can use the code provided to try this on datasets where vectors are far apart.
 
-While the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate) provides better variance reduction, rather than computing the empirical control variate correction.
+While the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate) can provide better variance reduction, rather than computing the empirical control variate correction.
 
 As vectors are correlated, control variates for inner products perform well. You can use the code provided to try this on datasets where vectors are corelated. 
 
-Again, while the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate - which we have to compute anyway!) provides better variance reduction, rather than computing the empirical control variate correction.
+Again, while the control variate correction is in terms of a, using an estimate of the inner product (even the ordinary random projection estimate - which we have to compute anyway!) can provide a better variance reduction, rather than computing the empirical control variate correction.
 
 
 # Why is this useful?

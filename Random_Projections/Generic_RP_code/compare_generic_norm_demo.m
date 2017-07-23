@@ -16,7 +16,7 @@ function [ rmse_vec] = compare_generic_norm_demo(X, niter, varargin)
 
   % Example input:
 
-  % compare_generic_norm_demo(X, 1000, 'option', 'SB', opt_para, '5')
+  % compare_generic_norm_demo(X, 1000, 'option', 'normal', 'opt_para', '1')
   % Look at RMSE of estimated norms using SB matrix of parameter 5.
 
   % We look at the average RMSE.
@@ -36,7 +36,7 @@ function [ rmse_vec] = compare_generic_norm_demo(X, niter, varargin)
 
     if mod(iter_num, 10) == 0
       clf('reset');
-      local_plot_norm_err(1:K, rmse_vec, iter_num, false)
+      local_plot(1:K, rmse_vec, iter_num, false)
       drawnow
     end
 
@@ -49,27 +49,23 @@ function [ rmse_vec] = compare_generic_norm_demo(X, niter, varargin)
 end
 
 
-function [ ] = local_plot_norm_err(kvec, rmse_vec, iter_num, fig_para)
+
+
+function [ ] = local_plot(kvec, rmse, iter_num, fig_para)
 
   if fig_para
     figure;
   end
-  
-  rmse_mean = mean(rmse_vec(1:iter_num,:),1);
-  rmse_var = 3*sqrt(var(rmse_vec(1:iter_num,:),0,1));
 
-  min_bound = rmse_mean - rmse_var;
-  min_bound(min_bound < 0) = 0;
-  max_bound = rmse_mean + rmse_var;
+  plot_avg_sd_expts(kvec, rmse, iter_num, 'Estimate of norms', 'b')
+  grid on;  
 
-  plot(kvec,rmse_mean, '-r', 'DisplayName', 'Average RMSE for dataset'); hold all
-  plot(kvec,min_bound, '--b', 'DisplayName', 'Lower 3sd bound'); 
-  plot(kvec,max_bound, '--b', 'DisplayName', 'Upper 3sd bound'); 
-
-  grid on;
-  title(['Average RMSE for dataset at ', num2str(iter_num), ' iterations'], 'FontWeight', 'bold');
+  title(['Average RMSE of norms at ', num2str(iter_num), ' iterations'], 'FontWeight', 'bold');
   xlabel('Number of columns K', 'FontWeight', 'bold');
   legend('-DynamicLegend', 'location', 'northeast');
   ylabel('Average RMSE', 'FontWeight', 'bold');
 
+
 end
+
+
