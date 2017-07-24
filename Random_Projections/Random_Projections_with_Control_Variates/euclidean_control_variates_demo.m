@@ -129,8 +129,8 @@ function [rmse] = euclidean_control_variates_demo(X, niter, varargin)
     if mod(iter_num, 2) == 0
       clf('reset');
     	local_plot(kvec, rmse, iter_num, false)
-
       drawnow
+
     end
   end
 
