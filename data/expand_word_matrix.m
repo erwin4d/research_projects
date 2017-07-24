@@ -1,7 +1,5 @@
 function [X] = expand_word_matrix(data_name)
   
-  
-  % Normalize, get the evec and shit
 
   if strcmp(data_name, 'kos')
     % Load words data

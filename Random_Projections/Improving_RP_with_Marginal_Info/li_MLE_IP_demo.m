@@ -1,6 +1,6 @@
 function [ ] = li_MLE_IP_demo(X, niter, varargin)
 
-  % Look at the average RMSE for pairwise <quantity> over entire dataset X
+  % Look at the average RMSE for pairwise inner product over entire dataset X
   % use random projection matrix of columns K = 10:10:100 using
   % li's method
 
