@@ -1,6 +1,6 @@
 function [rmse] = inner_product_control_variates_demo(X, niter, varargin)
 
-  % Look at the average RMSE for pairwise euclidean distance over entire dataset X
+  % Look at the average RMSE for pairwise inner product over entire dataset X
   % use random projection matrix of columns K = 10,20, ... 100 using
   % control variates method.
 
