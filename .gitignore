@@ -38,3 +38,10 @@ data/arcene_train.labels
 data/arcene_train.data
 
 *.data
+*.tex
+*.toc
+Code/latex_items/data_and_distances/cat.jpg
+Code/latex_items/data_and_distances/toy_example_two_groups_1.pdf
+Code/latex_items/data_and_distances/toy_examples.R
+*.bbl
+*.blg
