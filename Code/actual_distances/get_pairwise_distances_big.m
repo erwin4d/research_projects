@@ -36,7 +36,7 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
   pars = inputParser;  
   pars.addRequired('X1',@(x) ismatrix(x) && isnumeric(x));
   pars.addRequired('X2',@(x) ismatrix(x) && isnumeric(x));
-  pars.addRequired('distance_type', @(x) any(strcmp(x,{'angular_distance', 'dot_product', 'euclidean_distance', 'hamming_distance', 'jacaard_similarity', 'lp_distance', 'resemblance', 'squared_euclidean_distance', 'squared_lp_distance'})));
+  pars.addRequired('distance_type', @(x) any(strcmp(x,{'angular_distance', 'dot_product', 'euclidean_distance', 'hamming_distance', 'jaccard_similarity', 'lp_distance', 'resemblance', 'squared_euclidean_distance', 'squared_lp_distance'})));
   pars.addOptional('p_dist', 'none', @(x) x > 0 | x == Inf);
   pars.parse(X1, X2 , distance_type, varargin{:});  
 
@@ -85,17 +85,27 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
   dist_struct.dist_mat = zeros(n1,n2);
   if ~ischar(inputs.p_dist)
     dist_struct.dist_p = inputs.p_dist;
+    for i = 1:length(n1_index_start)
+      for j = 1:length(n2_index_start)
+        dist_struct_tmp = get_pairwise_distances(X1(n1_index_start(i):n1_index_end(i),:), X2(n2_index_start(j):n2_index_end(j),:) , distance_type, inputs.p_dist);
+        
+        dist_struct.dist_mat(n1_index_start(i):n1_index_end(i),n2_index_start(j):n2_index_end(j)) = dist_struct_tmp.dist_mat;
+      end
+    end 
+  else
+    for i = 1:length(n1_index_start)
+      for j = 1:length(n2_index_start)
+         dist_struct_tmp = get_pairwise_distances(X1(n1_index_start(i):n1_index_end(i),:), X2(n2_index_start(j):n2_index_end(j),:) , distance_type);
+      
+        dist_struct.dist_mat(n1_index_start(i):n1_index_end(i),n2_index_start(j):n2_index_end(j)) = dist_struct_tmp.dist_mat;
+     end
+    end 
   end
 
 
 
-  for i = 1:length(n1_index_start)
-    for j = 1:length(n2_index_start)
-      dist_struct_tmp = get_pairwise_distances(X1(n1_index_start(i):n1_index_end(i),:), X2(n2_index_start(j):n2_index_end(j),:) , distance_type);
-      
-      dist_struct.dist_mat(n1_index_start(i):n1_index_end(i),n2_index_start(j):n2_index_end(j)) = dist_struct_tmp.dist_mat;
-    end
-  end 
+
+
   dist_struct.dist_type = dist_struct_tmp.dist_type;
 
 

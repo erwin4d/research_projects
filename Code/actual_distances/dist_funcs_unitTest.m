@@ -1370,7 +1370,1954 @@ function testHammingdistance_name(testCase)
 end
 
 
-%get_pairwise_distances.m  
-%get_pairwise_distances_big.m
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Test get_pairwise_distances.m
+%%%%%%%% Test get_pairwise_distances_big.m
+
+
+function testPairwiseDistance_angular_distance_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'angular_distance');
+  expSolution = get_pairwise_angular_distance(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_angular_distance_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'angular_distance');
+  expSolution = 'angular_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_angular_distance_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'angular_distance');
+  expSolution = get_pairwise_angular_distance(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_angular_distance_name2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'angular_distance');
+  expSolution = 'angular_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_angular_distance_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'angular_distance');
+  expSolution = get_pairwise_angular_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_angular_distance_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'angular_distance');
+  expSolution = get_pairwise_angular_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_angular_distance_matrix5(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'angular_distance');
+  expSolution = get_pairwise_angular_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_angular_distance_matrix6(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'angular_distance');
+  expSolution = get_pairwise_angular_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+
+function testPairwiseDistance_dot_product_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'dot_product');
+  expSolution = get_pairwise_dot_product(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_dot_product_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'dot_product');
+  expSolution = 'dot_product';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_dot_product_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'dot_product');
+  expSolution = get_pairwise_dot_product(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_dot_product_name2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'dot_product');
+  expSolution = 'dot_product';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_dot_product_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'dot_product');
+  expSolution = get_pairwise_dot_product(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_dot_product_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'dot_product');
+  expSolution = get_pairwise_dot_product(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_dot_product_matrix5(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'dot_product');
+  expSolution = get_pairwise_dot_product(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_dot_product_matrix6(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'dot_product');
+  expSolution = get_pairwise_dot_product(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_euclidean_distance_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'euclidean_distance');
+  expSolution = get_pairwise_euclidean_distance(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_euclidean_distance_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'euclidean_distance');
+  expSolution = 'Euclidean_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_euclidean_distance_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'euclidean_distance');
+  expSolution = get_pairwise_euclidean_distance(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_euclidean_distance_name2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'euclidean_distance');
+  expSolution = 'Euclidean_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_euclidean_distance_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'euclidean_distance');
+  expSolution = get_pairwise_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_euclidean_distance_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'euclidean_distance');
+  expSolution = get_pairwise_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_euclidean_distance_matrix5(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'euclidean_distance');
+  expSolution = get_pairwise_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_euclidean_distance_matrix6(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'euclidean_distance');
+  expSolution = get_pairwise_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+
+function testPairwiseDistance_squared_euclidean_distance_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_euclidean_distance');
+  expSolution = get_pairwise_squared_euclidean_distance(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_squared_euclidean_distance_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_euclidean_distance');
+  expSolution = 'squared_Euclidean_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_squared_euclidean_distance_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_euclidean_distance');
+  expSolution = get_pairwise_squared_euclidean_distance(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_squared_euclidean_distance_name2(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_euclidean_distance');
+  expSolution = 'squared_Euclidean_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_squared_euclidean_distance_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_euclidean_distance');
+  expSolution = get_pairwise_squared_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_squared_euclidean_distance_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_euclidean_distance');
+  expSolution = get_pairwise_squared_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_squared_euclidean_distance_matrix5(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_euclidean_distance');
+  expSolution = get_pairwise_squared_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_squared_euclidean_distance_matrix6(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_euclidean_distance');
+  expSolution = get_pairwise_squared_euclidean_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+
+
+function testPairwiseDistance_jaccard_similarity_matrix(testCase)
+    
+  X1 = abs(normrnd(0,0.5,5,10));
+  X2 = abs(normrnd(1,0.3,3,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'jaccard_similarity');
+  expSolution = get_pairwise_jaccard_similarity(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_jaccard_similarity_name(testCase)
+    
+  X1 = abs(normrnd(0,0.5,5,10));
+  X2 = abs(normrnd(1,0.3,3,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'jaccard_similarity');
+  expSolution = 'jaccard_similarity';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_jaccard_similarity_matrix2(testCase)
+    
+  X1 = abs(normrnd(0,0.5,5,10));
+  X2 = abs(normrnd(1,0.3,3,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'jaccard_similarity');
+  expSolution = get_pairwise_jaccard_similarity(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_jaccard_similarity_name2(testCase)
+    
+  X1 = abs(normrnd(0,0.5,5,10));
+  X2 = abs(normrnd(1,0.3,3,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'jaccard_similarity');
+  expSolution = 'jaccard_similarity';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_jaccard_similarity_matrix3(testCase)
+    
+  X1 = abs(normrnd(0,0.5,251,10));
+  X2 = abs(normrnd(1,0.3,3,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'jaccard_similarity');
+  expSolution = get_pairwise_jaccard_similarity(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_jaccard_similarity_matrix4(testCase)
+    
+  X1 = abs(normrnd(0,0.5,3,10));
+  X2 = abs(normrnd(1,0.3,251,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'jaccard_similarity');
+  expSolution = get_pairwise_jaccard_similarity(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_jaccard_similarity_matrix5(testCase)
+    
+  X1 = abs(normrnd(0,0.5,500,10));
+  X2 = abs(normrnd(1,0.3,631,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'jaccard_similarity');
+  expSolution = get_pairwise_jaccard_similarity(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_jaccard_similarity_matrix6(testCase)
+    
+  X1 = abs(normrnd(0,0.5,631,10));
+  X2 = abs(normrnd(1,0.3,500,10));
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'jaccard_similarity');
+  expSolution = get_pairwise_jaccard_similarity(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_hamming_distance_matrix(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'hamming_distance');
+  expSolution = get_pairwise_hamming_distance(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_hamming_distance_name(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'hamming_distance');
+  expSolution = 'hamming_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_hamming_distance_matrix2(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'hamming_distance');
+  expSolution = get_pairwise_hamming_distance(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_hamming_distance_name2(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'hamming_distance');
+  expSolution = 'hamming_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_hamming_distance_matrix3(testCase)
+    
+  X1 = binornd(1,0.3,251,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'hamming_distance');
+  expSolution = get_pairwise_hamming_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_hamming_distance_matrix4(testCase)
+    
+  X1 = binornd(1,0.3,3,10);
+  X2 = binornd(1,0.7,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'hamming_distance');
+  expSolution = get_pairwise_hamming_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_hamming_distance_matrix5(testCase)
+    
+  X1 = binornd(1,0.3,500,10);
+  X2 = binornd(1,0.7,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'hamming_distance');
+  expSolution = get_pairwise_hamming_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_hamming_distance_matrix6(testCase)
+    
+  X1 = binornd(1,0.3,631,10);
+  X2 = binornd(1,0.7,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'hamming_distance');
+  expSolution = get_pairwise_hamming_distance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_resemblance_matrix(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'resemblance');
+  expSolution = get_pairwise_resemblance(X1,X2);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_resemblance_name(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances(X1, X2, 'resemblance');
+  expSolution = 'resemblance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_resemblance_matrix2(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'resemblance');
+  expSolution = get_pairwise_resemblance(X1,X2);
+
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_resemblance_name2(testCase)
+    
+  X1 = binornd(1,0.3,8,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'resemblance');
+  expSolution = 'resemblance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testbigPairwiseDistance_resemblance_matrix3(testCase)
+    
+  X1 = binornd(1,0.3,251,10);
+  X2 = binornd(1,0.7,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'resemblance');
+  expSolution = get_pairwise_resemblance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_resemblance_matrix4(testCase)
+    
+  X1 = binornd(1,0.3,3,10);
+  X2 = binornd(1,0.7,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'resemblance');
+  expSolution = get_pairwise_resemblance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_resemblance_matrix5(testCase)
+    
+  X1 = binornd(1,0.3,631,10);
+  X2 = binornd(1,0.7,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'resemblance');
+  expSolution = get_pairwise_resemblance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testbigPairwiseDistance_resemblance_matrix6(testCase)
+    
+  X1 = binornd(1,0.3,500,10);
+  X2 = binornd(1,0.7,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'resemblance');
+  expSolution = get_pairwise_resemblance(X1,X2); % should work if not too big
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+
+
+function testPairwiseDistance_lpdistance1_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_lpdistance1_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = 'l1_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_lpdistance1_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_lpdistance2_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_lpdistance2_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = 'lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_lpdistance2_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+function testPairwiseDistance_lpdistance3_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_lpdistance3_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = 'lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_lpdistance3_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+  
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_lpdistanceinf_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_lpdistanceinf_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = 'l-infinity_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_lpdistanceinf_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+  
+  actSolution = get_pairwise_distances(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+
+
+function testPairwiseDistance_squared_lpdistance1_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_squared_lpdistance1_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'l1_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_squared_lpdistance1_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_squared_lpdistance2_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_squared_lpdistance2_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'squared_lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_squared_lpdistance2_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+function testPairwiseDistance_squared_lpdistance3_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_squared_lpdistance3_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'squared_lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_squared_lpdistance3_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+  
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_squared_lpdistanceinf_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_squared_lpdistanceinf_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'l-infinity_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_squared_lpdistanceinf_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+  
+  actSolution = get_pairwise_distances(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+
+
+
+
+
+function testPairwiseDistance_big_lpdistance1_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistance1_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = 'l1_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_lpdistance1_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_big_lpdistance2_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistance2_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = 'lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_lpdistance2_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+function testPairwiseDistance_big_lpdistance3_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistance3_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = 'lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_lpdistance3_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+  
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_big_lpdistanceinf_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistanceinf_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = 'l-infinity_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_lpdistanceinf_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+  
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+
+
+function testPairwiseDistance_big_squared_lpdistance1_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistance1_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'l1_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_squared_lpdistance1_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 1;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_big_squared_lpdistance2_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistance2_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'squared_lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_squared_lpdistance2_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance3_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistance3_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'squared_lp_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_squared_lpdistance3_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = 3;
+  
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+function testPairwiseDistance_big_squared_lpdistanceinf_matrix(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistanceinf_name(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = 'l-infinity_distance';
+  verifyEqual(testCase,actSolution.dist_type,expSolution)
+end
+
+function testPairwiseDistance_big_squared_lpdistanceinf_p(testCase)
+    
+  X1 = normrnd(0,0.5,5,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  
+  p = Inf;
+  
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = p;
+  verifyEqual(testCase,actSolution.dist_p,expSolution)
+end
+
+
+function testPairwiseDistance_big_lpdistance1_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistance1_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistance1_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_lpdistance1_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance2_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance2_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance2_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance2_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance3_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance3_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance3_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistance3_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistanceinf_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistanceinf_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistanceinf_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_lpdistanceinf_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'lp_distance', p);
+  expSolution = get_pairwise_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+
+
+function testPairwiseDistance_big_squared_lpdistance1_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance1_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance1_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance1_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+
+  p = 1;
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance2_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance2_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance2_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistance2_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 2;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+
+function testPairwiseDistance_big_squared_lpdistance3_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistance3_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistance3_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistance3_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = 3;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistanceinf_matrix1(testCase)
+    
+  X1 = normrnd(0,0.5,251,10);
+  X2 = normrnd(1,0.3,3,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+function testPairwiseDistance_big_squared_lpdistanceinf_matrix2(testCase)
+    
+  X1 = normrnd(0,0.5,3,10);
+  X2 = normrnd(1,0.3,251,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistanceinf_matrix3(testCase)
+    
+  X1 = normrnd(0,0.5,500,10);
+  X2 = normrnd(1,0.3,631,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+
+function testPairwiseDistance_big_squared_lpdistanceinf_matrix4(testCase)
+    
+  X1 = normrnd(0,0.5,631,10);
+  X2 = normrnd(1,0.3,500,10);
+
+  n1 = size(X1,1);
+  n2 = size(X2,1);
+  p = Inf;
+
+  actSolution = get_pairwise_distances_big(X1, X2, 'squared_lp_distance', p);
+  expSolution = get_pairwise_squared_lp_distance(X1,X2,p);
+  verifyEqual(testCase,round(actSolution.dist_mat,10),round(expSolution.dist_mat,10))
+end
+
+%  elseif strcmp(distance_type, 'lp_distance')  
+%    dist_struct = get_pairwise_lp_distance(X1,X2,inputs.p_dist);
+%  elseif strcmp(distance_type, 'squared_lp_distance')
+%    dist_struct = get_pairwise_squared_lp_distance(X1,X2,inputs.p_dist);
 

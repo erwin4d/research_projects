@@ -38,4 +38,4 @@ List of functions in this folder
   - get_pairwise_lp_distance.m
   - get_pairwise_jaccard_similarity.m
 
-
+Unit tests are here: dist_funcs_unitTest
