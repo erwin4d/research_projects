@@ -21,9 +21,9 @@ function [dist_struct] = get_pairwise_lp_distance(X1, X2, p)
   elseif mod(p,2) == 0
     dist_struct = get_pairwise_lp_even_distance(X1,X2,p);
   elseif mod(p,2) == 1
-    dist_struct = get_pairwise_lp_odd_distance(X1,X2,p)
+    dist_struct = get_pairwise_lp_odd_distance(X1,X2,p);
   elseif p == Inf
-    dist_struct = get_pairwise_l_infinity_distance(X1,X2)
+    dist_struct = get_pairwise_l_infinity_distance(X1,X2);
   else
     'Error'
   end

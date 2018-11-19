@@ -9,7 +9,8 @@ function [dist_struct] = get_pairwise_jaccard_similarity(X1, X2)
   %            .dist_type: 'jaccard_similarity' 
   %    
   % Assumptions: Assume we can compute and store this n1 by n2 matrix in memory
-  
+  % Assumptions: No observations are zeros 
+    
   % Author: KK
 
   % See derivations.pdf for more info
@@ -24,7 +25,7 @@ function [dist_struct] = get_pairwise_jaccard_similarity(X1, X2)
     end
   else
     for j = 1:n2
-      dist_struct.dist_mat(:,j) = sum(bsxfun(@min, X2(j,:), X1),1) ./ sum(bsxfun(@max, X2(j,:), X1),1);  
+      dist_struct.dist_mat(:,j) = sum(bsxfun(@min, X2(j,:), X1),2) ./ sum(bsxfun(@max, X2(j,:), X1),2);  
     end
   end  
 

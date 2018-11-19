@@ -15,17 +15,24 @@ function [dist_struct] = get_pairwise_squared_lp_even_distance(X1, X2, p)
 
   % See derivations.pdf for more info
   
-  n1 = size(X1,1);
-  n2 = size(X2,1);
+
+  if mod(p,2) == 0
+
+    n1 = size(X1,1);
+    n2 = size(X2,1);
   
-  dist_struct.dist_mat = repmat(sum(X1.^p,2),1,n2) + repmat(sum(X2.^p,2),1,n1)'; % take care of M_0 and M_p (see derivation)
+    dist_struct.dist_mat = repmat(sum(X1.^p,2),1,n2) + repmat(sum(X2.^p,2),1,n1)'; % take care of M_0 and M_p (see derivation)
 
-  for t = 1:(p-1)
-    dist_struct.dist_mat = dist_struct.dist_mat + (-1)^t * nchoosek(p,t) * (X1.^t * (X2.^(p-t))');
+    for t = 1:(p-1)
+      dist_struct.dist_mat = dist_struct.dist_mat + (-1)^t * nchoosek(p,t) * (X1.^t * (X2.^(p-t))');
+    end
+
+    dist_struct.dist_type = 'squared_lp_distance';
+    dist_struct.dist_p = p;
+  else
+    'error';
+    dist_struct = 'error';
   end
-
-  dist_struct.dist_type = 'squared_lp_distance';
-  dist_struct.dist_p = p;
 
 end
       

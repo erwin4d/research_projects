@@ -14,10 +14,14 @@ function [dist_struct] = get_pairwise_lp_odd_distance(X1, X2, p)
   % Author: KK
 
   % See derivations.pdf for more info
-
-  dist_struct = get_pairwise_squared_lp_odd_distance(X1, X2,p);
-  dist_struct.dist_mat = nthroot(dist_struct.dist_mat,p);
-  dist_struct.dist_type = 'lp_distance';
+  if(mod(p,2) == 1)
+    dist_struct = get_pairwise_squared_lp_odd_distance(X1, X2,p);
+    dist_struct.dist_mat = nthroot(dist_struct.dist_mat,p);
+    dist_struct.dist_type = 'lp_distance';
+  else
+    'error';
+    dist_struct = 'error';
+  end
 
 end
       

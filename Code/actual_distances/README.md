@@ -34,7 +34,8 @@ List of functions in this folder
   - get_pairwise_lp_odd_distance.m
   - get_pairwise_l1_distance.m
   - get_pairwise_l_infinity_distance.m
-  - get_pairwise_squared_lp_distance
-  - get_pairwise_lp_distance
+  - get_pairwise_squared_lp_distance.m
+  - get_pairwise_lp_distance.m
+  - get_pairwise_jaccard_similarity.m
 
 

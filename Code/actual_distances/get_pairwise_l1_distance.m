@@ -24,7 +24,7 @@ function [dist_struct] = get_pairwise_l1_distance(X1, X2)
     end
   else
     for j = 1:n2
-      dist_struct.dist_mat(:,j) = sum(abs(bsxfun(@minus, X2(j,:), X1)),1);  
+      dist_struct.dist_mat(:,j) = sum(abs(bsxfun(@minus, X2(j,:), X1)),2);  
     end
   end  
 

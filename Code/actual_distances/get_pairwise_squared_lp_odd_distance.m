@@ -14,24 +14,30 @@ function [dist_struct] = get_pairwise_squared_lp_odd_distance(X1, X2, p)
   % Author: KK
 
   % See derivations.pdf for more info
-  n1 = size(X1,1);
-  n2 = size(X2,1);
-  
-  dist_struct.dist_mat = zeros(n1,n2);
 
-  if (n1 <= n2)  
-    for i = 1:n1
-      dist_struct.dist_mat(i,:) = sum((bsxfun(@minus, X1(i,:), X2)).^p,2)';
-    end
+  if mod(p,2) == 1
+    n1 = size(X1,1);
+    n2 = size(X2,1);
+    
+    dist_struct.dist_mat = zeros(n1,n2);
+    
+    if (n1 <= n2)  
+      for i = 1:n1
+        dist_struct.dist_mat(i,:) = sum((bsxfun(@minus, X1(i,:), X2)).^p,2)';
+      end
+    else
+      for j = 1:n2
+        dist_struct.dist_mat(:,j) = sum((bsxfun(@plus, -X2(j,:), X1)).^p,2);  
+      end
+    end  
+
+
+    dist_struct.dist_type = 'squared_lp_distance';
+    dist_struct.dist_p = p;
   else
-    for j = 1:n2
-      dist_struct.dist_mat(:,j) = sum((bsxfun(@minus, X2(j,:), X1)).^p,1);  
-    end
-  end  
-
-
-  dist_struct.dist_type = 'squared_lp_distance';
-  dist_struct.dist_p = p;
+    'error';
+    dist_struct = 'error';
+  end
 
 end
       

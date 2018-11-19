@@ -9,14 +9,17 @@ function [dist_struct] = get_pairwise_angular_distance(X1, X2)
   %            .dist_type: 'angular_distance'
   %                                                                                                              
   % Assumptions: Assume we can compute and store this n1 by n2 matrix in memory
-  
+  % Assumptions: No observations are zeros 
+
   % Author: KK
 
   % See derivations.pdf for more info
+
+  % Note: Possible to get NaNs here, when one vector is zero so...
   
   n1 = size(X1,1);
   n2 = size(X2,1);
-  
+
   dist_struct.dist_mat = acos((X1 * X2') ./ sqrt(repmat(sum(X1.^2,2),1,n2) .* repmat(sum(X2.^2,2),1,n1)'));
   dist_struct.dist_type = 'angular_distance';
 

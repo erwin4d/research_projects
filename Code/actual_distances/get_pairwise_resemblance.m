@@ -8,7 +8,8 @@ function [dist_struct] = get_pairwise_resemblance(X1, X2)
   %                        resemblance between X1(i,:) and X2(j,:)
   %            .dist_type: 'resemblance' 
   % Assumptions: Assume we can compute and store this n1 by n2 matrix in memory
-  
+  % Assumptions: No observations are zeros 
+    
   % Author: KK
 
   % See derivations.pdf for more info
