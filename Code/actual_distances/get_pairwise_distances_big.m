@@ -18,8 +18,11 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
   MAXSIZE = 250;
   
 
-  % X1: n1 by p matrix of n1 observations and p parameters 
-  % X2: n2 by p matrix of n2 observations and p parameters
+  % X1, X2:A structure with at least two fields, being
+  %           .mat: A n by p matrix with n observations and p features
+  %           .num_obs: Number of observations
+  %           
+
   % distance_type: type of distance to be calculated, from
   %                - angular_distance
   %                - dot_product
@@ -34,8 +37,8 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
   % varagin: optional parameter p, for lp distance
 
   pars = inputParser;  
-  pars.addRequired('X1',@(x) ismatrix(x) && isnumeric(x));
-  pars.addRequired('X2',@(x) ismatrix(x) && isnumeric(x));
+  pars.addRequired('X1',@(x) isstruct(x) | ismatrix(x));
+  pars.addRequired('X2',@(x) isstruct(x) | ismatrix(x));
   pars.addRequired('distance_type', @(x) any(strcmp(x,{'angular_distance', 'dot_product', 'euclidean_distance', 'hamming_distance', 'jaccard_similarity', 'lp_distance', 'resemblance', 'squared_euclidean_distance', 'squared_lp_distance'})));
   pars.addOptional('p_dist', 'none', @(x) x > 0 | x == Inf);
   pars.parse(X1, X2 , distance_type, varargin{:});  
@@ -54,40 +57,38 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
 
   % See derivations.pdf for more info
 
-  n1 = size(X1,1);
-  n2 = size(X2,1);
 
   % Construct start index and end index of blocks of "height" 250 or less
-  if n1 > MAXSIZE
-    n1_index_start = 1:MAXSIZE:n1;
-    n1_index_end = MAXSIZE:MAXSIZE:n1;
+  if X1.num_obs > MAXSIZE
+    n1_index_start = 1:MAXSIZE:X1.num_obs;
+    n1_index_end = MAXSIZE:MAXSIZE:X1.num_obs;
     
     if(length(n1_index_start) > length(n1_index_end))
-      n1_index_end = [n1_index_end, n1];
+      n1_index_end = [n1_index_end, X1.num_obs];
     end
   else
     n1_index_start = 1;
-    n1_index_end = n1;
+    n1_index_end = X1.num_obs;
   end
   % Construct start index and end index of blocks of "width" 250 or less
-  if n2 > MAXSIZE
-    n2_index_start = 1:MAXSIZE:n2;
-    n2_index_end = MAXSIZE:MAXSIZE:n2;
+  if X2.num_obs > MAXSIZE
+    n2_index_start = 1:MAXSIZE:X2.num_obs;
+    n2_index_end = MAXSIZE:MAXSIZE:X2.num_obs;
     
     if(length(n2_index_start) > length(n2_index_end))
-      n2_index_end = [n2_index_end, n2];
+      n2_index_end = [n2_index_end, X2.num_obs];
     end
   else
     n2_index_start = 1;
-    n2_index_end = n2;
+    n2_index_end = X2.num_obs;
   end
   
-  dist_struct.dist_mat = zeros(n1,n2);
+  dist_struct.dist_mat = zeros(X1.num_obs,X2.num_obs);
   if ~ischar(inputs.p_dist)
     dist_struct.dist_p = inputs.p_dist;
     for i = 1:length(n1_index_start)
       for j = 1:length(n2_index_start)
-        dist_struct_tmp = get_pairwise_distances(X1(n1_index_start(i):n1_index_end(i),:), X2(n2_index_start(j):n2_index_end(j),:) , distance_type, inputs.p_dist);
+        dist_struct_tmp = get_pairwise_distances(X1.mat(n1_index_start(i):n1_index_end(i),:), X2.mat(n2_index_start(j):n2_index_end(j),:) , distance_type, inputs.p_dist);
         
         dist_struct.dist_mat(n1_index_start(i):n1_index_end(i),n2_index_start(j):n2_index_end(j)) = dist_struct_tmp.dist_mat;
       end
@@ -95,7 +96,7 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
   else
     for i = 1:length(n1_index_start)
       for j = 1:length(n2_index_start)
-         dist_struct_tmp = get_pairwise_distances(X1(n1_index_start(i):n1_index_end(i),:), X2(n2_index_start(j):n2_index_end(j),:) , distance_type);
+         dist_struct_tmp = get_pairwise_distances(X1.mat(n1_index_start(i):n1_index_end(i),:), X2.mat(n2_index_start(j):n2_index_end(j),:) , distance_type);
       
         dist_struct.dist_mat(n1_index_start(i):n1_index_end(i),n2_index_start(j):n2_index_end(j)) = dist_struct_tmp.dist_mat;
      end

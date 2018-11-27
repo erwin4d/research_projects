@@ -1,7 +1,9 @@
 function [dist_struct] = get_pairwise_squared_lp_even_distance(X1, X2, p)
 
-  % X1: n1 by p matrix of n1 observations and p parameters 
-  % X2: n2 by p matrix of n2 observations and p parameters
+  % X1, X2:A structure with at least two fields, being
+  %           .mat: A n by p matrix with n observations and p features
+  %           .num_obs: Number of observations
+  %           
   %  p, which could take positive even integers 2,4,6,...
 
   % dist_struct: Outputs a structure with three fields.
@@ -14,17 +16,15 @@ function [dist_struct] = get_pairwise_squared_lp_even_distance(X1, X2, p)
   % Author: KK
 
   % See derivations.pdf for more info
-  
-
+ 
+   
+ 
   if mod(p,2) == 0
 
-    n1 = size(X1,1);
-    n2 = size(X2,1);
-  
-    dist_struct.dist_mat = repmat(sum(X1.^p,2),1,n2) + repmat(sum(X2.^p,2),1,n1)'; % take care of M_0 and M_p (see derivation)
+    dist_struct.dist_mat = repmat(sum((X1.mat).^p,2),1,(X2.num_obs)) + repmat(sum((X2.mat).^p,2),1,(X1.num_obs))'; % take care of M_0 and M_p (see derivation)
 
     for t = 1:(p-1)
-      dist_struct.dist_mat = dist_struct.dist_mat + (-1)^t * nchoosek(p,t) * (X1.^t * (X2.^(p-t))');
+      dist_struct.dist_mat = dist_struct.dist_mat + (-1)^t * nchoosek(p,t) * ((X1.mat).^t * ((X2.mat).^(p-t))');
     end
 
     dist_struct.dist_type = 'squared_lp_distance';

@@ -1,7 +1,9 @@
 function [dist_struct] = get_pairwise_lp_distance(X1, X2, p)
 
-  % X1: n1 by p matrix of n1 observations and p parameters 
-  % X2: n2 by p matrix of n2 observations and p parameters
+  % X1, X2:A structure with at least two fields, being
+  %           .mat: A n by p matrix with n observations and p features
+  %           .num_obs: Number of observations
+  %          
   %  p, which could take positive integers 1, 2, ... including Inf
 
   % This combines the functions

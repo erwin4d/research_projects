@@ -1,0 +1,1079 @@
+rm(golub_train)
+create_iris(TRUE)
+create_colon(TRUE)
+ls()
+rm(list = ls())
+# Load data into specific format#
+# Should return 3 outputs in a list#
+#
+# X matrix (observations)#
+# Y labels of 0s or 1s (class)#
+# X - n observations (rows), p dimensions (columns)#
+# Y - obs of 0s and 1s.#
+library(MASS)#
+library(datamicroarray)#
+#
+setClass("preprocess_ob", slots=list(X = "matrix", Y = "numeric", num_obs = "numeric", num_features = "numeric", name = "character", info = "character", is_centered = "logical"))#
+#
+setMethod(f = "show", signature = "preprocess_ob",#
+	definition = function(object) {#
+    cat("Name:\t\t\t\t\t\t\t\t", object@name, "\n")#
+    cat("Is_centered: \t\t\t\t\t", object@is_centered, "\n")#
+    cat("Number of observations: \t", "n =", object@num_obs, "\n")#
+    cat("Number of parameters: \t", "p = ", object@num_features, "\n\n")#
+    cat("Other Info:\t\t\t\t\t", object@info, "\n")#
+  }#
+)#
+#
+create_preprocess_ob<-function(X,Y,num_obs,num_features,name,info,is_centered){#
+#
+  if (is_centered == TRUE){#
+#
+    new_name = paste(name,"_centered", sep = "")#
+    X_cent = matrix( scale(X,center=TRUE), nrow = num_obs, ncol = num_features, byrow = F)  	#
+	  to_create = new("preprocess_ob",#
+	    name = new_name,#
+	    num_obs = num_obs,#
+	    num_features = num_features,#
+	    is_centered = is_centered,#
+	    info = info,#
+	    X = X_cent,#
+	    Y = Y#
+	  )#
+  } else {#
+    new_name = paste(name,"_uncentered", sep = "")#
+	  to_create = new("preprocess_ob",#
+	    name = new_name,#
+	    num_obs = num_obs,#
+	    num_features = num_features,#
+	    is_centered = is_centered,#
+	    info = info,#
+	    X = X,#
+	    Y = Y#
+	  )#
+  }#
+  return(to_create)#
+}#
+#
+## Create X,Y based on datamicroarray package #
+#
+create_datamicroarray_XY<-function(data, setzero){#
+  size = dim(data$x)#
+  X = matrix(nrow = size[1],ncol = size[2])#
+  X[,1:size[2]] = data$x[,1:1:size[2]]#
+  Y = rep(1,size[1])#
+  Y[which(data$y == setzero)] = 0  #
+  return(list(X=X,Y=Y, num_obs = size[1], num_features = size[2]))#
+}#
+create_iris<-function(is_centered = TRUE){#
+#
+  data(iris)#
+  X = matrix(nrow = 100,ncol = 4)#
+  X[,1] = iris[1:100,1]#
+  X[,2] = iris[1:100,2] #
+  X[,3] = iris[1:100,3] #
+  X[,4] = iris[1:100,4]    #
+  Y = c(rep(0,50),rep(1,50))#
+  num_obs = 100#
+  num_features = 4#
+	info = "This is the first 100 rows of the iris data, consisting of 2 classes."#
+  name = "iris"#
+  to_create = create_preprocess_ob(X = X, Y = Y, num_obs = num_obs, num_features = num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+create_colon<-function(is_centered = TRUE){#
+#
+  data(alon)#
+  data_out = create_datamicroarray_XY(data = alon, setzero = "n")#
+  info = "This is the colon data (Alon et al), consisting of 2 classes. 0 corresponds to n, 1 corresponds to t."#
+  name = "colon"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(alon)#
+  return(to_create)#
+}#
+create_borovecki<-function(is_centered = TRUE){#
+#
+  data(borovecki)#
+  data_out = create_datamicroarray_XY(data = borovecki, setzero = "control")#
+  info = "This is the Borovecki data, consisting of 2 classes. 0 corresponds to control, 1 corresponds to symptomatic."#
+  name = "borovecki" #
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(borovecki)#
+  return(to_create)#
+}#
+#
+create_chin<-function(is_centered = TRUE){#
+#
+  data(chin)#
+  data_out = create_datamicroarray_XY(data = chin, setzero = "negative")#
+#
+  info = "This is the Chin data, consisting of 2 classes. 0 corresponds to negative, 1 corresponds to positive."#
+  name = "chin"#
+#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(chin)#
+  return(to_create)#
+}#
+create_chowdary<-function(is_centered = TRUE){#
+#
+  data(chowdary)#
+  data_out = create_datamicroarray_XY(data = chowdary, setzero = "colon")#
+  info = "This is the Chowdary data, consisting of 2 classes. 0 corresponds to colon, 1 corresponds to breast."#
+  name = "chowdary"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(chowdary)#
+  return(to_create)#
+}#
+create_golub<-function(is_centered = TRUE){#
+#
+  data(golub)#
+  data_out = create_datamicroarray_XY(data = golub, setzero = "AML")#
+  info = "This is the Golub data, consisting of 2 classes. 0 corresponds to AML, 1 corresponds to ALL."#
+  name = "golub"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(golub)#
+  return(to_create)#
+}#
+create_gordon<-function(is_centered = TRUE){#
+#
+  data(gordon)#
+  X = matrix(nrow = 72,ncol = 7129)#
+  X[,1:7129] = golub$x[,1:7129]#
+  Y = rep(1, 72)#
+  Y[which(golub$y == "AML")] = 0 #
+  num_obs = 72#
+  num_features = 7129#
+  info = "This is the Golub data, consisting of 2 classes. 0 corresponds to AML, 1 corresponds to ALL."#
+  name = "golub"#
+  to_create = create_preprocess_ob(X = X, Y = Y, num_obs = num_obs, num_features = num_features, name = name, info = info, is_centered = is_centered)#
+#
+  return(to_create)#
+}
+create_iris(TRUE)
+ls()
+iris
+data(gordon)
+str(gordon)
+str(gordon$y)
+gordon$y
+create_gordon<-function(is_centered = TRUE){#
+#
+  data(gordon)#
+  data_out = create_datamicroarray_XY(data = golub, setzero = "AML")#
+  info = "This is the Gordon data, consisting of 2 classes. 0 corresponds to adenocarcinoma, 1 corresponds to mesothelioma"#
+  name = "gordon"#
+#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(gordon)#
+  return(to_create)#
+}
+str(create_gordon(TRUE))
+create_gordon<-function(is_centered = TRUE){#
+#
+  data(gordon)#
+  data_out = create_datamicroarray_XY(data = gordon, setzero = "adenocarcinoma")#
+  info = "This is the Gordon data, consisting of 2 classes. 0 corresponds to adenocarcinoma, 1 corresponds to mesothelioma"#
+  name = "gordon"#
+#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(gordon)#
+  return(to_create)#
+}
+str(create_gordon(TRUE))
+ls()
+create_golub<-function(is_centered = TRUE){#
+#
+  data(golub)#
+  data_out = create_datamicroarray_XY(data = golub, setzero = "AML")#
+  info = "This is the Golub data, consisting of 2 classes. 0 corresponds to AML, 1 corresponds to ALL."#
+  name = "golub"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  rm(golub)#
+  return(to_create)#
+}
+str(create_golub(TRUE))
+ls()
+rm(list = ls())
+?data
+data()
+data(gravier)
+str(gravier)
+str(gravier$x)
+str(dim(gravier$x))
+str(dim(gravier$y))
+str(gravier$y)
+# Load data into specific format#
+# Should return 3 outputs in a list#
+#
+# X matrix (observations)#
+# Y labels of 0s or 1s (class)#
+# X - n observations (rows), p dimensions (columns)#
+# Y - obs of 0s and 1s.#
+library(MASS)#
+library(datamicroarray)#
+#
+setClass("preprocess_ob", slots=list(X = "matrix", Y = "numeric", num_obs = "numeric", num_features = "numeric", name = "character", info = "character", is_centered = "logical"))#
+#
+setMethod(f = "show", signature = "preprocess_ob",#
+	definition = function(object) {#
+    cat("Name:\t\t\t\t\t\t\t\t", object@name, "\n")#
+    cat("Is_centered: \t\t\t\t\t", object@is_centered, "\n")#
+    cat("Number of observations: \t", "n =", object@num_obs, "\n")#
+    cat("Number of parameters: \t", "p = ", object@num_features, "\n\n")#
+    cat("Other Info:\t\t\t\t\t", object@info, "\n")#
+  }#
+)#
+#
+create_preprocess_ob<-function(X,Y,num_obs,num_features,name,info,is_centered){#
+#
+  if (is_centered == TRUE){#
+#
+    new_name = paste(name,"_centered", sep = "")#
+    X_cent = matrix( scale(X,center=TRUE), nrow = num_obs, ncol = num_features, byrow = F)  	#
+	  to_create = new("preprocess_ob",#
+	    name = new_name,#
+	    num_obs = num_obs,#
+	    num_features = num_features,#
+	    is_centered = is_centered,#
+	    info = info,#
+	    X = X_cent,#
+	    Y = Y#
+	  )#
+  } else {#
+    new_name = paste(name,"_uncentered", sep = "")#
+	  to_create = new("preprocess_ob",#
+	    name = new_name,#
+	    num_obs = num_obs,#
+	    num_features = num_features,#
+	    is_centered = is_centered,#
+	    info = info,#
+	    X = X,#
+	    Y = Y#
+	  )#
+  }#
+  return(to_create)#
+}#
+#
+## Create X,Y based on datamicroarray package #
+#
+create_datamicroarray_XY<-function(data, setzero){#
+  size = dim(data$x)#
+  X = matrix(nrow = size[1],ncol = size[2])#
+  X[,1:size[2]] = data$x[,1:1:size[2]]#
+  Y = rep(1,size[1])#
+  Y[which(data$y == setzero)] = 0  #
+  return(list(X=X,Y=Y, num_obs = size[1], num_features = size[2]))#
+}#
+create_iris<-function(is_centered = TRUE){#
+#
+  data(iris)#
+  X = matrix(nrow = 100,ncol = 4)#
+  X[,1] = iris[1:100,1]#
+  X[,2] = iris[1:100,2] #
+  X[,3] = iris[1:100,3] #
+  X[,4] = iris[1:100,4]    #
+  Y = c(rep(0,50),rep(1,50))#
+  num_obs = 100#
+  num_features = 4#
+	info = "This is the first 100 rows of the iris data, consisting of 2 classes."#
+  name = "iris"#
+  to_create = create_preprocess_ob(X = X, Y = Y, num_obs = num_obs, num_features = num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+create_colon<-function(is_centered = TRUE){#
+#
+  data(alon)#
+  data_out = create_datamicroarray_XY(data = alon, setzero = "n")#
+  info = "This is the colon data (Alon et al), consisting of 2 classes. 0 corresponds to n, 1 corresponds to t."#
+  name = "colon"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+create_borovecki<-function(is_centered = TRUE){#
+#
+  data(borovecki)#
+  data_out = create_datamicroarray_XY(data = borovecki, setzero = "control")#
+  info = "This is the Borovecki data, consisting of 2 classes. 0 corresponds to control, 1 corresponds to symptomatic."#
+  name = "borovecki" #
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+#
+create_chin<-function(is_centered = TRUE){#
+#
+  data(chin)#
+  data_out = create_datamicroarray_XY(data = chin, setzero = "negative")#
+#
+  info = "This is the Chin data, consisting of 2 classes. 0 corresponds to negative, 1 corresponds to positive."#
+  name = "chin"#
+#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+create_chowdary<-function(is_centered = TRUE){#
+#
+  data(chowdary)#
+  data_out = create_datamicroarray_XY(data = chowdary, setzero = "colon")#
+  info = "This is the Chowdary data, consisting of 2 classes. 0 corresponds to colon, 1 corresponds to breast."#
+  name = "chowdary"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+create_golub<-function(is_centered = TRUE){#
+#
+  data(golub)#
+  data_out = create_datamicroarray_XY(data = golub, setzero = "AML")#
+  info = "This is the Golub data, consisting of 2 classes. 0 corresponds to AML, 1 corresponds to ALL."#
+  name = "golub"#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+create_gordon<-function(is_centered = TRUE){#
+#
+  data(gordon)#
+  data_out = create_datamicroarray_XY(data = gordon, setzero = "adenocarcinoma")#
+  info = "This is the Gordon data, consisting of 2 classes. 0 corresponds to adenocarcinoma, 1 corresponds to mesothelioma"#
+  name = "gordon"#
+#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}#
+#
+create_gravier<-function(is_centered = TRUE){#
+#
+  data(gravier)#
+  data_out = create_datamicroarray_XY(data = gravier, setzero = "poor")#
+  info = "This is the Gravier data, consisting of 2 classes. 0 corresponds to poor, 1 corresponds to good"#
+  name = "gravier"#
+#
+  to_create = create_preprocess_ob(X = data_out$X, Y = data_out$Y, num_obs = data_out$num_obs, num_features = data_out$num_features, name = name, info = info, is_centered = is_centered)#
+  return(to_create)#
+}
+str(create_gravier(TRUE))
+str(create_gordon(TRUE))
+str(create_gravier(TRUE))
+data(gravier)#
+  data_out = create_datamicroarray_XY(data = gravier, setzero = "poor")#
+  info = "This is the Gravier data, consisting of 2 classes. 0 corresponds to poor, 1 corresponds to good"#
+  name = "gravier"
+data_out
+str(gravier)
+str(gravier$x)
+as.matrix(gravier$x)
+ls()
+data(golub)
+library(datamicroarray)
+hmm
+data(golub)
+golub
+## test#
+#
+rm(list = ls())#
+#
+data(iris)#
+#
+iris_dat = as.matrix(iris[,1:4])#
+#
+proj_data = iris_dat %*% eigen(cov(iris_dat))$vectors#
+#
+proj_data = proj_data[,1:2]#
+#
+## Okay, there are three classes#
+#
+## We want a function: Given data, what is the equation of the ellipse?#
+## Can only do 2D anyway.#
+#
+find2Dellipse<-function(data_X, percent, col){#
+  # what's the mean and covariance?#
+  mu_hat = colMeans(data_X)#
+  sigma_hat = t(data_X) %*% data_X / nrow(data_X) - mu_hat %*% t(mu_hat)#
+  eigs = eigen(sigma_hat)#
+  lambda_1 = eigs$values[1]#
+  lambda_2 = eigs$values[2]#
+  evec_1 = as.matrix(eigs$vectors[,1], ncol = 1)#
+  evec_2 = as.matrix(eigs$vectors[,2], ncol = 1)#
+#
+  scale_factor = qchisq(percent, 2, ncp = 0, lower.tail = TRUE, log.p = FALSE)#
+#
+ #  x^2 / lambda_1*scale_factor + y^2 / lambda_2*scale_factor = 1#
+  xseq = c(seq(-sqrt(lambda_1*scale_factor),0,by = 0.001),seq(0,sqrt(lambda_1*scale_factor),by = 0.001))#
+  xseq_tmp = seq(0,sqrt(lambda_1*scale_factor), by = 0.001)#
+  yseq_tmp = sqrt((1 - xseq_tmp^2/(lambda_1*scale_factor)) * lambda_2*scale_factor)#
+  yseq = c(rev(yseq_tmp),yseq_tmp)#
+#
+  ellipse_top = cbind(xseq,yseq) #
+  ellipse_bottom = cbind(xseq,-yseq) #
+#
+  u = svd((sigma_hat))$u#
+  new_ellipse_top =   t(u %*% t(ellipse_top)) + matrix(rep(mu_hat,dim(ellipse_top)[1]),ncol = 2, byrow = T)#
+  new_ellipse_bottom = t(u %*% t(ellipse_bottom)) + matrix(rep(mu_hat,dim(ellipse_top)[1]),ncol = 2, byrow = T)#
+  lines(new_ellipse_top[,1],new_ellipse_top[,2], lty = 1, col = col)#
+  lines(new_ellipse_bottom[,1],new_ellipse_bottom[,2], lty = 1, col = col)#
+#
+}#
+## make plotting easier#
+findMaxMin<-function(data_X){#
+  xmin = min(data_X[,1])#
+  xmax = max(data_X[,1])#
+#
+  ymin = min(data_X[,2])#
+  ymax = max(data_X[,2])#
+  return(list(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax))#
+}#
+#
+set_up_plot<-function(data_X, main, xlab, ylab){#
+  bds = findMaxMin(proj_data)#
+  par(mar = c(5,5,5,5))#
+	plot(0, xlim = c(bds$xmin, bds$xmax), ylim = c(bds$ymin,bds$ymax), ylab = ylab, xlab = xlab, main = main, cex.lab = 2, cex.axis = 2, cex.main = 2)#
+}#
+#
+## Plot and visualize IRIS#
+#
+main = "Plot of iris data"#
+xlab = "X axis"#
+ylab = "Y axis"#
+#
+set_up_plot(proj_data, main = main, xlab = xlab, ylab = ylab)#
+#
+lines(proj_data[1:50,1], proj_data[1:50,2], type = "p", pch = 2, col = "blue")#
+lines(proj_data[51:100,1], proj_data[51:100,2], type = "p", pch = 3, col = "red")#
+lines(proj_data[101:150,1], proj_data[101:150,2], type = "p", pch = 4, col = "black")#
+find2Dellipse(data_X = proj_data[1:50,], percent = 0.95, col = "blue")#
+find2Dellipse(data_X = proj_data[51:100,], percent = 0.95, col = "red")#
+find2Dellipse(data_X = proj_data[101:150,], percent = 0.95, col = "black")
+100/3
+33 * 50
+1650 / 400
+12345/54321
+log(12345)
+log(12345) + log(54321)
+log(12345) - log(54321)
+exp(log(12345) - log(54321))
+log(12345)
+log(54321)
+log(12345) - log(54321)
+exp(-1.48166)
+411831 + 123483
+535314/5730400
+1000*700*3
+X1 = matrix(c(1.5,1.2,1.7,2.1,1.9,2.0),ncol = 2)
+X1
+plot(x1)
+plot(X1)
+library(MASS)
+X1 = mvrnorm(n = 10, mu = c(2,1), sigma = matrix(c(1,0.7,0.7,1),nrow = 2))
+X1 = mvrnorm(n = 10, mu = c(2,1), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))
+X1
+plot(X1)
+X1 = mvrnorm(n = 10, mu = c(2,1), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-1,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlab = "X axis", ylab = "Y axis")
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)
+min(X1)
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(2,1), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-1,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)
+lines(X1, col = "blue", pch = 3)
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(2,1), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-1,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 3, type = "p")
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(4,2), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-6,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 4, type = "p")
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(4,2), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-6,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 4, type = "p")#
+lines(X2, col = "red", pch = 8, type = "p")
+legend("topleft", legend = c("Group 1", "Group 2"), pch = c(4,8), col = c("blue", "red"))
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(4,2), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-6,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 4, type = "p")#
+lines(X2, col = "red", pch = 8, type = "p")#
+lines(x = 1, y = 2, col = "black", pch = 6, type = "p")#
+#
+legend("topleft", legend = c("Group 1", "Group 2", "Unknown point"), pch = c(4,8,6), col = c("blue", "red", "black"))
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(4,2), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-6,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 4, type = "p")#
+lines(X2, col = "red", pch = 8, type = "p")#
+lines(x = 1, y = 2, col = "black", pch = 6, type = "p")#
+#
+legend("topleft", legend = c("Group 1", "Group 2", "Unknown vector"), pch = c(4,8,6), col = c("blue", "red", "black"))
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(4,2), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-6,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 4, type = "p")#
+lines(X2, col = "red", pch = 8, type = "p")#
+lines(x = 1, y = 2, col = "black", pch = 6, type = "p")#
+#
+legend("topleft", legend = c("Group 1", "Group 2", "Unknown vector"), pch = c(4,8,6), col = c("blue", "red", "black"), cex = 2)
+##### TOY EXAMPLE 1#
+#
+X1 = mvrnorm(n = 10, mu = c(4,2), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+X2 = mvrnorm(n = 10, mu = c(-6,-3), Sigma = matrix(c(1,0.7,0.7,1),nrow = 2))#
+#
+xbounds = c(min(X1[,1], X2[,1]),max(X1[,1], X2[,1]))#
+ybounds = c(min(X1[,2], X2[,2]),max(X1[,2], X2[,2]))#
+#
+par(mar = c(5,5,5,5))#
+plot(0, type = "n", main = "Plot of Group 1 and Group 2", xlim = xbounds, ylim = ybounds, xlab = "X axis", ylab = "Y axis", cex.lab = 2, cex.axis = 2, cex.main = 2)#
+#
+abline(h = 0)#
+abline(v = 0)#
+lines(X1, col = "blue", pch = 4, type = "p", cex = 2)#
+lines(X2, col = "red", pch = 8, type = "p", cex = 2)#
+lines(x = 1, y = 2, col = "black", pch = 6, type = "p", cex = 2)#
+#
+legend("topleft", legend = c("Group 1", "Group 2", "Unknown vector"), pch = c(4,8,6), col = c("blue", "red", "black"), cex = 2)
+xseq = seq(1,100,1)
+xseq
+xseq = seq(1,100,1)#
+yseq = 100 - xseq^2
+plot(xseq,yseq)
+xseq = seq(1,10,1)#
+yseq = 100 - xseq^2
+plot(xseq,yseq)
+xseq = seq(1,10,1)#
+yseq = 100 - (xseq+ 10)^2#
+plot(xseq,yseq)
+xseq = seq(1,10,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(xseq,yseq)
+xseq = seq(1,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(xseq,yseq)
+xseq = seq(1,20,1)#
+yseq = 100 - (xseq- 20)^2#
+plot(xseq,yseq)
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(xseq,yseq)
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n", xseq,yseq, xaxt = "n")
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n",  xaxt = "n")
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n",  xaxt = "n", yaxt = "n", xlim = c(0, 20),ylim = c(0,100))
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n",  xaxt = "n", yaxt = "n", xlim = c(0, 20),ylim = c(0,100), xlab = "Amount of shit thrown", ylab = "Proportion of vote going to opposition")
+par(mar = c(5,5,5,5))#
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n",  xaxt = "n", yaxt = "n", xlim = c(0, 20),ylim = c(0,100), xlab = "Amount of shit thrown", ylab = "Proportion of vote going to opposition", cex.lab = 2, cex.main = 2)
+lines(xseq,yseq)
+par(mar = c(5,5,5,5))#
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n",  xaxt = "n", yaxt = "n", xlim = c(0, 20),ylim = c(0,100), xlab = "Amount of shit thrown", ylab = "Proportion of vote going to opposition", cex.lab = 2, cex.main = 2)#
+#
+lines(xseq,yseq, col = "blue")#
+abline(h = 0)
+par(mar = c(5,5,5,5))#
+xseq = seq(0,20,1)#
+yseq = 100 - (xseq- 10)^2#
+plot(0, type = "n",  xaxt = "n", yaxt = "n", xlim = c(0, 20),ylim = c(0,100), xlab = "Amount of shit thrown", ylab = "Proportion of vote going to opposition", cex.lab = 2, cex.main = 2, main = "Proportion of opposition vote versus shit thrown")#
+#
+lines(xseq,yseq, col = "blue")#
+abline(h = 0)
+library(MASS)   # use the MASS library
+mu = c(0,0)#
+eye_2 = diag(2)  ## diag(x) creates a diagonal matrix of size x#
+#
+mvn_data_1 = mvrnorm(n = 10000, mu = mu, Sigma = eye_2)#
+#
+head(mvn_data_1) ## See first few rows#
+tail(mvn_data_1) ## See last few rows#
+#
+## Let's plot the first column against the second#
+## But we should really look at the plot documentation#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2])
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "RV 1", ylab = "RV 2", main = "Plot of bivariate normal with N((0,0), I_n)")
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))))#
+#
+## Paste is like concatenate. Eg, paste("this","is","a","sentence")#
+## There is a sep option ; type ?paste for more info#
+#
+## You can adjust the font size of labelling, etc with cex.#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)
+abline(h = 0)#
+abline(v = 0)#
+#
+## Hard to see black, so#
+#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+## What we generated was the bivariate normal with mean mu = c(0,0), and I_2 as our covariance matrix#
+## This means, our x variable is independent of our y variable. #
+#
+## What if we had some correlation? Eg#
+#
+Sigma_cor = matrix(data = c(1,0.7,0.7,1),nrow = 2)#
+#
+mvn_data_2 = mvrnorm(n = 10000, mu = mu, Sigma = Sigma_cor)#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+xmin = min(mvn_data_1[,1], mvn_data_2[,1])#
+xmax = max(mvn_data_1[,1], mvn_data_2[,1])#
+ymin = min(mvn_data_1[,2], mvn_data_2[,2])#
+ymax = max(mvn_data_1[,2], mvn_data_2[,2])#
+#
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+Sigma_cor = matrix(data = c(1,0.7,0.7,1),nrow = 2)#
+#
+mvn_data_2 = mvrnorm(n = 10000, mu = mu, Sigma = Sigma_cor)#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+par(mfrow = c(2,1))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+Sigma_cor
+Sigma_cor %*% mvn_data_1
+str(Sigma_cor)
+str(mvn_data_1)
+mvn_data_1 %*% Sigma_cor
+plot(mvn_data_1 %*% Sigma_cor)
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+t(Sigma_cor %*% t(mvn_data_1))
+test1 = t(Sigma_cor %*% t(mvn_data_1)
+test1 = t(Sigma_cor %*% t(mvn_data_1))
+test1
+plot(x = test1[,1], y = test1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+test1 = t(Sigma_cor %*% Sigma_cor %*% t(mvn_data_1))#
+#
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = test1[,1], y = test1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+test1 = t(Sigma_cor  %*% t(mvn_data_1))#
+#
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = test1[,1], y = test1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+tmp = eigen(Sigma_cor)
+eigen(Sigma_cor)$vectors
+diag(tmp$values)
+eigen(tmp)$vectors %*% diag(tmp$values) %*% (solve(eigen(tmp)$vectors))
+eigen(tmp)$vectors %*% diag(tmp$values) %*% (solve(tmp$vectors))
+tmp$vectors
+eigen(tmp)$vectors %*% diag(tmp$values) %*% (inverse(tmp$vectors))
+tmp$vectors %*% diag(tmp$values) %*% (solve(tmp$vectors))
+tmp$vectors %*% diag(tmp$values)^0.5 %*% (solve(tmp$vectors))
+tmp = eigen(Sigma_cor)#
+#
+Sigma_cor2 = tmp$vectors %*% diag(tmp$values)^0.5 %*% (solve(tmp$vectors))#
+#
+test1 = t(Sigma_cor  %*% t(mvn_data_1))#
+test2 = t(Sigma_cor2  %*% t(mvn_data_1))#
+#
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = test2[,1], y = test2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+tmp = eigen(Sigma_cor)#
+#
+Sigma_cor2 = tmp$vectors %*% diag(tmp$values)^0.5 %*% (solve(tmp$vectors))#
+#
+test1 = t(Sigma_cor  %*% t(mvn_data_1))#
+test2 = t(Sigma_cor2  %*% t(mvn_data_1))#
+#
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = test2[,1], y = test2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), xlim = c(xmin,xmax), ylim = c(ymin, ymax), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), xlim = c(xmin,xmax), ylim = c(ymin, ymax),cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+par(mfrow = c(1,2))  ## (Try to see what happens if we use c(2,1) instead)#
+#
+plot(x = mvn_data_1[,1], y = mvn_data_1[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,I[2]))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")#
+#
+plot(x = mvn_data_2[,1], y = mvn_data_2[,2], xlab = "First random variable", ylab = "Second random variable", main = expression(paste("Plot of bivariate normal with ", N(0,Sigma))), cex.axis = 1.5, cex.main = 1.5, cex.lab = 1.5)#
+abline(h = 0, col = "blue")#
+abline(v = 0, col = "blue")
+install.packages("ade4")   # if you do not have this package#
+library("ade4")            # load into library
+library("ade4")            # load into library
+data(olympic)  # load olympic data from ade4 dataset#
+#
+olympic           # see form of olympic data#
+str(olympic)      # see form of olympic data#
+head(olympic$tab) # see form of olympic data#
+?olympic
+dim(olympic$tab)  # 33 rows, 10 parameters / features
+olympic_data = olympic$tab#
+olympic_data = scale(olympic_data, scale = TRUE)   # this centers and scales the data (why do you think we do this?)#
+# should type ?scale for info about parameters#
+#
+###### Do PCA#
+###### which is just getting the eigenvectors of covariance matrix#
+#
+ev = eigen(cov(olympic_data))
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+plot(x = 0:10, y = c(0,cumsum(ev$values)/(sum(ev$values))), type = "l", main = "Plot of variance accounted for by eigenvectors", xlab = "Number of eigenvectors", ylab = "Variance accounted for")#
+#
+## you should look at the helpfiles for: cumsum, sum, plot for more info#
+#
+abline(h = 0.8)
+dim(olympic$tab)  # 33 rows, 10 parameters / features
+olympic_data = olympic$tab#
+olympic_data = scale(olympic_data, scale = TRUE)   # this centers and scales the data (why do you think we do
+ev = eigen(cov(olympic_data))
+head(olympic$tab) # see form of olympic data
+olympic_data = olympic$tab#
+olympic_data = scale(olympic_data, scale = TRUE)   # this centers and scales the data (why do you think we do this?)#
+# should type ?scale for info about parameters
+ev = eigen(cov(olympic_data))
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+ev = eigen(cov(olympic_data))  #
+#
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+plot(x = 0:10, y = c(0,cumsum(ev$values)/(sum(ev$values))), type = "l", main = "Plot of variance accounted for by eigenvectors", xlab = "Number of eigenvectors", ylab = "Variance accounted for")
+abline(h = 0.8)
+plot(x = 0:10, y = c(0,cumsum(ev$values)/(sum(ev$values))), type = "l", main = "Plot of variance accounted for by eigenvectors", xlab = "Number of eigenvectors", ylab = "Variance accounted for")#
+#
+## you should look at the helpfiles for: cumsum, sum, plot for more info#
+#
+abline(h = 0.8)
+ev = eigen(cov(olympic_data))  #
+#
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+plot(x = 0:10, y = c(0,cumsum(ev$values)/(sum(ev$values))), type = "l", main = "Plot of variance accounted for by eigenvectors", xlab = "Number of eigenvectors", ylab = "Variance accounted for")#
+#
+## you should look at the helpfiles for: cumsum, sum, plot for more info#
+#
+abline(h = 0.8)
+olympic$tab
+ev = eigen(cov(olympic_data))  #
+#
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+str(ev)
+ev = eigen(cov(olympic_data))
+ev
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+ev$values
+ev$vectors
+str(ev) # see form of eigen - will always give eigenvalues and eigenvectors#
+ev$values#
+ev$vectors
+ev$values
+plot(x = 0:10, y = c(0,cumsum(ev$values)/(sum(ev$values))), type = "l", main = "Plot of variance accounted for by eigenvectors", xlab = "Number of eigenvectors", ylab = "Variance accounted for")
+abline(h = 0.8)
+c(0,ev$values/(sum(ev$values)))
+?eigen
+plot(x = 0:10, y = c(0,cumsum(ev$values)/(sum(ev$values))), type = "l", main = "Plot of variance accounted for by eigenvectors", xlab = "Number of eigenvectors", ylab = "Variance accounted for")
+abline(h = 0.8)
+c(0,ev$values/(sum(ev$values)))
+abline(v = 4)
+coord_mat = ev$vectors[,1:4]  # take first 4 eigenvectors
+coord_mat = ev$vectors[,1:4]  # take first 4 eigenvectors#
+new_olympic = as.matrix(olympic$tab) %*% coord_mat   # %*% is matrix multiply in R
+coord_mat
+coord_mat %*% t(as.matrix(olympic$tab))
+coord_mat %*% as.matrix(olympic$tab)
+dim(as.matrix(olympic$tab))
+dim(coord_mat)
+coord_mat
+t(coord_mat) %*% t(as.matrix(olympic$tab))
+t(t(coord_mat) %*% t(as.matrix(olympic$tab))) - new_olympic
+plot(x = new_olympic[,1], y = new_olympic[,2], main = "Plot of points with PC1 and PC2 as axes", xlab = "PC1", ylab = "PC2")
+plot(x = new_olympic[,2], y = new_olympic[,3], main = "Plot of points with PC2 and PC3 as axes", xlab = "PC2", ylab = "PC3", type = "n")#
+text(x = new_olympic[,2],  y = new_olympic[,3] ,label=1:33,col='blue')
+plot(x = new_olympic[,2], y = new_olympic[,4], main = "Plot of points with PC2 and PC4 as axes", xlab = "PC2", ylab = "PC4", type = "n")#
+text(x = new_olympic[,2],  y = new_olympic[,4] ,label=1:33,col='blue')
+olympic$tab[17,]  # anything special?#
+olympic$score[17]
+data(iris)
+coord_mat  # Remember, this is the first 4 eigenvectors as columns
+names(olympic$tab)  # names of variables
+plot(x = new_olympic[,2], y = new_olympic[,3], main = "Plot of points with PC2 and PC3 as axes", xlab = "PC2", ylab = "PC3", type = "n")#
+text(x = new_olympic[,2],  y = new_olympic[,3] ,label=1:33,col='blue')
+olympic$tab[17,]  # anything special?#
+olympic$score[17]
+plot(x = new_olympic[,2], y = new_olympic[,3], main = "Plot of points with PC2 and PC3 as axes", xlab = "PC2", ylab = "PC3", type = "n")#
+text(x = new_olympic[,2],  y = new_olympic[,3] ,label=1:33,col='blue')
+plot(x = new_olympic[,2], y = new_olympic[,4], main = "Plot of points with PC2 and PC4 as axes", xlab = "PC2", ylab = "PC4", type = "n")#
+text(x = new_olympic[,2],  y = new_olympic[,4] ,label=1:33,col='blue')
+names(olympic$tab)  # names of variables
+coord_mat[,1]
+names(olympic$tab)  # names of variables
+olympic$tab[17,]  # anything special?#
+olympic$score[17]
+olympic$tab
+coord_mat
+names(olympic$tab)  # names of variables
+coord_mat[,1]
+names(olympic$tab)  # names of variables
+plot(x = 1:10, y = coord_mat[,1], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC1", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,1], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC1", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+?olympic # remember this
+?olympic
+plot(x = 1:10, y = coord_mat[,2], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC2", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,3], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC3", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,1], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC1", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+## Repeat this for 2nd PC#
+plot(x = 1:10, y = coord_mat[,2], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC2", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,2], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC2", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,3], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC3", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,4], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC4", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)#
+#
+## Harder to see. #
+abline(h = 0.2, lty = 2)#
+abline(h = -0.2, lty = 2)
+plot(x = 1:10, y = coord_mat[,3], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC3", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)
+plot(x = 1:10, y = coord_mat[,4], xlim = c(1,10), ylim = c(-1,1), main = "Visualize linear combination of original variables for PC4", xlab = "Events", ylab = "Coefficients of linear combination", xaxt = "n")#
+#
+axis(1, at=1:10, labels=names(olympic$tab))#
+#
+abline(h = 0)#
+#
+## Harder to see. #
+abline(h = 0.2, lty = 2)#
+abline(h = -0.2, lty = 2)
+0.8 * 18926
+15141
+15141 - 15043
+library(plsgenomics)
+data(Colon)
+str(Colon)
+Colon$X
+Colon$Y
+Colon$X
+ls()
+ls()
+write.csv(Colon$X, "alon_colon_dataset_X.csv")
+?write.csv
+write.csv(Colon$X, "alon_colon_dataset_X.csv", rownames = FALSE, colnames = FALSE)
+?write.csv
+write.csv(Colon$X, "alon_colon_dataset_X.csv", row.names = FALSE, col.names = FALSE)
+write.csv(Colon$X, "alon_colon_dataset_X.csv", row.names = FALSE)
+?write.csv
+write.csv(Colon$X, "alon_colon_dataset_X.csv", col.names = FALSE, row.names = FALSE)
+str(Colon$X)
+Colon$X
+dim(Colon$X)
+write.csv(Colon$X, "alon_colon_dataset_X.csv", col.names = NA, row.names = FALSE)
+write.table(Colon$X, file = "alon_colon_dataset_X.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")
+Colon$Y
+Colon$Y - 1
+write.table(Colon$Y - 1, file = "alon_colon_dataset_Y.csv",row.names=FALSE, na="",col.names=FALSE, sep=",")

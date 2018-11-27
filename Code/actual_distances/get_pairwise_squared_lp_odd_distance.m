@@ -1,7 +1,9 @@
 function [dist_struct] = get_pairwise_squared_lp_odd_distance(X1, X2, p)
 
-  % X1: n1 by p matrix of n1 observations and p parameters 
-  % X2: n2 by p matrix of n2 observations and p parameters
+  % X1, X2:A structure with at least two fields, being
+  %           .mat: A n by p matrix with n observations and p features
+  %           .num_obs: Number of observations
+  %           
   %  p, which could take positive odd integers starting from 3,5,7,...
   
   % dist_struct: Outputs a structure with three fields.
@@ -14,20 +16,19 @@ function [dist_struct] = get_pairwise_squared_lp_odd_distance(X1, X2, p)
   % Author: KK
 
   % See derivations.pdf for more info
-
+ 
   if mod(p,2) == 1
-    n1 = size(X1,1);
-    n2 = size(X2,1);
+
     
-    dist_struct.dist_mat = zeros(n1,n2);
+    dist_struct.dist_mat = zeros(X1.num_obs,X2.num_obs);
     
-    if (n1 <= n2)  
-      for i = 1:n1
-        dist_struct.dist_mat(i,:) = sum((bsxfun(@minus, X1(i,:), X2)).^p,2)';
+    if ((X1.num_obs) <= (X2.num_obs))  
+      for i = 1:(X1.num_obs)
+        dist_struct.dist_mat(i,:) = sum((bsxfun(@minus, (X1.mat(i,:)), (X2.mat))).^p,2)';
       end
     else
-      for j = 1:n2
-        dist_struct.dist_mat(:,j) = sum((bsxfun(@plus, -X2(j,:), X1)).^p,2);  
+      for j = 1:(X2.num_obs)
+        dist_struct.dist_mat(:,j) = sum((bsxfun(@plus, (-X2.mat(j,:)), (X1.mat))).^p,2);  
       end
     end  
 

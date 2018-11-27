@@ -1,7 +1,9 @@
 function [dist_struct] = get_pairwise_resemblance(X1, X2)
 
-  % X1: n1 by p matrix of n1 observations and p parameters 
-  % X2: n2 by p matrix of n2 observations and p parameters
+  % X1, X2:A structure with at least two fields, being
+  %           .mat: A n by p matrix with n observations and p features
+  %           .num_obs: Number of observations
+  %           
 
   % dist_struct: Outputs a structure with three fields.
   %            .dist_mat:  A n1 by n2 matrix, with (i,j)^th entry being the 
@@ -13,20 +15,18 @@ function [dist_struct] = get_pairwise_resemblance(X1, X2)
   % Author: KK
 
   % See derivations.pdf for more info
-  n1 = size(X1,1);
-  n2 = size(X2,1);
 
-  intersected = X1 * X2';
+  intersected = (X1.mat) * (X2.mat)';
   
-  unioned = zeros(n1,n2);
+  unioned = zeros((X1.num_obs),(X2.num_obs));
   
-  if (n1 <= n2)  
-    for i = 1:n1
-      unioned(i,:) = sum(bsxfun(@or, X1(i,:),X2),2)';
+  if ((X1.num_obs) <= (X2.num_obs))  
+    for i = 1:(X1.num_obs)
+      unioned(i,:) = sum(bsxfun(@or, (X1.mat(i,:)),(X2.mat)),2)';
     end
   else
-    for j = 1:n2
-      unioned(:,j) = sum(bsxfun(@or, X2(j,:),X1),2);    
+    for j = 1:(X2.num_obs)
+      unioned(:,j) = sum(bsxfun(@or, (X2.mat(j,:)),(X1.mat)),2);    
     end
   end
   
