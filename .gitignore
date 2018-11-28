@@ -45,3 +45,7 @@ Code/latex_items/data_and_distances/toy_example_two_groups_1.pdf
 Code/latex_items/data_and_distances/toy_examples.R
 *.bbl
 *.blg
+*.eps
+Code/latex_items/construction_of_random_projections/graphics/initial_plot_normal_random_matrix_distance.pdf
+Code/latex_items/construction_of_random_projections/graphics/smaller_plot_deviation_normal_random_matrix_distance.pdf
+Code/latex_items/construction_of_random_projections/graphics/smaller_plot_normal_random_matrix_distance.pdf
