@@ -1,5 +1,4 @@
 
-
 % Some intuition on how well this does
 
 kvals = 10:10:1000;
@@ -96,3 +95,68 @@ set(gca, 'FontSize', 30)
 
 lgd = legend('-DynamicLegend', 'location', 'northeast');
 lgd.FontSize = 30;
+
+
+
+%%%%%%%%%%%%%%%%
+kvals = 1:1:100;
+numiter = 1000;
+
+% Use colon data
+[X, ~] = load_colon();
+
+% Two vectors: Feel free to change the parameters
+rng(0)
+[ X_struct_small ] = build_X_struct(X(randsample(62,2),:), false, false)  
+
+[theo_var, est_var] = verify_variance_generic_distance_simulation(X_struct_small, kvals, numiter, 'squared_euclidean_distance');
+
+
+
+xlim([0,100])
+plot(kvals,theo_var, 'k', 'DisplayName', 'Theoretical Variance'); hold all
+plot(kvals,est_var, 'r', 'DisplayName', 'Empirical Variance'); 
+
+
+grid on;
+
+title(['Plot of variance against dimensions projected to'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca, 'FontSize', 30)
+ylabel('Variance of Sq. Euclidean Distance', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'FontSize', 30)
+
+lgd = legend('-DynamicLegend', 'location', 'northeast');
+lgd.FontSize = 30;
+
+
+
+
+[theo_var, est_var] = verify_variance_generic_distance_simulation(X_struct_small, kvals, numiter, 'dot_product');
+
+
+
+xlim([0,100])
+plot(kvals,theo_var, 'k', 'DisplayName', 'Theoretical Variance'); hold all
+plot(kvals,est_var, 'r', 'DisplayName', 'Empirical Variance'); 
+
+
+grid on;
+
+title(['Plot of variance against dimensions projected to'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca, 'FontSize', 30)
+ylabel('Variance of Dot Product', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'FontSize', 30)
+
+lgd = legend('-DynamicLegend', 'location', 'northeast');
+lgd.FontSize = 30;
+
+
+
