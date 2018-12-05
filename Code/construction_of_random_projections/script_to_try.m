@@ -158,5 +158,39 @@ set(gca, 'FontSize', 30)
 lgd = legend('-DynamicLegend', 'location', 'northeast');
 lgd.FontSize = 30;
 
+%%%%%%%%%%%%%%%%
+
+eps_vals = [0.01:0.01:0.5];
+eps_vals_flip = fliplr(eps_vals);
+
+xlim([0,0.5])
+plot(eps_vals_flip,9 * log(1000)./ (eps_vals.^2 - (2/3) * eps_vals.^3), 'k', 'DisplayName', '1000 observations'); hold all
+plot(eps_vals_flip,9 * log(10000)./ (eps_vals.^2 - (2/3) * eps_vals.^3), 'r', 'DisplayName', '10000 observations'); 
+plot(eps_vals_flip,9 * log(100000)./ (eps_vals.^2 - (2/3) * eps_vals.^3), 'b', 'DisplayName', '100000 observations'); 
+plot(eps_vals_flip,9 * log(1000000)./ (eps_vals.^2 - (2/3) * eps_vals.^3), 'c', 'DisplayName', '1000000 observations'); 
+
+grid on;
+
+title(['Plot of k against epsilon'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Epsilon', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca,'XTick', 0:0.05:0.5)
+set(gca,'XTickLabel', fliplr(0:0.05:0.5))
+set(gca, 'FontSize', 30)
+
+ylabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'YScale', 'log')
+set(gca, 'FontSize', 30)
+
+lgd = legend('-DynamicLegend', 'location', 'northwest');
+lgd.FontSize = 30;
+
+
+
+
+
+
 
 
