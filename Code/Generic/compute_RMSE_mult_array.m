@@ -4,7 +4,6 @@ function [ rmse ] = compute_RMSE_mult_array(truevals, estvals, N)
   % estvals should be a 3 dimensional array of obs x obs x k
   % N should be number of total pairwise observations
 
-  % In general, we center first before normalizing
   rmse = sqrt(sum(squeeze(sum((estvals - truevals).^2,1)),1) / N);
   
 

@@ -191,6 +191,119 @@ lgd.FontSize = 30;
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+f=@(eps,k) 2*exp(-(eps.^2 - eps.^3).*k/4);
+[EPS,K]=meshgrid(0.001:0.001:0.5, 20:20:100000);
+prob=f(EPS,K);
+prob(prob>=1) = 1;
+prob = 1-prob;
+[C,h] = contour(EPS,K,prob, 'ShowText','on');
+clabel(C,h,'FontSize',14)
+
+set(gca, 'YScale', 'log')
+grid on;
+title(['Level curves of f(epsilon,k) for squared Euclidean distance'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Epsilon', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca, 'FontSize', 30)
+
+ylabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'YScale', 'log')
+set(gca, 'FontSize', 30)
+grid on;
 
 
+
+f=@(eps,k) 4*exp(-(eps.^2 - eps.^3).*k/4);
+[EPS,K]=meshgrid(0.001:0.001:0.5, 20:20:100000);
+prob=f(EPS,K);
+prob(prob>=1) = 1;
+prob = 1-prob;
+[C,h] = contour(EPS,K,prob, 'ShowText','on');
+clabel(C,h,'FontSize',14)
+
+set(gca, 'YScale', 'log')
+grid on;
+title(['Level curves of f(epsilon,k) for inner product'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Epsilon', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca, 'FontSize', 30)
+
+ylabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'YScale', 'log')
+set(gca, 'FontSize', 30)
+grid on;
+
+
+
+
+kvals = 10:10:1000;
+numiter = 10000;
+
+% Use colon data
+[X, ~] = load_colon();
+
+% Center and standardize for just two vectors
+[ X_struct ] = build_X_struct(X, false, false)  
+rng(0);
+
+idx = randsample(62,2);
+
+X_struct.mat = X_struct.mat(idx,:);
+X_struct.num_obs = 2;
+X_struct.total_pairwise = 1;
+
+[prop_ed] = compare_generic_distance_epsilon_bounds_simulation(X_struct, kvals, numiter, 'squared_euclidean_distance', 0.1)
+
+[prop_dot] = compare_generic_distance_epsilon_bounds_simulation(X_struct, kvals, numiter, 'dot_product', 0.1)
+
+theo_ed = 2*exp( -(0.1^2 - 0.1^3) * kvals/4)
+theo_ed(theo_ed>1) = 1
+
+theo_dp = 4*exp( -(0.1^2 - 0.1^3) * kvals/4)
+theo_dp(theo_dp>1) = 1
+
+
+xlim([10,1000])
+plot(kvals,theo_ed, 'k', 'DisplayName', 'Theoretical probability'); hold all
+plot(kvals,prop_ed, 'r', 'DisplayName', 'Empirical probability'); 
+
+grid on;
+
+title(['Plot of probability that squared Euclidean distance exceeds eps = 0.10'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca, 'FontSize', 30)
+ylabel('Probability', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'FontSize', 30)
+
+lgd = legend('-DynamicLegend', 'location', 'northeast');
+lgd.FontSize = 30;
+
+
+
+xlim([10,1000])
+plot(kvals,theo_dp, 'k', 'DisplayName', 'Theoretical probability'); hold all
+plot(kvals,prop_dot, 'r', 'DisplayName', 'Empirical probability'); 
+
+grid on;
+
+title(['Plot of probability that dot product exceeds eps = 0.10'], 'FontWeight', 'bold','FontSize', 30);
+
+xlabel('Number of dimensions k', 'FontWeight', 'bold','FontSize', 40);
+xt = get(gca, 'XTick');
+set(gca, 'FontSize', 30)
+ylabel('Probability', 'FontWeight', 'bold','FontSize', 40);
+yt = get(gca, 'YTick');
+set(gca, 'FontSize', 30)
+
+lgd = legend('-DynamicLegend', 'location', 'northeast');
+lgd.FontSize = 30;
 
