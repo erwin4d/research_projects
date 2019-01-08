@@ -1,6 +1,6 @@
 function [theo_var, est_var] = verify_variance_generic_distance_simulation(X_struct, kvals, numiter, typeof)
   
-  truedist = get_pairwise_distances(X_struct,X_struct, typeof);
+  truedist = get_pairwise_distances_big(X_struct,X_struct, typeof);
   
   truedist = truedist.dist_mat(1,2);
   

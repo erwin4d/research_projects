@@ -82,7 +82,14 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
     n2_index_start = 1;
     n2_index_end = X2.num_obs;
   end
+
+  dist_struct.n1_index_start = n1_index_start;
+  dist_struct.n2_index_start = n2_index_start;
   
+  dist_struct.n1_index_end = n1_index_end;
+  dist_struct.n2_index_end = n2_index_end;
+
+
   dist_struct.dist_mat = zeros(X1.num_obs,X2.num_obs);
   if ~ischar(inputs.p_dist)
     dist_struct.dist_p = inputs.p_dist;
@@ -104,7 +111,7 @@ function [dist_struct] = get_pairwise_distances_big(X1, X2, distance_type, varar
   end
 
 
-
+  
 
 
   dist_struct.dist_type = dist_struct_tmp.dist_type;
